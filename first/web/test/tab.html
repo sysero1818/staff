@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="../css/tab.css" />
+<script type="text/javascript" src="../js/jquery-1.9.1.js"></script>
+<script type="text/javascript">
+var $items = $('#vtab>ul>li');
+$items.mouseover(function() {
+    $items.removeClass('selected');
+    $(this).addClass('selected');
+
+    var index = $items.index($(this));
+    $('#vtab>div').hide().eq(index).show();
+}).eq(1).mouseover();
+</script>
+</head>
+<body>
+<div id="vtab">
+  <ul>
+      <li class="home"></li>
+      <li class="login"></li>
+      <li class="support"></li>
+  </ul>
+  <div>
+      <h4>Welcome Home!</h4>
+      HOME CONTENT
+  </div>
+  <div>
+      <h4>Secure Login</h4>
+      LOGIN CONTENT
+  </div>
+  <div>
+      <h4>Online Support</h4>
+      SUPPORT CONTENT
+  </div>
+</div>
+</body>
+</html>

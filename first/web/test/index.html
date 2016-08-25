@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>1차 프로젝트aaa</title>
+<link rel="stylesheet" type="text/css" href="../css/base.css" />
+<link rel="stylesheet" type="text/css" href="../css/navs.css" />
+<link rel="stylesheet" type="text/css" href="../css/tables1.css" />
+<link rel="stylesheet" type="text/css" href="../css/jquery-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../css/table_style.css" />
+
+<script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript" src="../js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="../js/jquery.validate.js"></script>
+<script type="text/javascript" src="../js/jquery.form.js"></script>
+<script type="text/javascript" src="../js/jquery.maskedinput.js"></script>
+<script type="text/javascript" src="../js/nav.js"></script>
+<script type="text/javascript" src="../js/table.js"></script>
+
+<style>
+#wrapper { 
+	margin: 0 auto;
+	width: 922px;
+}
+
+#header {
+	color: #333;
+	width: 100%;
+	padding: 10px;
+	height: 100px;
+	margin: 10px 0px 0px 0px;
+	background: #82D9CF;
+}
+#navigation {
+	color: #333;
+	padding: 10px;
+	margin: 0px 0px 0px 0px;
+	background: #A4BEB6;
+}
+#main {
+	background: url(../images/faux-3-3-col.gif);
+	margin-bottom: 0px;
+	overflow: auto; 
+	width: 100%;
+	height: 750px;
+}
+
+#leftcolumn { 
+	display: inline;
+	color: #333;
+	margin:10px;
+	padding:0;
+	width: 195px;
+	float: left;
+}
+
+#rightcolumn { 
+	float: right;
+	color: #333;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: 12px;
+	margin-right: 5px;
+	padding:0;
+	width: 74%;
+	display: inline;
+	position: relative;
+}
+
+#footer { 
+	width: 100%;
+	height: 60px;
+	clear: both;
+	color: #333;
+	background: #82D9CF;
+	margin: 0px 0px 10px 0px;
+	padding: 10px;
+}
+
+.clear { 
+	clear: both; background: none; 
+}
+
+#header_title{
+	margin: 0 auto;
+	text-align: center;
+	clear: both;
+}
+
+
+#login {
+	float:right;
+	margin:10px 0 10px 0;
+	font-size:1.1em;
+}
+
+h1 { 
+	font-family: 'Merienda', 'Trebuchet MS', Verdana, sans-serif, '맑은 고딕'; 
+	font-size: 2.35em; 
+	line-height: 1em; 
+	margin-bottom: 20px; 
+	font-weight: bold; 
+	letter-spacing: -0.03em; 
+	color: #675d90; 
+	text-shadow: 2px 2px 0px rgba(255,255,255,0.65); 
+	text-align: center; 
+}
+
+#content_table{
+	width: 100%;
+	float: right;
+}
+
+#member_table{
+	margin-top: 5px;
+	width: 100%;
+	height: 300px;
+	border: 1px solid #C1DAD7;	
+}
+
+#main_paging{
+	margin-top: 5px;
+	text-align: center;
+	line-height: 20px;
+	color: #4f6b72;	
+}
+
+#main_paging img{
+	vertical-align: middle;
+}
+
+#content_form{
+	width: 100%;
+	float: right;
+	margin: 30px auto;
+	padding : 5px;
+	border: 1px solid #C1DAD7;
+}
+
+#pic {
+	float: left;
+	width: 120px;
+	height: 140px;
+	padding: 10px;
+	border: 1px solid #C1DAD7;
+}
+
+#pic p.pic_btnRow {
+	display: block;
+	position:relative;
+	margin-top: 2px;
+	text-align: center;
+}
+
+#regForm{
+	float: right;
+	width: 79%;
+	border: 1px solid #C1DAD7;
+	margin-left: 10px;
+	padding: 5px;
+}
+
+#regForm_left{
+	width: 45%;
+	height: 180px;
+	float: left;
+}
+
+#regForm_right{
+	width: 55%;
+	height: 180px;	
+	float: left;
+}
+
+#regForm_bottom{
+	width: 100%;
+	float:left;	
+	height: 120px;
+}
+
+#tabs{
+	width: 74%;
+	margin: 10px;
+	float:right;
+	height: 500px;
+}
+#tabs > li > a{
+	font-size: 12px;
+}
+
+#tablewrapper{
+	margin: 0 auto;
+}
+
+form.cmxform  p {
+	font-size: 0.98em; 
+	list-style: none;
+	margin: 2px;
+	padding: 0px;
+}
+form.cmxform label {
+	display: inline-block;
+	width: 60px;
+	line-height: 2.1;
+	vertical-align: middle;
+	text-align: right;
+	margin-right: 10px;
+	color: #4f6b72;	
+}
+
+form.cmxform label.error {
+	display: inline;
+	width: 70px;
+	text-align:left;
+	position: relative;
+	left:10px;
+	top: 2px;
+	color: red;
+	margin:0;
+	padding:0;
+}
+
+input.submit {margin-left: 30px;}
+
+input, select {padding:0.2em;  font-size:0.98em; border:1px solid #C1DAD7;}
+input:focus, select:focus {background-color:#ecf2f6; border:1px solid #79B7E7;}
+
+#regForm p.btnRow {
+	display:	block;
+	text-align: center;
+	margin-top: 5px;
+	position:relative;
+}
+
+#empno, #passwd, #empname {width:80px;}
+#indt, #outdt, #birth {width:66px;}
+#mobile{width:88px;	ime-mode:disable;}
+#jumin{width:95px;	ime-mode:disable;}
+#zipcode{width:47px;}
+#email{width:150px;}
+#basicad, #detailad {width:250px;}
+</style>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $( "#tabs" ).tabs();
+	$("#indt, #outdt").datepicker();
+	
+	$("#birth").datepicker({
+		changeMonth: true,
+		changeYear: true
+	});
+	
+    $("#indt").datepicker("option", "maxDate", $("#outdt").val());
+    $("#indt").datepicker("option", "onClose", function ( selectedDate ) {
+        $("#outdt").datepicker( "option", "minDate", selectedDate );
+    });
+
+    $("#outdt").datepicker("option", "minDate", $("#indt").val());
+    $("#outdt").datepicker("option", "onClose", function ( selectedDate ) {
+        $("#indt").datepicker( "option", "maxDate", selectedDate );
+	});
+    
+
+    
+	$("#mobile").mask("999-9999-9999");
+	$("#jumin").mask("999999-9999999");	
+	
+    
+	 $("#regForm").validate({
+		rules: {
+		  empno: {required: true, minlength: 5, maxlength: 10},
+		  passwd: {required: true, minlength: 5, maxlength: 20},
+		  empname: {required: true, maxlength: 10 },
+		  deptcd: {required: true},
+		  positcd: {required: true},
+		  upperid: {required: true},			  
+		  email: {email: true}
+		},
+		messages: {
+		  empno: {required: "필수", minlength: "5자리 이상", maxlength: "10자리까지" },
+		  passwd: {required: "필수", minlength: "5자리 이상", maxlength: "20자리까지" },
+		  empname: {required: "필수", maxlength: "10자리까지" },
+		  deptcd: {required: "필수"},
+		  positcd: {required: "필수"},
+		  upperid: {required: "필수"},
+		  email: {email: "오류"},
+		}
+	  });
+	
+	// submit
+	var options = {
+		url : 'projectList.html',
+		type : 'POST',
+		beforeSubmit: function(){
+			$.blockUI({overlayCSS:{opacity:0.0}, message:null});
+			return $("#regForm").valid();
+		},
+	
+		success : function(responseText,statusText,xhr){
+			$("#regForm").clearForm();
+			$("#inup").val("in");
+			$("#btnSubmit").val("등록");
+			$("#btnRefresh").hide();
+			$.unblockUI();
+	
+			if (responseText!=""){
+				alert(responseText);
+			}
+		}, 
+		error: function (jqXHR, textStatus, errorThrown) {
+			$.unblockUI();
+			alert(errorThrown);
+		}
+	}
+	$("#regForm").ajaxForm(options);	
+	
+	$("#btnRefresh").bind("click", function(){
+		$("#regForm").clearForm();
+		$("#regForm_left > p > label.error").hide();
+		$("#regForm_right > p > label.error").hide();			
+		$("#deptcd").val("");
+		$("#positcd").val("");
+	});		
+	
+	$("#tableheader").hide();
+	
+	//var param="";
+	$.post("../memberList.do", "", scTableControl);
+	
+	function scTableControl(strText){
+		$("#member_table").html(strText);
+	}
+});
+</script>
+</head>
+<body>
+
+<div id="wrapper">
+  <div id="header">
+  	<div id="login">홍길동님 로그인&nbsp;|&nbsp;로그아웃</div>
+  	<div id="header_title"><h1>사원 정보 관리 시스템</h1></div>
+  </div>
+  <div id="navigation"> 홈  </div>
+
+  <div id="main">
+
+    <div id="leftcolumn">
+    <nav>
+      <ul id="menu">
+        <li><a href="#">기술 관리</a>
+          <ul>
+            <li><a href="#">기술 목록</a></li>
+          </ul>
+        </li>
+        <li><a href="#">프로젝트 관리</a>
+          <ul>
+            <li><a href="projectList.html">프로젝트 목록</a></li>
+            <li><a href="#">개인 프로젝트 목록</a></li>
+          </ul>
+        </li>
+        <li><a href="#">사원 관리</a>
+          <ul>
+            <li><a href="#">사용자 목록</a></li>
+          </ul>
+        </li>
+        <li><a href="#">고객 관리</a>
+          <ul>
+            <li><a href="#">고객 목록</a></li>
+            <li><a href="#">상담 목록</a></li>
+          </ul>
+        </li>
+        <li><a href="#">거래처 관리</a>
+          <ul>
+            <li><a href="#">거래처 목록</a></li>
+          </ul>
+        </li>  
+        <li><a href="#">공지 사항</a></li>                
+      </ul>
+    </nav>
+	</div>
+
+    <div id="rightcolumn">
+	    <div id="content_table">
+    		<div id="table_search">
+	 			<p>
+					<label for="sh_compname">검색명 : </label>
+					<input type="text" id="sh_prjname" name="sh_prjname" maxlength="10" value=""  />
+					&nbsp;&nbsp;<input type="button" id="btnSearch" value="검색"  />
+				</p>
+    		</div>	
+    		<!--    
+			<table id="mytable" summary="프로젝트에 사용">
+		  <caption>프로젝트 내용 </caption> 
+			<thead>
+				<tr>
+				  <th scope="col" abbr="사번">사번</th>
+				  <th scope="col" abbr="이름">이름</th>
+				  <th scope="col" abbr="부서">부서</th>
+				  <th scope="col" abbr="직급">직급</th>
+				  <th scope="col" abbr="상급자">상급자</th>
+				  <th scope="col" abbr="입사일">입사일</th>				  				  
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+				  <td>12345</td>
+				  <td>홍길동</td>
+				  <td>개발부</td>
+				  <td>대리</td>
+				  <td>고길동 과장</td>				  				  
+				  <td>2016-06-01</td>
+				</tr>
+				<tr>
+				  <td>12345</td>
+				  <td>홍길동</td>
+				  <td>개발부</td>
+				  <td>대리</td>
+				  <td>고길동 과장</td>				  				  
+				  <td>2016-06-01</td>
+				</tr>
+				<tr>
+				  <td>12345</td>
+				  <td>홍길동</td>
+				  <td>개발부</td>
+				  <td>대리</td>
+				  <td>고길동 과장</td>				  				  
+				  <td>2016-06-01</td>
+				</tr>
+				<tr>
+				  <td>12345</td>
+				  <td>홍길동</td>
+				  <td>개발부</td>
+				  <td>대리</td>
+				  <td>고길동 과장</td>				  				  
+				  <td>2016-06-01</td>
+				</tr>
+				<tr>
+				  <td>12345</td>
+				  <td>홍길동</td>
+				  <td>개발부</td>
+				  <td>대리</td>
+				  <td>고길동 과장</td>				  				  
+				  <td>2016-06-01</td>
+				</tr>
+				<tr>
+				  <td>12345</td>
+				  <td>홍길동</td>
+				  <td>개발부</td>
+				  <td>대리</td>
+				  <td>고길동 과장</td>				  				  
+				  <td>2016-06-01</td>
+				</tr>
+				<tr>
+				  <td>12345</td>
+				  <td>홍길동</td>
+				  <td>개발부</td>
+				  <td>대리</td>
+				  <td>고길동 과장</td>				  				  
+				  <td>2016-06-01</td>
+				</tr>	
+			</tbody>													
+			</table>
+			-->
+			<div id="member_table">
+			</div>
+			<div id="main_paging">
+			        <img src="../images/first.gif" width="16" height="15" />
+                    <img src="../images/prev.gif"  width="16" height="15" />
+                     <span id="main_num">&nbsp;1&nbsp;|&nbsp;2&nbsp;|&nbsp;3&nbsp;|&nbsp;4&nbsp;|&nbsp;5&nbsp;</span>
+                    <img src="../images/next.gif"  width="16" height="15" />
+                    <img src="../images/last.gif"  width="16" height="15" />
+			</div>
+		</div>
+		
+    	<div id="content_form"> 
+    		<div id="pic">
+				<img src="../images/noimage_pic.gif" />
+				<p class="pic_btnRow">
+					<input type="submit" id="btnPicSubmit" value="수정" /> <input type="button" id="btnDelPic" value="삭제" />
+				</p>
+    		</div>
+ 			<form class="cmxform" id="regForm" name="regForm" method="post" enctype="multipart/form-data">
+ 				<div id="regForm_left">
+					<input type="hidden" name="inup" id="inup" value="in" />
+					<input type="hidden" name="before_empno" id="before_empno" value="" /> 
+					<p>
+						<label for="empno">사번</label>
+						<input type="text" id="empno" name="empno" style="ime-mode:disabled"  class="required"  value="" />
+					</p>	
+					<p>
+						<label for="passwd">패스워드</label>
+						<input type="password" id="passwd" name="passwd" style="ime-mode:disabled" class="required"  value="" />
+					</p>		
+					<p>
+						<label>부서</label>
+							<select id="deptcd" name="deptcd" class="required">
+								<option value="">선택</option>
+								<option value="A">총무부</option>
+								<option value="B">기획부</option>
+								<option value="C">개발부</option>
+								<option value="D">영업부</option>																												
+						</select>	
+					</p>			
+					<p>
+						<label for="indt">입사일</label>
+						<input type="text" id="indt" name="indt"  value="" />
+					</p>			
+					<p>
+						<label>휴대폰</label>
+						<input type="text" id="mobile" name="mobile" value="" />
+					</p>	
+					<p>
+						<label for="birth">생일</label>
+						<input type="text" id="birth" name="birth"  value="" />
+					</p>																							
+ 				</div>
+ 				<div id="regForm_right">
+					<p>
+						<label for="empname">사원명</label>
+						<input type="text" id="empname" name="empname"  class="required" value="" />
+					</p>
+					<p>
+						<label for="jumin">주민번호</label>
+						<input type="text" id="jumin" name="jumin"  value="" />
+					</p>		
+					<p>		
+						<label>직급</label>
+							<select id="positcd" name="positcd" class="required">
+								<option value="">선택</option>
+								<option value="7">CEO</option>
+								<option value="6">이사</option>
+								<option value="5">부장</option>
+								<option value="4">차장</option>
+								<option value="3">과장</option>
+								<option value="2">대리</option>
+								<option value="1">주임</option>
+								<option value="0">사원</option>							
+						</select>						
+					</p>
+					<p>
+						<label for="outdt">퇴사일</label>
+						<input type="text" id="outdt" name="outdt"  value="" />
+					</p>
+					<p>
+						<label for="email">이메일</label>
+						<input type="text" id="email"  name="email" style="ime-mode:disabled" class="email" value="" />
+					</p>					
+ 				</div>
+ 				<div id="regForm_bottom">
+					<p>
+						<label for="zipcode">우편번호</label>
+							<input type="text" id="zipcode" name="zipcode"  value="" />
+					</p>
+					<p>
+						<label for="zipcode">기본주소</label>
+							<input type="text" id="basicad" name="basicad"  value="" />
+					</p>
+					<p>
+						<label for="zipcode">상세주소</label>
+							<input type="text" id="detailad" name="detailad"  value="" />
+						
+					</p>
+					<p class="btnRow">
+						<input type="submit" id="btnSubmit" value="등록" /> <input type="button" id="btnRefresh" value="초기화" />
+					</p>					
+ 				</div>
+			</form> 
+     	</div>
+    </div>
+    
+	<div id="tabs">
+	  <ul>
+	    <li><a href="#tabs-1">학 력</a></li>
+	    <li><a href="#tabs-2">경 력</a></li>
+	    <li><a href="#tabs-3">자 격 증</a></li>
+	    <li><a href="#tabs-4">보유 기술</a></li>	    
+	  </ul>
+	  <div id="tabs-1">
+	<div id="tablewrapper">
+		<div id="tableheader">
+        	<div class="search">
+                <select id="columns" onchange="sorter.search('query')"></select>
+                <input type="text" id="query" onkeyup="sorter.search('query')" />
+            </div>
+            <span class="details">
+				<div>Records <span id="startrecord"></span>-<span id="endrecord"></span> of <span id="totalrecords"></span></div>
+        		<div><a href="javascript:sorter.reset()">reset</a></div>
+        	</span>
+        </div>
+        <table cellpadding="0" cellspacing="0" border="0" id="table" class="tinytable">
+            <thead  class="ui-widget-header">
+                <tr>
+                    <th class="nosort"><h3>재학기간</h3></th>
+                    <th class="nosort"><h3>학교명</h3></th>
+                    <th class="nosort"><h3>전공</h3></th>
+                    <th class="nosort"><h3>학점</h3></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2010-03-10 ~ 2013-03-02</td>
+                    <td>ooo 대학교</td>
+                    <td>컴퓨터공학</td>
+                    <td>3.5</td>
+                </tr>
+                <tr>
+                    <td>2010-03-10 ~ 2013-03-02</td>
+                    <td>ooo 대학교</td>
+                    <td>컴퓨터공학</td>
+                    <td>3.5</td>
+                </tr>
+                <tr>
+                    <td>2010-03-10 ~ 2013-03-02</td>
+                    <td>ooo 대학교</td>
+                    <td>컴퓨터공학</td>
+                    <td>3.5</td>
+                </tr>
+                <tr>
+                    <td>2010-03-10 ~ 2013-03-02</td>
+                    <td>ooo 대학교</td>
+                    <td>컴퓨터공학</td>
+                    <td>3.5</td>
+                </tr>
+                <tr>
+                    <td>2010-03-10 ~ 2013-03-02</td>
+                    <td>ooo 대학교</td>
+                    <td>컴퓨터공학</td>
+                    <td>3.5</td>
+                </tr>
+                <tr>
+                    <td>2010-03-10 ~ 2013-03-02</td>
+                    <td>ooo 대학교</td>
+                    <td>컴퓨터공학</td>
+                    <td>3.5</td>
+                </tr>
+                <tr>
+                    <td>2010-03-10 ~ 2013-03-02</td>
+                    <td>ooo 대학교</td>
+                    <td>컴퓨터공학</td>
+                    <td>3.5</td>
+                </tr>
+                <tr>
+                    <td>2010-03-10 ~ 2013-03-02</td>
+                    <td>ooo 대학교</td>
+                    <td>컴퓨터공학</td>
+                    <td>3.5</td>
+                </tr>
+                <tr>
+                    <td>2010-03-10 ~ 2013-03-02</td>
+                    <td>ooo 대학교</td>
+                    <td>컴퓨터공학</td>
+                    <td>3.5</td>
+                </tr>
+                <tr>
+                    <td>2010-03-10 ~ 2013-03-02</td>
+                    <td>ooo 대학교</td>
+                    <td>컴퓨터공학</td>
+                    <td>3.5</td>
+                </tr>
+                <tr>
+                    <td>2010-03-10 ~ 2013-03-02</td>
+                    <td>ooo 대학교</td>
+                    <td>컴퓨터공학</td>
+                    <td>3.5</td>
+                </tr>
+                <tr>
+                    <td>2010-03-10 ~ 2013-03-02</td>
+                    <td>ooo 대학교</td>
+                    <td>컴퓨터공학</td>
+                    <td>3.5</td>
+                </tr>
+                <tr>
+                    <td>2010-03-10 ~ 2013-03-02</td>
+                    <td>ooo 대학교</td>
+                    <td>컴퓨터공학</td>
+                    <td>3.5</td>
+                </tr>
+                <tr>
+                    <td>2010-03-10 ~ 2013-03-02</td>
+                    <td>ooo 대학교</td>
+                    <td>컴퓨터공학</td>
+                    <td>3.5</td>
+                </tr>
+                <tr>
+                    <td>2010-03-10 ~ 2013-03-02</td>
+                    <td>ooo 대학교</td>
+                    <td>컴퓨터공학</td>
+                    <td>3.5</td>
+                </tr>                                                                                                                                                                                                
+
+            </tbody>
+        </table>
+        <div id="tablefooter">
+          <div id="tablenav">
+            	<div>
+                    <img src="../images/first.gif" width="16" height="16" alt="First Page" onclick="sorter.move(-1,true)" />
+                    <img src="../images/prev.gif" width="16" height="16" alt="First Page" onclick="sorter.move(-1)" />
+                    <img src="../images/next.gif" width="16" height="16" alt="First Page" onclick="sorter.move(1)" />
+                    <img src="../images/last.gif" width="16" height="16" alt="Last Page" onclick="sorter.move(1,true)" />
+                </div>
+                <div>
+                	<select id="pagedropdown"></select>
+				</div>
+                <div>
+                	<a href="javascript:sorter.showall()">view all</a>
+                </div>
+            </div>
+			<div id="tablelocation">
+            	<div>
+                    <select onchange="sorter.size(this.value)">
+                    	<option value="5" selected="selected">5</option>
+                        <option value="10">10</option>
+                    </select>
+                    <span>Entries Per Page</span>
+                </div>
+                <div class="page">Page <span id="currentpage"></span> of <span id="totalpages"></span></div>
+            </div>
+        </div>
+    </div>
+	
+
+		<script type="text/javascript">
+		var sorter = new TINY.table.sorter('sorter','table',{
+			headclass:'head',
+			ascclass:'asc',
+			descclass:'desc',
+			evenclass:'evenrow',
+			oddclass:'oddrow',
+			evenselclass:'evenselected',
+			oddselclass:'oddselected',
+			paginate:true,
+			size:5,
+			colddid:'columns',
+			currentid:'currentpage',
+			totalid:'totalpages',
+			startingrecid:'startrecord',
+			endingrecid:'endrecord',
+			totalrecid:'totalrecords',
+			hoverid:'selectedrow',
+			pageddid:'pagedropdown',
+			navid:'tablenav',
+			sortcolumn:1,
+			sortdir:1,
+			//sum:[8],
+			//avg:[6,7,8,9],
+			//columns:[{index:7, format:'%', decimals:1},{index:8, format:'$', decimals:0}],
+			init:true
+		});
+	  </script>	  
+	  
+	  </div>
+	  <div id="tabs-2">
+	  </div>
+	  <div id="tabs-3">
+	  </div>
+	  <div id="tabs-4">
+	  </div>	  
+	</div>							
+    <div class="clear"> </div>
+  </div>
+
+  <div id="footer"> 바닥글 </div>
+
+ </div>
+</body>
+</html>
