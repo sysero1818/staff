@@ -30,9 +30,8 @@
 	</table>
 </div>
 <div id="modalPicDiv" title="사진 수정">
-	<form id="picForm" name="picForm" enctype="multipart/form-data">
-		<input type="hidden" name="cmd" value="picUpload" />
-		<input type="hidden" name="pic_empno" value="" />
+	<form id="picForm" name="picForm" method="post" action="neviGo?cmd=picUpload" enctype="multipart/form-data">
+		<input type="text" id="pic_empno" name="pic_empno" value="" />
 		<input type="file" id="picFile" name="picFile" value="" />
 		<input type="submit" id="picSend" name="picSend" value="수정" />
 	</form>	

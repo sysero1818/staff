@@ -85,7 +85,7 @@ $(document).ready(function(){
 //	여기까지 주소 찾기 모달 폼
 	
 //  ************* 사진 업로드 모달 폼 ******************
-	
+
 	var pic, open_pic
 	pic = $( "#modalPicDiv" ).dialog({
 		autoOpen: false,
@@ -103,39 +103,18 @@ $(document).ready(function(){
 		}
 	});
 
-	
-/*    $("#picSend").click(function(){
-  	  var formData = new FormData($("#picForm"));
-  	  formData.append("cmd", $("input[name=cmd]").val());
-  	  formData.append("pic_empno", $("input[name=pic_empno]").val());
-  	  formData.append("picFile", $("input[name=picFile]")[0].files[0]);
-  	 
-  	  $.ajax({
-  		type: "post",
-  	    url: "neviGo",
-  	    data: formData,
-  	    processData: false,
-  	    contentType: false,
-  	    type: 'POST',
-  	    success: function(data){
-  	    	alert("EE");
-  	    }
-  	  });
 
-    });*/
-	
+
 	var frmData=$("#picForm").serialize();
 	$("#picForm").ajaxForm({
 		type: "post",
 		url: "neviGo?cmd=picUpload",
-//		enctype: "multipart/form-data",
 		data: frmData,
 		dataType: "json",
 		beforeSubmit: function (data, frm, opt) {
-             alert("전송전!!");
         },		
 		success : function(data) {
-			alert(data);
+
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
 			alert(xhr.status+" : "+thrownError);
@@ -146,7 +125,7 @@ $(document).ready(function(){
 	open_pic = $("#btnPic").on("click", function(){
 		pic.dialog("open");
 	});
-	
+
 //  ************* 사진 업로드 모달 폼 끝*****************	
     $( "#tabs" ).tabs({
     	event:"mouseover"
@@ -271,7 +250,7 @@ $(document).ready(function(){
 			var gsr = $("#user_list").jqGrid('getGridParam','selrow');
 			$("#user_list").jqGrid('GridToForm',gsr,"#regForm");
 			var ret = $("#user_list").getRowData( ids );
-			$("#pic_empno").val($.trim(ret.empno));
+			$("#pic_empno").val(ret.empno);
 			$("#jumin").val($.trim(ret.jumin));
 			$("#indt").val($.trim(ret.indt));
 			$("#outdt").val($.trim(ret.outdt));
@@ -279,7 +258,11 @@ $(document).ready(function(){
 			$("#birth").val($.trim(ret.birth));
 //			$("#passwd").hide();
 //			$("#confirm_passwd").hide();
-			
+			if (ret.pic == ""){
+				$("#picture > img").attr("src","images/noimage_pic.gif");
+			} else if (ret.pic != null) {
+				$("#picture > img").attr("src","upload/"+ret.pic);
+			}
 			$("#inup").val("up");
 			$("#btnSubmit").val("수정");
         }
