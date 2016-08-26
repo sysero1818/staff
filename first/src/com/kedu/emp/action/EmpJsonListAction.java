@@ -23,7 +23,7 @@ public class EmpJsonListAction implements Action {
 		int page = 1;
 		int perPageRow = 10;
 		String sh_empno = "";
-		String sh_empnm = "";		
+		String sh_empnm = "";
 		String sh_indt_st = "";
 		String sh_indt_ed = "";
 		try {

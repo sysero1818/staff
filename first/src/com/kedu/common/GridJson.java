@@ -4,7 +4,7 @@ import java.util.List;
 
 public class GridJson<T> {
 	
-	private int total;  
+	private int total;
 	private int page;
 	private int records;
 	private List<T> rows;
