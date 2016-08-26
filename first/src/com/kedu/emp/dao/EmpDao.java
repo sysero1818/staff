@@ -320,7 +320,7 @@ public class EmpDao {
 		return result;
 	}
 	
-	public EmpDto getMember(String empno){
+	public EmpDto getEmpOneByEmpno(String empno){
 		EmpDto eDto = null;
 		String sql = "select * from emp where empno=?";
 		Connection conn = null;

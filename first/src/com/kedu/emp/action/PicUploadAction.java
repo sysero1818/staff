@@ -1,14 +1,19 @@
 package com.kedu.emp.action;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.kedu.common.Action;
 import com.kedu.emp.dao.EmpDao;
+import com.kedu.emp.dto.EmpDto;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
@@ -27,13 +32,12 @@ public class PicUploadAction implements Action {
 		System.out.println(uploadFilePath);
 		
 		try {
-			MultipartRequest multi = new MultipartRequest(request, // request 객체
-					uploadFilePath, // 서버상의 실제 디렉토리
-					uploadFileSizeLimit, // 최대 업로드 파일 크기
-					encType, // 인코딩 방법
-					// 동일한 이름이 존재하면 새로운 이름이 부여됨
+			MultipartRequest multi = new MultipartRequest(request, 
+					uploadFilePath, 
+					uploadFileSizeLimit,
+					encType, 
 					new DefaultFileRenamePolicy());
-			// 업로드된 파일의 이름 얻기
+
 			String pic = multi.getFilesystemName("picFile");
 			String empno	= multi.getParameter("pic_empno");
 			
@@ -43,8 +47,34 @@ public class PicUploadAction implements Action {
 			if (pic == null) { 
 				System.out.print("파일 업로드 되지 않았음");
 			} else { 
+
+//				기존에 사진 파일이 있는지 DB에서 가져오기
 				EmpDao eDao = EmpDao.getInstance();
-				eDao.updatePic(empno, pic);				
+				EmpDto eDto = eDao.getEmpOneByEmpno(empno);
+				String old_pic = eDto.getPic();
+				
+//				기존의 데이터가 있으면 해당 파일을 삭제하기
+				if(old_pic != null){
+					File file = new File( savePath +"/"+ old_pic );
+					if (file.exists()){
+						file.delete();
+					}
+				}
+				
+//				새로 업로드한 사진 DB에 update하기
+				eDao.updatePic(empno, pic);	
+				
+//				새로 update한 데이터를 json으로 세팅해주기
+				Gson gson = new GsonBuilder().create();
+				String json = gson.toJson(pic);
+				
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				
+				PrintWriter out = response.getWriter();
+				out.write(json);
+				out.flush();
+				out.close();	
 			}
 		} catch (Exception e) {
 			System.out.print("예외 발생 : " + e);

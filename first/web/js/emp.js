@@ -114,7 +114,7 @@ $(document).ready(function(){
 		beforeSubmit: function (data, frm, opt) {
         },		
 		success : function(data) {
-
+			$("#picture > img").attr("src","upload/"+data);
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
 			alert(xhr.status+" : "+thrownError);

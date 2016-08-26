@@ -43,7 +43,7 @@ public class LoginOk implements Action {
 		int result = empDao.login(empno, passwd, manager, mpasswd);
 		
 		if (result == 1){
-			EmpDto eDto = empDao.getMember(empno);
+			EmpDto eDto = empDao.getEmpOneByEmpno(empno);
 			HttpSession session = request.getSession();
 			session.setAttribute("empno", eDto.getEmpno());
 			session.setAttribute("empnm", eDto.getEmpnm());
