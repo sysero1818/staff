@@ -55,18 +55,19 @@ $(document).ready(function(){
 		event.preventDefault();
 	});	
 	
-	$("#btndong").on("click", function(){
+
+	$("#btndong").on("click",function(){
 		var frmData=$("#addrSerarchForm").serialize();
 		$.ajax({
 			type: "post",
-			url: "neviGo",
+			url: "neviGo?cmd=searchAddr",
 			data: frmData,
 			dataType: "json",
 			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 			success : function(data) {
 				$("#addr_table tbody").children().remove();
 				$.each(data, function(i){
-					$("#addr_table tbody").prepend("<tr><td>"+data[i].empno+"</td><td>"+data[i].empnm+"</td><td>"+data[i].birth+"</td><td>"+data[i].email+"</td><td>"+data[i].jumin+"</td></tr>");
+					$("#addr_table tbody").prepend("<tr><td>"+data[i].seq+"</td><td>"+data[i].zipcode+"</td><td>"+data[i].sido+"</td><td>"+data[i].sigungu+"</td><td>"+data[i].dong+"</td><td>"+data[i].ri+"</td><td>"+data[i].bldg+"</td><td>"+data[i].bunji+"</td></tr>");
 				})
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
@@ -108,7 +109,7 @@ $(document).ready(function(){
 		url: "neviGo?cmd=picUpload",
 		data: frmData,
 		dataType: "json",
-		beforeSubmit: function (data, frm, opt) {
+		beforeSubmit: function () {
 			if($("#pic_empno").val() == ""){
 				alertMsg("사진수정", "사원을 선택해 주세요...");
 				return false;
@@ -132,7 +133,9 @@ $(document).ready(function(){
 		pic.dialog("open");
 	});
 
-//  ************* 사진 업로드 모달 폼 끝*****************	
+//  ************* 사진 업로드 모달 폼 끝*****************
+	
+	
     $( "#tabs" ).tabs({
     	event:"mouseover"
     });

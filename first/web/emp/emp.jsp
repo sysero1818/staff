@@ -16,22 +16,21 @@
 <div id="modalAddrDiv" title="우편번호 찾기">
 	<p class="validateTips">&nbsp;</p>
 	<form id="addrSerarchForm" name="addrSerarchForm">
-		<fieldset>
-			<input type="hidden" name="cmd" value="empTest" />
+			<input type="hidden" name="cmd" value="searchAddr" />
 			<label for="dong">동이름 : </label>
 			<input type="text" name="dong" id="dong" class="text ui-widget-content ui-corner-all">
 			<input type="button" id="btndong" value="검색" />
-		</fieldset>
 	</form>
 	<table id="addr_table">
 		<thead>
 			<tr>
-				<th>우편번호</th><th>시도</th><th>시군구</th><th>동</th><th>리</th>
+				<th>일련번호</th><th>우편번호</th><th>시도</th><th>시군구</th><th>동</th><th>리</th><th>건물명</th><th>번지</th>
 			</tr>
 		</thead>
 		<tbody></tbody>
 	</table>
 </div>
+
 <div id="modalPicDiv" title="사진 수정">
 	<form id="picForm" name="picForm" method="post" action="neviGo?cmd=picUpload" enctype="multipart/form-data">
 		<input type="hidden" id="pic_empno" name="pic_empno" value="" />

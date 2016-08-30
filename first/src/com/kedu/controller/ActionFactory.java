@@ -9,6 +9,7 @@ import com.kedu.emp.action.LoginOk;
 import com.kedu.emp.action.ManagerUpdateAction;
 import com.kedu.emp.action.MemberListGoAction;
 import com.kedu.emp.action.PicUploadAction;
+import com.kedu.emp.action.SearchAddr;
 
 public class ActionFactory {
 	private static ActionFactory instance = new ActionFactory();
@@ -42,6 +43,8 @@ public class ActionFactory {
 			action = new MemberListGoAction();
 		} else if (cmd.equals("picUpload")){
 			action = new PicUploadAction();
+		} else if (cmd.equals("searchAddr")){
+			action = new SearchAddr();
 		}
 
 
