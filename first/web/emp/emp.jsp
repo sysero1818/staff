@@ -10,6 +10,9 @@
 <script type="text/javascript" src="js/emp.js"></script>
 </head>
 <body>
+<div id="alert_msg" title="">
+  <p></p>
+</div>
 <div id="modalAddrDiv" title="우편번호 찾기">
 	<p class="validateTips">&nbsp;</p>
 	<form id="addrSerarchForm" name="addrSerarchForm">
@@ -31,7 +34,7 @@
 </div>
 <div id="modalPicDiv" title="사진 수정">
 	<form id="picForm" name="picForm" method="post" action="neviGo?cmd=picUpload" enctype="multipart/form-data">
-		<input type="text" id="pic_empno" name="pic_empno" value="" />
+		<input type="hidden" id="pic_empno" name="pic_empno" value="" />
 		<input type="file" id="picFile" name="picFile" value="" />
 		<input type="submit" id="picSend" name="picSend" value="수정" />
 	</form>	
@@ -67,10 +70,11 @@
     		</div>
 		</div>
 		
+		
     	<div id="content_form"> 
  			<div id="regForm_title" class="ui-widget-header">사원 정보</div>
     		<div id="picture">
-				<img src="images/noimage_pic.gif" />
+				<img src="images/noimage_pic.gif" width="100"  height="100"/>
 				<p class="pic_btnRow">
 					<input type="button" id="btnPic" value="수정" /> <input type="button" id="btnPicDel" value="삭제" />
 				</p>
@@ -174,12 +178,16 @@
 		    <li><a href="#tabs-4">보유 기술</a></li>	    
 		  </ul>
 		  <div id="tabs-1">
+		  
 		  </div>
 		  <div id="tabs-2">
+		  
 		  </div>
 		  <div id="tabs-3">
+		  
 		  </div>
 		  <div id="tabs-4">
+		  
 		  </div>	  
 		</div>     	
     </div>

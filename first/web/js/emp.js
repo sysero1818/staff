@@ -53,7 +53,6 @@ $(document).ready(function(){
 	
 	form = dl.find( "#addrSerarchForm" ).on( "submit", function( event ) {
 		event.preventDefault();
-		addUser();
 	});	
 	
 	$("#btndong").on("click", function(){
@@ -86,10 +85,10 @@ $(document).ready(function(){
 	
 //  ************* 사진 업로드 모달 폼 ******************
 
-	var pic, open_pic
+	var pic, open_pic, picform
 	pic = $( "#modalPicDiv" ).dialog({
 		autoOpen: false,
-		height: 300,
+		height: 150,
 		width: 350,
 		modal: true,
 		buttons: {
@@ -98,11 +97,9 @@ $(document).ready(function(){
 			}
 		},
 		close: function() {
-			form[ 0 ].reset();
-			allFields.removeClass( "ui-state-error" );
+			$("#picForm").clearForm();
 		}
 	});
-
 
 
 	var frmData=$("#picForm").serialize();
@@ -112,16 +109,25 @@ $(document).ready(function(){
 		data: frmData,
 		dataType: "json",
 		beforeSubmit: function (data, frm, opt) {
+			if($("#pic_empno").val() == ""){
+				alertMsg("사진수정", "사원을 선택해 주세요...");
+				return false;
+			}
+			
+			if($("#picFile").val() == ""){
+				alertMsg("사진수정", "파일을 선택해 주세요...");
+				return false;
+			}
         },		
 		success : function(data) {
-			$("#picture > img").attr("src","upload/"+data);
+			$("#picture > img").attr("src","upload/"+data.updateFile);
+			$("#user_list").trigger("reloadGrid");
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
 			alert(xhr.status+" : "+thrownError);
 		}
 	});
 
-	
 	open_pic = $("#btnPic").on("click", function(){
 		pic.dialog("open");
 	});
@@ -189,9 +195,9 @@ $(document).ready(function(){
 			$.unblockUI();
 			
 			if (responseText=="0"){
-				alert("등록실패");
+				alertMsg("사원 목록", "등록 실패");
 			} else if (responseText=="1"){
-				alert("등록완료");
+				alertMsg("사원 목록", "등록 완료");
 			}
 
 			$("#user_list").trigger("reloadGrid");

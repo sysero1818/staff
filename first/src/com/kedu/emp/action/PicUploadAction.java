@@ -3,6 +3,7 @@ package com.kedu.emp.action;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -28,8 +29,9 @@ public class PicUploadAction implements Action {
 		String encType = "UTF-8";
 		ServletContext context = request.getSession().getServletContext();
 		String uploadFilePath = context.getRealPath(savePath);
-		System.out.println("서버상의 실제 디렉토리 :");
-		System.out.println(uploadFilePath);
+//		System.out.println("서버상의 실제 디렉토리 :");
+//		System.out.println(uploadFilePath);
+		HashMap<String, String> sendData = new HashMap<String, String>();
 		
 		try {
 			MultipartRequest multi = new MultipartRequest(request, 
@@ -41,13 +43,12 @@ public class PicUploadAction implements Action {
 			String pic = multi.getFilesystemName("picFile");
 			String empno	= multi.getParameter("pic_empno");
 			
-			System.out.println(pic);
-			System.out.println(empno);
-			
+		
 			if (pic == null) { 
 				System.out.print("파일 업로드 되지 않았음");
+				sendData.put("uploadyn", "no");
 			} else { 
-
+				sendData.put("uploadyn", "ok");
 //				기존에 사진 파일이 있는지 DB에서 가져오기
 				EmpDao eDao = EmpDao.getInstance();
 				EmpDto eDto = eDao.getEmpOneByEmpno(empno);
@@ -55,18 +56,26 @@ public class PicUploadAction implements Action {
 				
 //				기존의 데이터가 있으면 해당 파일을 삭제하기
 				if(old_pic != null){
-					File file = new File( savePath +"/"+ old_pic );
+					File file = new File( uploadFilePath +"/"+ old_pic );
 					if (file.exists()){
 						file.delete();
 					}
 				}
 				
 //				새로 업로드한 사진 DB에 update하기
-				eDao.updatePic(empno, pic);	
+				int result = eDao.updatePic(empno, pic);
 				
 //				새로 update한 데이터를 json으로 세팅해주기
 				Gson gson = new GsonBuilder().create();
-				String json = gson.toJson(pic);
+				
+				if (result == 1){
+					sendData.put("updateyn", "ok");
+					sendData.put("updateFile", pic);
+				} else {
+					sendData.put("updateyn", "no");
+				}
+				
+				String json = gson.toJson(sendData);
 				
 				response.setContentType("application/json");
 				response.setCharacterEncoding("UTF-8");
@@ -74,7 +83,8 @@ public class PicUploadAction implements Action {
 				PrintWriter out = response.getWriter();
 				out.write(json);
 				out.flush();
-				out.close();	
+				out.close();
+				
 			}
 		} catch (Exception e) {
 			System.out.print("예외 발생 : " + e);

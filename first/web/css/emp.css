@@ -172,6 +172,7 @@ input:focus, select:focus {background-color:#ecf2f6; border:1px solid #79B7E7;}
 #zipcode{width:47px;}
 #email{width:150px;}
 #basicad, #detailad {width:250px;}
+#picFile{width: 200px;}
 
 #tabs{
 	width: 100%;

@@ -72,9 +72,9 @@ public class EmpInUpAction implements Action {
 		
 		EmpDao empDao = EmpDao.getInstance();
 		
-		System.out.println(empDto.getEmpnm());
+/*		System.out.println(empDto.getEmpnm());
 		System.out.println(empDto.toString());		
-		System.out.println(inup);
+		System.out.println(inup);*/
 		
 		if (inup.equals("in")){
 			result = empDao.insertEmp(empDto);

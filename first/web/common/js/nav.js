@@ -53,5 +53,10 @@ $(document).ready(function(){
 		$.each($('tr:even'), function(i){ //짝수 번째 
 		$(this).css("backgroundColor", "#F7F7F7"); 
 	}); 
-	
 });
+
+function alertMsg(title, msg){
+	$("#alert_msg").attr("title", title);
+	$("#alert_msg > p").text(msg);
+	$("#alert_msg").dialog();	
+}
