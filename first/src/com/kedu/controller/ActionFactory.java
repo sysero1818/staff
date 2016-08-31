@@ -4,6 +4,7 @@ import com.kedu.common.Action;
 import com.kedu.emp.action.EmpGoAction;
 import com.kedu.emp.action.EmpInUpAction;
 import com.kedu.emp.action.EmpJsonListAction;
+import com.kedu.emp.action.LogOutAction;
 import com.kedu.emp.action.LoginGoAction;
 import com.kedu.emp.action.LoginOk;
 import com.kedu.emp.action.ManagerUpdateAction;
@@ -29,6 +30,8 @@ public class ActionFactory {
 //		메뉴 : 사원목록
 		if(cmd.equals("login")) {
 			action = new LoginGoAction();
+		} else if (cmd.equals("logOut")) {
+			action = new LogOutAction();
 		} else if (cmd.equals("loginOk")) {
 			action = new LoginOk();
 		} else if(cmd.equals("emp")) {
@@ -45,7 +48,7 @@ public class ActionFactory {
 			action = new PicUploadAction();
 		} else if (cmd.equals("searchAddr")){
 			action = new SearchAddr();
-		}
+		} 
 
 
 		return action;

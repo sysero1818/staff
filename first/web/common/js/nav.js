@@ -53,6 +53,14 @@ $(document).ready(function(){
 		$.each($('tr:even'), function(i){ //짝수 번째 
 		$(this).css("backgroundColor", "#F7F7F7"); 
 	}); 
+		
+	
+	$("#logout").on("click", function(){
+		if(confirm("로그아웃 하시겠습니까?")){
+			location.href="neviGo?cmd=logOut";
+		}
+	});
+		
 });
 
 function alertMsg(title, msg){

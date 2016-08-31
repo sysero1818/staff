@@ -46,7 +46,7 @@
   box-sizing: initial ;	
 }
 
-#pager input {
+#pager input, #addr_pager input {
 	  text-align: right;
 	  font-size: 1em;
 	  width: 40px;
@@ -169,9 +169,9 @@ input:focus, select:focus {background-color:#ecf2f6; border:1px solid #79B7E7;}
 #indt, #outdt, #birth {width:70px;}
 #mobile{width:100px;	ime-mode:disable;}
 #jumin{width:110px;	ime-mode:disable;}
-#zipcode{width:47px;}
+#zipcode, #md_zipcode{width:50px;}
 #email{width:150px;}
-#basicad, #detailad {width:250px;}
+#basicad, #detailad, #md_basicad {width:250px;}
 #picFile{width: 200px;}
 
 #tabs{
@@ -183,5 +183,11 @@ input:focus, select:focus {background-color:#ecf2f6; border:1px solid #79B7E7;}
 
 #tabs > li > a{
 	font-size: 12px;
+}
+
+#insert_addr {
+	border: 1px solid #A6C9E2;
+	margin-top : 20px;
+	padding: 3px;
 }
 

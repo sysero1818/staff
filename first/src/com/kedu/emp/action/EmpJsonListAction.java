@@ -54,12 +54,12 @@ public class EmpJsonListAction implements Action {
 //			System.out.println("널처리 했는데.....");
 		}
 		
-//		System.out.println(sh_empno+":"+sh_empnm+":"+sh_indt_st+":"+sh_indt_ed);
+
 		
 		EmpDao mDao = EmpDao.getInstance();
 		List<EmpDto> empList = mDao.selectAllEmps(page, perPageRow, sh_empno, sh_empnm, sh_indt_st, sh_indt_ed);
 		
-		int records = mDao.getCountRow();
+		int records = mDao.getCountRow(sh_empno, sh_empnm, sh_indt_st, sh_indt_ed);
 		int total = (int)Math.ceil((double)records/(double)perPageRow);
 		
 		GridJson<EmpDto> empJson = new GridJson<EmpDto>();

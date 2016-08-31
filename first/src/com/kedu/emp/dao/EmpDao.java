@@ -27,25 +27,31 @@ public class EmpDao {
 	}
 	
 	//사원의 row개수 구하기
-	public int getCountRow() {
+	public int getCountRow(String sh_empno, String sh_empnm, String sh_indt_st, String sh_indt_ed) {
 		int x= 0;
+		String sql = "{call emp_count(?,?,?,?,?)}";
 		Connection conn = null;
-		PreparedStatement pstmt = null;
+		CallableStatement  cstmt = null;
 		ResultSet rs = null;
+
 		try{
-			
-			conn=DBManager.getConnection();
-			//System.out.println("getConnection");
-			pstmt=conn.prepareStatement("select count(empno) from emp");
-			rs = pstmt.executeQuery();
+			conn = DBManager.getConnection();
+			cstmt = conn.prepareCall(sql);
+			cstmt.setString(1, sh_empno);
+			cstmt.setString(2, sh_empnm);
+			cstmt.setString(3, sh_indt_st);
+			cstmt.setString(4, sh_indt_ed);			
+			cstmt.registerOutParameter(5, oracle.jdbc.OracleTypes.CURSOR);
+			cstmt.executeQuery();
+			rs = (ResultSet) cstmt.getObject(5);
 			
 			if(rs.next()){
-				x=rs.getInt(1);
+				x=rs.getInt("cnt");
 			}
 		}catch(Exception ex){
 			System.out.println("getListCount 에러: " + ex);			
 		}finally{
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, cstmt, rs);
 		}
 		return x;
 	}
@@ -58,21 +64,21 @@ public class EmpDao {
 		int endrow=startrow + perPageRow - 1;
 
 		Connection conn = null;
-		CallableStatement  pstmt = null;
+		CallableStatement  cstmt = null;
 		ResultSet rs = null;
 
 		try {
 			conn = DBManager.getConnection();
-			pstmt = conn.prepareCall(sql);
-			pstmt.setInt(1, startrow);
-			pstmt.setInt(2, endrow);
-			pstmt.setString(3, sh_empno);
-			pstmt.setString(4, sh_empnm);
-			pstmt.setString(5, sh_indt_st);
-			pstmt.setString(6, sh_indt_ed);			
-			pstmt.registerOutParameter(7, oracle.jdbc.OracleTypes.CURSOR);
-			pstmt.executeQuery();
-			rs = (ResultSet) pstmt.getObject(7);			
+			cstmt = conn.prepareCall(sql);
+			cstmt.setInt(1, startrow);
+			cstmt.setInt(2, endrow);
+			cstmt.setString(3, sh_empno);
+			cstmt.setString(4, sh_empnm);
+			cstmt.setString(5, sh_indt_st);
+			cstmt.setString(6, sh_indt_ed);			
+			cstmt.registerOutParameter(7, oracle.jdbc.OracleTypes.CURSOR);
+			cstmt.executeQuery();
+			rs = (ResultSet) cstmt.getObject(7);			
 
 			while (rs.next()) {
 				EmpDto empDto = new EmpDto();
@@ -100,7 +106,7 @@ public class EmpDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DBManager.close(conn, pstmt, rs);
+			DBManager.close(conn, cstmt, rs);
 		}
 		return list;
 	}

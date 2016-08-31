@@ -37,8 +37,8 @@ $(document).ready(function(){
 	
 	dl = $( "#modalAddrDiv" ).dialog({
 		autoOpen: false,
-		height: 300,
-		width: 350,
+		height: 600,
+		width: 610,
 		modal: true,
 		buttons: {
 			Cancel: function() {
@@ -55,28 +55,42 @@ $(document).ready(function(){
 		event.preventDefault();
 	});	
 	
+    $("#addr_list").jqGrid({
+        url:"neviGo?cmd=searchAddr",
+        datatype:"json",
+        caption:"주소 찾기",
+        height:"250",
+        rowNum:10,
+        rowList:[5,10,15,20],
+        colNames:["seq","우편번호","주소", "번지"],
+        colModel:[
+                  {name:"seq", index:"seq", hidden:true}, 
+                  {name:"zipcode", index:"zipcode", align:"center", sortable:false}, 
+                  {name:"address1", index:"address1", align:"center", sortable:false}, 
+                  {name:"address2", index:"address2", align:"center", sortable:false}                   
+                  ],
+        pager:"#addr_pager",
+        sortname: "seq",        
+        width: 575,
+        viewrecords:true,
+        onSelectRow: function(ids) {
+        	var ret = $("#addr_list").getRowData( ids );
+        	$("#md_zipcode").val(ret.zipcode);
+        	$("#md_basicad").val(ret.address1);
+        }
+    });
+    $("#addr_list").jqGrid("navGrid","#addr_pager",{add:false,edit:false,del:false, search:false});
 
-	$("#btndong").on("click",function(){
-		var frmData=$("#addrSerarchForm").serialize();
-		$.ajax({
-			type: "post",
-			url: "neviGo?cmd=searchAddr",
-			data: frmData,
-			dataType: "json",
-			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-			success : function(data) {
-				$("#addr_table tbody").children().remove();
-				$.each(data, function(i){
-					$("#addr_table tbody").prepend("<tr><td>"+data[i].seq+"</td><td>"+data[i].zipcode+"</td><td>"+data[i].sido+"</td><td>"+data[i].sigungu+"</td><td>"+data[i].dong+"</td><td>"+data[i].ri+"</td><td>"+data[i].bldg+"</td><td>"+data[i].bunji+"</td></tr>");
-				})
-			},
-			error: function (xhr, ajaxOptions, thrownError) {
-				alert(xhr.status+" : "+thrownError);
-			}
-		}); 
-	});
-	
-	var open_addr = $("#btnaddr").on("click", function(){
+    $("#btnUseAddr").on("click", function(){
+    	$("#zipcode").val($("#md_zipcode").val());
+    	$("#basicad").val($("#md_basicad").val());
+    	$("#addrSerarchForm").clearForm();
+    	$("#mdAddrForm").clearForm();
+    	$("#addr_list").jqGrid("clearGridData");
+    	dl.dialog( "close" );
+    });
+
+    var open_addr = $("#btnaddr").on("click", function(){
 		$("#addr_table tbody").children().remove();
 		dl.dialog("open");
 	});
@@ -136,10 +150,12 @@ $(document).ready(function(){
 //  ************* 사진 업로드 모달 폼 끝*****************
 	
 	
+
     $( "#tabs" ).tabs({
     	event:"mouseover"
     });
-	
+
+
 	$("#indt, #outdt").datepicker();
 	
 	$("#birth").datepicker({
@@ -229,7 +245,7 @@ $(document).ready(function(){
         caption:"사원 목록",
         height:"300",
         rowNum:10,
-        rowList:[3,5,10,15,20],
+        rowList:[5,10,15,20],
         colNames:["사원번호","사원명","pic","jumin","생일","zipseq","detailad","전화","이메일","입사일","outdt","empgb","deptno","positno","payment"],
         colModel:[
                   {name:"empno", index:"empno", align:'center', sortable:false}, 
@@ -274,11 +290,44 @@ $(document).ready(function(){
 			}
 			$("#inup").val("up");
 			$("#btnSubmit").val("수정");
+			
+			$("#sch_list").jqGrid('setGridParam',{url:"neviGo?cmd=searchAddr&dong="+ret.empnm,page:1});
+			$("#sch_list").jqGrid('setCaption', "테스트").trigger('reloadGrid');
         }
     });
    
-    $("#user_list").jqGrid.navGrid("#pager",{add:false,edit:false,del:false, search:false});	
+    $("#user_list").jqGrid("navGrid","#pager",{add:false,edit:false,del:false, search:false});
+   
+    
+    /*$("#sch_list").jqGrid({
+        url:"neviGo?cmd=searchAddr&dong=부평",
+        mtype:"post",
+        datatype:"json",
+        caption:"주소 찾기",
+        height:"300",
+        rowNum:10,
+        rowList:[5,10,15,20],
+        colNames:["seq","우편번호","시도","시군구","동","리","건물명","번지"],
+        colModel:[
+                  {name:"seq", index:"seq", hidden:true}, 
+                  {name:"zipcode", index:"zipcode", align:"center", sortable:false}, 
+                  {name:"sido", index:"sido", align:"center", sortable:false},                     
+                  {name:"sigungu", index:"sigungu", align:"center", sortable:false},
+                  {name:"dong", index:"dong", align:"center", sortable:false},
+                  {name:"ri", index:"ri", align:"center", sortable:false},                         
+                  {name:"bldg", index:"bldg", align:"center", sortable:false},                 
+                  {name:"bungi", index:"bungi", align:"center", sortable:false}               
+                  ],
+        pager:"#sch_pager",
+        autowidth:true,
+        viewrecords:true
+    });
+    $("#sch_list").jqGrid.navGrid("#sch_pager",{add:false,edit:false,del:false, search:false});*/
+
+    
 });
+
+
 
 function doSearch(ev){
 	var timeoutHnd;
@@ -292,5 +341,19 @@ function gridReload(){
 	var sh_empnm = $("#sh_empnm").val();
 	var sh_indt_st = $("#sh_indt_st").val();
 	var sh_indt_ed = $("#sh_indt_ed").val();
-	$("#user_list").jqGrid('setGridParam',{url:"empListJson.do?sh_empno="+sh_empno+"&sh_empnm="+sh_empnm+"&sh_indt_st="+sh_indt_st+"&sh_indt_ed="+sh_indt_ed,page:1}).trigger("reloadGrid");
+	$("#user_list").jqGrid('setGridParam',{url:"neviGo?cmd=empJsonList&sh_empno="+sh_empno+"&sh_empnm="+sh_empnm+"&sh_indt_st="+sh_indt_st+"&sh_indt_ed="+sh_indt_ed,page:1}).trigger("reloadGrid");
 }
+
+
+
+function doAddr(ev){
+	var timeoutHnd;
+	if(timeoutHnd)
+		clearTimeout(timeoutHnd)
+	timeoutHnd = setTimeout(gridAddr,100)
+}
+
+function gridAddr(){
+	var dong = $("#dong").val();
+	$("#addr_list").jqGrid('setGridParam',{url:"neviGo?cmd=searchAddr&dong="+dong,page:1}).trigger("reloadGrid");
+}    

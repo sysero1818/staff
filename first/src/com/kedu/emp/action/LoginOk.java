@@ -47,11 +47,10 @@ public class LoginOk implements Action {
 			HttpSession session = request.getSession();
 			session.setAttribute("empno", eDto.getEmpno());
 			session.setAttribute("empnm", eDto.getEmpnm());
-			if(manager.equals("1")) session.setAttribute("manager", "y");
+			if(manager.equals("1")) session.setAttribute("manager", "manager");
 			url = "neviGo?cmd=emp";
-			System.out.println("로그인 결과" + result);
 		} else {
-			System.out.println("로그인 결과" + result);
+//			System.out.println("로그인 결과" + result);
 		}
 		
 		/*RequestDispatcher dispatcher = request.getRequestDispatcher(url);

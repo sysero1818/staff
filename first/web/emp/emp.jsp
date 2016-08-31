@@ -18,17 +18,28 @@
 	<form id="addrSerarchForm" name="addrSerarchForm">
 			<input type="hidden" name="cmd" value="searchAddr" />
 			<label for="dong">동이름 : </label>
-			<input type="text" name="dong" id="dong" class="text ui-widget-content ui-corner-all">
-			<input type="button" id="btndong" value="검색" />
+			<input type="text" name="dong" id="dong" class="text ui-widget-content ui-corner-all" onkeyup="doAddr(arguments[0]||event)">
+			<input type="button" id="btndong" value="검색" onclick="doAddr(arguments[0]||event)" />
 	</form>
-	<table id="addr_table">
-		<thead>
-			<tr>
-				<th>일련번호</th><th>우편번호</th><th>시도</th><th>시군구</th><th>동</th><th>리</th><th>건물명</th><th>번지</th>
-			</tr>
-		</thead>
-		<tbody></tbody>
-	</table>
+	<table id="addr_list"></table>
+	<div id="addr_pager"></div>	
+	
+	<div id="insert_addr">
+		<form id="mdAddrForm"  class="cmxform">
+			<p>
+				<label for="md_zipcode">우편번호</label>
+				<input type="text" id="md_zipcode" name="md_zipcode" value="" />
+			</p>
+			<p>
+				<label for="md_basicad">기본 주소</label>
+				<input type="text" id="md_basicad" name="md_basicad" value="" />
+			</p>
+			<p>
+				<input type="button" id="btnUseAddr" value="주소 사용" />
+			</p>
+		</form>
+	</div>	
+
 </div>
 
 <div id="modalPicDiv" title="사진 수정">
@@ -177,7 +188,10 @@
 		    <li><a href="#tabs-4">보유 기술</a></li>	    
 		  </ul>
 		  <div id="tabs-1">
-		  
+    		<div id="sch_table">
+				<table id="sch_list"></table>
+    			<div id="sch_pager"></div>
+    		</div>
 		  </div>
 		  <div id="tabs-2">
 		  
