@@ -171,7 +171,7 @@
 					</p>
 					<p>
 						<label for="zipcode">기본주소</label>
-							<input type="text" id="basicad" name="basicad"  value="" tabindex="14" />
+						<input type="text" id="basicad" name="basicad"  value="" tabindex="14" />
 					</p>
 					<p>
 						<label for="zipcode">상세주소</label>
@@ -179,7 +179,7 @@
 						
 					</p>
 					<p class="btnRow">
-						<input type="submit" id="btnSubmit" value="등록" /> <input type="button" id="btnRefresh" value="초기화" />
+						<input type="submit" id="btnSubmit" class="btnwht" value="등록" /> <input type="button" id="btnRefresh" class="btnwht" value="초기화" />
 					</p>					
  				</div>
 			</form> 
@@ -196,6 +196,38 @@
     		<div id="sch_table">
 				<table id="sch_list"></table>
     			<div id="sch_pager"></div>
+    		</div>
+    		<div id="sch_inup">
+    			<form id="schForm" class="cmxform" method="post">
+    				<input type="hidden" id="inup_sch" name="inup_sch"  value="in" />
+    				<input type="hidden" id="schno" name="schno" value="" />
+    				<input type="hidden" id="sch_empno" name="sch_empno" value=""/>
+    				<div id="sch_left">
+    					<p>
+							<label for="sch_startdt">시작</label>
+							<input type="text" id="sch_startdt" name="sch_startdt" class="required" value="" />
+						</p>
+						<p>
+							<label for="sch_enddt">종료</label>
+							<input type="text" id="sch_enddt" name="sch_enddt"  class="required" value="" />
+						</p>    				
+    				</div>
+    				<div id="sch_right">
+    					<p>
+							<label for="school">학교명</label>
+							<input type="text" id="school" name="school" class="required" value="" />
+						</p>
+						<p>
+							<label for="major">전공</label>
+							<input type="text" id="major" name="major" class="required" value="" />
+						</p>	    				
+    				</div>
+					<div id="sch_bottom">
+						<p>
+							<input type="submit" id="btnSchSubmit" class="btnwht" value="등록" /> <input type="button" id="btnSchRefresh" class="btnwht" value="초기화" />
+						</p>
+					</div>
+    			</form>
     		</div>
 		  </div>
 		  <div id="tabs-2">

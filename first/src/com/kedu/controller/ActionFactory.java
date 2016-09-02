@@ -4,12 +4,15 @@ import com.kedu.common.Action;
 import com.kedu.emp.action.EmpGoAction;
 import com.kedu.emp.action.EmpInUpAction;
 import com.kedu.emp.action.EmpJsonListAction;
+import com.kedu.emp.action.EmpSkillListAction;
 import com.kedu.emp.action.LogOutAction;
 import com.kedu.emp.action.LoginGoAction;
 import com.kedu.emp.action.LoginOk;
 import com.kedu.emp.action.ManagerUpdateAction;
 import com.kedu.emp.action.MemberListGoAction;
 import com.kedu.emp.action.PicUploadAction;
+import com.kedu.emp.action.SchInupAction;
+import com.kedu.emp.action.SchListAction;
 import com.kedu.emp.action.SearchAddr;
 
 public class ActionFactory {
@@ -48,7 +51,14 @@ public class ActionFactory {
 			action = new PicUploadAction();
 		} else if (cmd.equals("searchAddr")){
 			action = new SearchAddr();
-		} 
+		} else if (cmd.equals("schList")){
+			action = new SchListAction();
+		} else if (cmd.equals("schInup")){
+			action = new SchInupAction();
+		} else if (cmd.equals("empSkillList")){
+			action = new EmpSkillListAction();
+		}        
+		
 
 
 		return action;

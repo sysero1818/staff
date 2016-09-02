@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css" href="common/css/navs.css" />
 
 <script type="text/javascript" src="common/js/jquery-1.12.4.js"></script>
-<script type="text/javascript" src="common/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="common/js/jquery-ui.js"></script>
 <script type="text/javascript" src="common/js/jquery.jqGrid.min.js"></script>
 <script type="text/javascript" src="common/js/grid.locale-kr.js"></script>
 <script type="text/javascript" src="common/js/jquery.validate.js"></script>

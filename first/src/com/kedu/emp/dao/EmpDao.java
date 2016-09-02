@@ -103,7 +103,10 @@ public class EmpDao {
 				empDto.setPositno(rs.getInt("positno"));	
 				empDto.setPositnm(rs.getString("positnm"));
 				
-				if (manager != null || (ss_empno !=null && ss_empno.equals(rs.getString("empno"))) ){
+				if (ss_empno !=null && ss_empno.equals(rs.getString("empno"))){
+					empDto.setPayment(rs.getInt("payment"));
+					empDto.setUpyn("i");
+				} else if (manager != null){
 					empDto.setPayment(rs.getInt("payment"));
 					empDto.setUpyn("o");
 				} else {

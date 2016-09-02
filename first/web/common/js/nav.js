@@ -65,7 +65,15 @@ $(document).ready(function(){
 function alertMsg(title, msg){
 	$("#alert_msg").attr("title", title);
 	$("#alert_msg > p").text(msg);
-	$("#alert_msg").dialog();	
+	$("#alert_msg").dialog({
+		modal: true,
+		buttons: {
+			Close: function() {
+		        $( this ).dialog( "close" );
+		    }
+		}		
+	});
+	$("#alert_msg").css("z-index","1000");
 }
 
 function set_comma(n) {
@@ -74,4 +82,16 @@ function set_comma(n) {
 	while (reg.test(n))
 	n = n.replace(reg, '$1' + ',' + '$2');
 	return n;
+}
+
+function setStEd_picker(st, ed){
+    $(st).datepicker("option", "maxDate", $(ed).val());
+    $(st).datepicker("option", "onClose", function ( selectedDate ) {
+        $(ed).datepicker( "option", "minDate", selectedDate );
+    });
+
+    $(ed).datepicker("option", "minDate", $(st).val());
+    $(ed).datepicker("option", "onClose", function ( selectedDate ) {
+        $(st).datepicker( "option", "maxDate", selectedDate );
+	});	
 }
