@@ -16,7 +16,7 @@ public class ManagerUpdateAction implements Action {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String url = "";
 		EmpDao empDao = EmpDao.getInstance();
-		int result = empDao.updateManager("2016080001", "11111");
+		int result = empDao.updateManager("2016080001", "121212");
 		
 		
 		if (result == 1){

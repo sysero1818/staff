@@ -26,7 +26,7 @@ public class ActionFactory {
 	public Action getAction(String cmd) {
 		Action action = null;
 //		System.out.println("ActionFactory :" + cmd);
-		
+
 //		메뉴 : 사원목록
 		if(cmd.equals("login")) {
 			action = new LoginGoAction();

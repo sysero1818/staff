@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -54,10 +55,12 @@ public class EmpJsonListAction implements Action {
 //			System.out.println("널처리 했는데.....");
 		}
 		
-
+		HttpSession session = request.getSession();
+		String ss_empno = (String) session.getAttribute("empno");
+		String manager	= (String) session.getAttribute("manager");
 		
 		EmpDao mDao = EmpDao.getInstance();
-		List<EmpDto> empList = mDao.selectAllEmps(page, perPageRow, sh_empno, sh_empnm, sh_indt_st, sh_indt_ed);
+		List<EmpDto> empList = mDao.selectAllEmps(page, perPageRow, sh_empno, sh_empnm, sh_indt_st, sh_indt_ed, ss_empno, manager);
 		
 		int records = mDao.getCountRow(sh_empno, sh_empnm, sh_indt_st, sh_indt_ed);
 		int total = (int)Math.ceil((double)records/(double)perPageRow);

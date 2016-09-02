@@ -15,7 +15,7 @@
 	*/
 	height: 35px;
 	vertical-align: middle;
-	line-height: 26px;	
+	line-height: 27px;
 }
 #table_search input{
 	width: 80px;	
@@ -173,6 +173,7 @@ input:focus, select:focus {background-color:#ecf2f6; border:1px solid #79B7E7;}
 #email{width:150px;}
 #basicad, #detailad, #md_basicad {width:250px;}
 #picFile{width: 200px;}
+#payment{width: 80px;}
 
 #tabs{
 	width: 100%;

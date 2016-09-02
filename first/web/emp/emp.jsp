@@ -26,6 +26,7 @@
 	
 	<div id="insert_addr">
 		<form id="mdAddrForm"  class="cmxform">
+			<input type="hidden" id="md_zipseq" name="md_zipseq" />
 			<p>
 				<label for="md_zipcode">우편번호</label>
 				<input type="text" id="md_zipcode" name="md_zipcode" value="" />
@@ -51,15 +52,14 @@
 </div>
 
 <div id="wrapper">
-	<%@include file="../common/header.jsp" %>
-	
+	<%@ include file="../common/header.jsp" %>  
   	<div id="navigation"> 홈 > 사원관리 </div>
   	
   	<div id="main">
 
     <div id="leftcolumn">
     <nav>
-		<%@include file="../common/menu.jsp" %>
+		<%@ include file="../common/menu.jsp" %>
     </nav>
 	</div>
     <div id="rightcolumn">
@@ -72,7 +72,7 @@
 					<label>입사일 : </label>
 					<input type="text" id="sh_indt_st" name="sh_indt_st" maxlength="8" value="" /> ~
 					<input type="text" id="sh_indt_ed" name="sh_indt_ed" maxlength="8" value="" />					
-					&nbsp;&nbsp;<input type="button" id="btnSearch" value="검색"  onclick="doSearch(arguments[0]||event)" />
+					&nbsp;&nbsp;<span><input type="button" id="btnSearch" value="검색"  onclick="doSearch(arguments[0]||event)" /></span>
     		</div>
     		<div id="table_body">
 				<table id="user_list"></table>
@@ -94,15 +94,15 @@
 					<input type="hidden" name="inup" id="inup" value="in" />
 					<p>
 						<label for="empno">사번</label>
-						<input type="text" id="empno" name="empno" readonly  value="" />
+						<input type="text" id="empno" name="empno" readonly value="" />
 					</p>	
-					<p>
+					<p class="pass">
 						<label for="passwd">패스워드</label>
-						<input type="password" id="passwd" name="passwd" class="required"  value="121212" />
+						<input type="password" id="passwd" name="passwd" class="required"   tabindex="2" value="121212" />
 					</p>		
 					<p>
 						<label for="deptno">부서</label>
-						<select id="deptno" name="deptno" class="required">
+						<select id="deptno" name="deptno" class="required"  tabindex="4" >
 								<option value="">선택</option>
 								<option value="100">총무부</option>
 								<option value="101" selected="selected">영업부</option>
@@ -112,33 +112,33 @@
 					</p>	
 					<p>
 						<label for="indt">입사일</label>
-						<input type="text" id="indt" name="indt"  value="2016-08-01" />
+						<input type="text" id="indt" name="indt"  value="2016-08-01"  tabindex="6" />
 					</p>			
 					<p>
 						<label for="mobile">휴대폰</label>
-						<input type="text" id="mobile" name="mobile" value="01022223333" />
+						<input type="text" id="mobile" name="mobile" value="01022223333"  tabindex="8" />
 					</p>	
 					<p>
 						<label for="birth">생일</label>
-						<input type="text" id="birth" name="birth"  value="" />
+						<input type="text" id="birth" name="birth"  value="" tabindex="10" />
 					</p>																							
  				</div>
  				<div id="regForm_right">
 					<p>
 						<label for="empname">사원명</label>
-						<input type="text" id="empnm" name="empnm"  class="required" value="" />
+						<input type="text" id="empnm" name="empnm"  class="required"  tabindex="1" value="" />
 					</p>
-					<p>
+					<p class="pass">
 						<label for="confirm_passwd">패스워드</label>
-						<input type="password" id="confirm_passwd" name="confirm_passwd" class="required"  value="121212" />
+						<input type="password" id="confirm_passwd" name="confirm_passwd" class="required"  tabindex="3" value="121212" />
 					</p>						
 					<p>
 						<label for="jumin">주민번호</label>
-						<input type="text" id="jumin" name="jumin"  value="" />
+						<input type="text" id="jumin" name="jumin"  value=""  tabindex="5" />
 					</p>		
 					<p>		
 						<label for="positno">직급</label>
-							<select id="positno" name="positno" class="required">
+							<select id="positno" name="positno" class="required"  tabindex="7" >
 								<option value="">선택</option>
 								<option value="10">CEO</option>
 								<option value="20">이사</option>
@@ -152,25 +152,30 @@
 					</p>
 					<p>
 						<label for="outdt">퇴사일</label>
-						<input type="text" id="outdt" name="outdt"  value="" />
+						<input type="text" id="outdt" name="outdt"  value="" tabindex="9" />
 					</p>
 					<p>
 						<label for="email">이메일</label>
-						<input type="text" id="email"  name="email" style="ime-mode:disabled" class="email" value="" />
-					</p>					
+						<input type="text" id="email"  name="email"  class="email" value=""  tabindex="11" />
+					</p>	
+					<p class="pay">
+						<label for="payment">급여</label>
+						<input type="text" id="payment"  name="payment" value="" tabindex="12" />
+					</p>										
  				</div>
  				<div id="regForm_bottom">
 					<p>
 						<label for="zipcode">우편번호</label>
-							<input type="text" id="zipcode" name="zipcode"  value="" /> <input type="button" id="btnaddr" value="찾기" />
+							<input type="hidden" id="zipseq" name="zipseq" value="" />
+							<input type="text" id="zipcode" name="zipcode"  value="" tabindex="13" /> <input type="button" id="btnaddr" value="찾기" />
 					</p>
 					<p>
 						<label for="zipcode">기본주소</label>
-							<input type="text" id="basicad" name="basicad"  value="" />
+							<input type="text" id="basicad" name="basicad"  value="" tabindex="14" />
 					</p>
 					<p>
 						<label for="zipcode">상세주소</label>
-							<input type="text" id="detailad" name="detailad"  value="" />
+							<input type="text" id="detailad" name="detailad"  value="" tabindex="15" />
 						
 					</p>
 					<p class="btnRow">

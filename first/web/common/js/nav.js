@@ -40,10 +40,9 @@ $(document).ready(function(){
 	$.datepicker.setDefaults($.datepicker.regional['ko']); 
 	
 	$( "input[type=submit], :button" ).button().css({
-			"padding":"2px 5px 2px 5px", 
+			"padding":"2px 5px", 
 			"font-size":"1em", 
 			"color":"#4f6b72",
-			"border":"1px solid #C1DAD7", 
 			"border-radius":"2px"
 		  });
 	
@@ -67,4 +66,12 @@ function alertMsg(title, msg){
 	$("#alert_msg").attr("title", title);
 	$("#alert_msg > p").text(msg);
 	$("#alert_msg").dialog();	
+}
+
+function set_comma(n) {
+	var reg = /(^[+-]?\d+)(\d{3})/;
+	n += '';
+	while (reg.test(n))
+	n = n.replace(reg, '$1' + ',' + '$2');
+	return n;
 }

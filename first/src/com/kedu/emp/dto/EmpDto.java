@@ -8,6 +8,8 @@ public class EmpDto {
 	private String jumin;
 	private String birth;
 	private int zipseq;
+	private String zipcode;
+	private String basicad;
 	private String detailad;
 	private String mobile;
 	private String email;
@@ -20,6 +22,7 @@ public class EmpDto {
 	private int positno;
 	private String positnm;
 	private int payment;
+	private String upyn;
 	
 	
 	public EmpDto() {
@@ -94,6 +97,26 @@ public class EmpDto {
 
 	public void setZipseq(int zipseq) {
 		this.zipseq = zipseq;
+	}
+
+
+	public String getZipcode() {
+		return zipcode;
+	}
+
+
+	public void setZipcode(String zipcode) {
+		this.zipcode = zipcode;
+	}
+
+
+	public String getBasicad() {
+		return basicad;
+	}
+
+
+	public void setBasicad(String basicad) {
+		this.basicad = basicad;
 	}
 
 
@@ -214,6 +237,15 @@ public class EmpDto {
 
 	public void setPayment(int payment) {
 		this.payment = payment;
+	}
+
+
+	public String getUpyn() {
+		return upyn;
+	}
+
+	public void setUpyn(String upyn) {
+		this.upyn = upyn;
 	}
 
 

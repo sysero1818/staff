@@ -75,6 +75,7 @@ $(document).ready(function(){
         viewrecords:true,
         onSelectRow: function(ids) {
         	var ret = $("#addr_list").getRowData( ids );
+        	$("#md_zipseq").val(ret.seq);
         	$("#md_zipcode").val(ret.zipcode);
         	$("#md_basicad").val(ret.address1);
         }
@@ -82,6 +83,7 @@ $(document).ready(function(){
     $("#addr_list").jqGrid("navGrid","#addr_pager",{add:false,edit:false,del:false, search:false});
 
     $("#btnUseAddr").on("click", function(){
+    	$("#zipseq").val($("#md_zipseq").val());
     	$("#zipcode").val($("#md_zipcode").val());
     	$("#basicad").val($("#md_basicad").val());
     	$("#addrSerarchForm").clearForm();
@@ -155,7 +157,7 @@ $(document).ready(function(){
     	event:"mouseover"
     });
 
-
+    $("#btnSubmit, #btnRefresh").css("width", "80");
 	$("#indt, #outdt").datepicker();
 	
 	$("#birth").datepicker({
@@ -214,9 +216,11 @@ $(document).ready(function(){
 			$.unblockUI();
 			
 			if (responseText=="0"){
-				alertMsg("사원 목록", "등록 실패");
+				alertMsg("사원 목록", "등록/수정 실패");
 			} else if (responseText=="1"){
 				alertMsg("사원 목록", "등록 완료");
+			} else if (responseText=="2"){
+				alertMsg("사원 목록", "수정 완료");
 			}
 
 			$("#user_list").trigger("reloadGrid");
@@ -229,6 +233,7 @@ $(document).ready(function(){
 	$("#regForm").ajaxForm(options);
 	
 	$("#btnRefresh").bind("click", function(){
+		$(".pass").show();		
 		$("#regForm").clearForm();
 		$("#inup").val("in");
 		$("#btnSubmit").val("등록");		
@@ -236,6 +241,7 @@ $(document).ready(function(){
 		$("#regForm_right > p > label.error").hide();			
 		$("#deptcd").val("");
 		$("#positcd").val("");
+		$("#picture > img").attr("src","images/noimage_pic.gif");
 	});		
 
     $("#user_list").jqGrid({
@@ -243,10 +249,10 @@ $(document).ready(function(){
         mtype:"post",
         datatype:"json",
         caption:"사원 목록",
-        height:"300",
+        height:"230",
         rowNum:10,
         rowList:[5,10,15,20],
-        colNames:["사원번호","사원명","pic","jumin","생일","zipseq","detailad","전화","이메일","입사일","outdt","empgb","deptno","positno","payment"],
+        colNames:["사원번호","사원명","pic","jumin","생일","zipseq","zipcode","basicad","detailad","전화","이메일","입사일","outdt","empgb","deptno","positno","payment","upyn"],
         colModel:[
                   {name:"empno", index:"empno", align:'center', sortable:false}, 
                   {name:"empnm", index:"empnm", align:'center', sortable:false}, 
@@ -254,6 +260,8 @@ $(document).ready(function(){
                   {name:"jumin", index:"jumin", hidden:true},
                   {name:"birth", index:"birth", hidden:true},
                   {name:"zipseq", index:"zipseq", hidden:true},                         
+                  {name:"zipcode", index:"zipcode", hidden:true},    
+                  {name:"basicad", index:"basicad", hidden:true},                      
                   {name:"detailad", index:"detailad", hidden:true},                  
                   {name:"mobile", index:"mobile", align:'center', sortable:false}, 
                   {name:"email", index:"email", align:'center', sortable:false},
@@ -262,7 +270,8 @@ $(document).ready(function(){
                   {name:"empgb", index:"empgb", hidden:true}, 
                   {name:"deptno", index:"deptno", hidden:true},
                   {name:"positno", index:"positno", hidden:true}, 
-                  {name:"payment", index:"payment", hidden:true}                  
+                  {name:"payment", index:"payment", hidden:true},
+                  {name:"upyn", index:"upyn", hidden:true}                  
                   ],
         pager:"#pager",
         autowidth:true,
@@ -281,15 +290,29 @@ $(document).ready(function(){
 			$("#outdt").val($.trim(ret.outdt));
 			$("#mobile").val($.trim(ret.mobile));
 			$("#birth").val($.trim(ret.birth));
-//			$("#passwd").hide();
-//			$("#confirm_passwd").hide();
+			$("#payment").val(set_comma(ret.payment));
+			$(".pass").hide();
+			
 			if (ret.pic == ""){
 				$("#picture > img").attr("src","images/noimage_pic.gif");
 			} else if (ret.pic != null) {
 				$("#picture > img").attr("src","upload/"+ret.pic);
 			}
-			$("#inup").val("up");
-			$("#btnSubmit").val("수정");
+			
+			if (ret.upyn == "o") {
+				$("#btnPic").show();
+				$("#btnPicDel").show();				
+				$("#btnSubmit").show();
+				$("#inup").val("up");
+				$("#btnSubmit").val("수정");
+				$(".pay").show();
+			} else {
+				$("#btnPic").hide();
+				$("#btnPicDel").hide();
+				$("#btnSubmit").hide();
+				$(".pay").hide();
+			}
+
 			
 			$("#sch_list").jqGrid('setGridParam',{url:"neviGo?cmd=searchAddr&dong="+ret.empnm,page:1});
 			$("#sch_list").jqGrid('setCaption', "테스트").trigger('reloadGrid');

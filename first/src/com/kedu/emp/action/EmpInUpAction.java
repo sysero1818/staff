@@ -30,14 +30,16 @@ public class EmpInUpAction implements Action {
 		empDto.setPic(request.getParameter("pic")); 
 		empDto.setJumin(request.getParameter("jumin").replace("-", "").trim());   
 		empDto.setBirth(request.getParameter("birth").replace("-", "").trim());   
-		//empDto.setZipseq(Integer.parseInt(request.getParameter("zipseq")));
-		empDto.setZipseq(1110);
-		//empDto.setDetailad(request.getParameter("detailad"));
-		empDto.setDetailad("부평4동");
+		empDto.setZipseq(Integer.parseInt(request.getParameter("zipseq")));
+		empDto.setDetailad(request.getParameter("detailad"));
 		empDto.setMobile(request.getParameter("mobile").replace("-", "").trim());  
 		empDto.setEmail(request.getParameter("email"));   
 		empDto.setIndt(request.getParameter("indt").replace("-", "").trim());
 		
+		if (request.getParameter("payment") != null) {
+			empDto.setPayment(Integer.parseInt(request.getParameter("payment").replace(",", "")));	
+		}
+				
 		if (request.getParameter("deptno") != null){
 			empDto.setDeptno(Integer.parseInt(request.getParameter("deptno")));
 		} else {
@@ -49,39 +51,15 @@ public class EmpInUpAction implements Action {
 			empDto.setPositno(80);
 		}
 
-//		System.out.println("전송되긴하냐??");
-		/*
-		empDto.setEmpnm("8888");   
-		empDto.setPasswd("aasasdf");  
-		empDto.setPic("afdajsdklf"); 
-		empDto.setJumin("8834273080312");   
-		empDto.setBirth("19701027");   
-		//empDto.setZipseq(Integer.parseInt(request.getParameter("zipseq")));
-		empDto.setZipseq(1110);
-		//empDto.setDetailad(request.getParameter("detailad"));
-		empDto.setDetailad("부평4동");
-		empDto.setMobile("01077773710");  
-		empDto.setEmail("sysero@dreamwiz.com");   
-		empDto.setIndt("20100101");
-		empDto.setDeptno(100);
-		empDto.setPositno(80);
-		empDto.setPayment(100000000);
-		System.out.println(empDto.getEmpnm());
-		empDto.toString();
-		*/
 		
 		EmpDao empDao = EmpDao.getInstance();
 		
-/*		System.out.println(empDto.getEmpnm());
-		System.out.println(empDto.toString());		
-		System.out.println(inup);*/
 		
 		if (inup.equals("in")){
 			result = empDao.insertEmp(empDto);
 		} else if(inup.equals("up")) {
-			result = empDao.updateEmp(empDto);
+			result = empDao.updateEmp(empDto)+1;
 		}
-//		System.out.println(result);
 		
 		Gson gson = new GsonBuilder().create();
 		String json = gson.toJson(result);

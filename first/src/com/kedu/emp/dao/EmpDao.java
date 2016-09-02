@@ -56,7 +56,7 @@ public class EmpDao {
 		return x;
 	}
 	
-	public List<EmpDto> selectAllEmps(int page, int perPageRow, String sh_empno, String sh_empnm, String sh_indt_st, String sh_indt_ed) {
+	public List<EmpDto> selectAllEmps(int page, int perPageRow, String sh_empno, String sh_empnm, String sh_indt_st, String sh_indt_ed, String ss_empno, String manager) {
 		String sql = "{call emp_list(?,?,?,?,?,?,?)}";
 		List<EmpDto> list = new ArrayList<EmpDto>();
 
@@ -89,6 +89,8 @@ public class EmpDao {
 				empDto.setJumin(rs.getString("jumin"));
 				empDto.setBirth(rs.getString("birth"));
 				empDto.setZipseq(rs.getInt("zipseq"));
+				empDto.setZipcode(rs.getString("zipcode"));
+				empDto.setBasicad(rs.getString("basicad"));				
 				empDto.setDetailad(rs.getString("detailad"));
 				empDto.setMobile(rs.getString("mobile"));
 				empDto.setEmail(rs.getString("email"));
@@ -100,7 +102,14 @@ public class EmpDao {
 				empDto.setDeptnm(rs.getString("deptnm"));
 				empDto.setPositno(rs.getInt("positno"));	
 				empDto.setPositnm(rs.getString("positnm"));
-				empDto.setPayment(rs.getInt("payment"));
+				
+				if (manager != null || (ss_empno !=null && ss_empno.equals(rs.getString("empno"))) ){
+					empDto.setPayment(rs.getInt("payment"));
+					empDto.setUpyn("o");
+				} else {
+					empDto.setPayment(0);
+					empDto.setUpyn("x");
+				}
 				list.add(empDto);
 			}
 		} catch (SQLException e) {
@@ -245,7 +254,7 @@ public class EmpDao {
 	
 	public int login(String empno, String passwd, String manager, String mpasswd){
 		int result = 0;
-		String sql = "SELECT e.passwd AS epasswd, m.passwd AS mpasswd FROM EMP e left outer JOIN manage m ON e.empno = m.manager where empno=?"; 
+		String sql = "SELECT e.passwd AS epasswd, m.passwd AS mpasswd FROM EMP e left outer JOIN manage m ON e.empno = m.manager where empno=? and e.outdt is null"; 
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
