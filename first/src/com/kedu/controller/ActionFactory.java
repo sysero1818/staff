@@ -4,6 +4,7 @@ import com.kedu.common.Action;
 import com.kedu.emp.action.EmpGoAction;
 import com.kedu.emp.action.EmpInUpAction;
 import com.kedu.emp.action.EmpJsonListAction;
+import com.kedu.emp.action.EmpSkillInsertAction;
 import com.kedu.emp.action.EmpSkillListAction;
 import com.kedu.emp.action.LogOutAction;
 import com.kedu.emp.action.LoginGoAction;
@@ -14,6 +15,7 @@ import com.kedu.emp.action.PicUploadAction;
 import com.kedu.emp.action.SchInupAction;
 import com.kedu.emp.action.SchListAction;
 import com.kedu.emp.action.SearchAddr;
+import com.kedu.emp.action.SkillListAction;
 
 public class ActionFactory {
 	private static ActionFactory instance = new ActionFactory();
@@ -57,7 +59,11 @@ public class ActionFactory {
 			action = new SchInupAction();
 		} else if (cmd.equals("empSkillList")){
 			action = new EmpSkillListAction();
-		}        
+		} else if (cmd.equals("skillList")){
+			action = new SkillListAction();
+		} else if (cmd.equals("empSkillInsert")){
+			action = new EmpSkillInsertAction();
+		}                      
 		
 
 

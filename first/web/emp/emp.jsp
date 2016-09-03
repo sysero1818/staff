@@ -21,7 +21,7 @@
 			<input type="text" name="dong" id="dong" class="text ui-widget-content ui-corner-all" onkeyup="doAddr(arguments[0]||event)">
 			<input type="button" id="btndong" value="검색" onclick="doAddr(arguments[0]||event)" />
 	</form>
-	<table id="addr_list"></table>
+	<table id="addr_list" class="jqtable"></table>
 	<div id="addr_pager"></div>	
 	
 	<div id="insert_addr">
@@ -75,7 +75,7 @@
 					&nbsp;&nbsp;<span><input type="button" id="btnSearch" value="검색"  onclick="doSearch(arguments[0]||event)" /></span>
     		</div>
     		<div id="table_body">
-				<table id="user_list"></table>
+				<table id="user_list" class="jqtable"></table>
     			<div id="pager"></div>
     		</div>
 		</div>
@@ -194,7 +194,7 @@
 		  </ul>
 		  <div id="tabs-1">
     		<div id="sch_table">
-				<table id="sch_list"></table>
+				<table id="sch_list" class="jqtable"></table>
     			<div id="sch_pager"></div>
     		</div>
     		<div id="sch_inup">
@@ -237,7 +237,14 @@
 		  
 		  </div>
 		  <div id="tabs-4">
-		  
+    		<div id="empskill_table">
+				<table id="empskill_list" class="jqtable"></table>
+    			<div id="empskill_pager"></div>
+    		</div>
+    		<div id="skill_table">
+				<table id="skill_list" class="jqtable"></table>
+    			<div id="skill_pager"></div>    		
+    		</div>		  
 		  </div>	  
 		</div>     	
     </div>

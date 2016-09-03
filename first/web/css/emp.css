@@ -215,3 +215,13 @@ input:focus, select:focus {background-color:#ecf2f6; border:1px solid #79B7E7;}
 	text-align: center;
 }
 
+#empskill_table{
+	float: left;
+	width: 50%;
+}
+
+#skill_table{
+	float: right;
+	width: 50%;
+}
+

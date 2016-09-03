@@ -15,13 +15,12 @@ import com.kedu.common.GridJson;
 import com.kedu.emp.dao.EmpSkillDao;
 import com.kedu.emp.dto.EmpSkillDto;
 
-public class EmpSkillListAction implements Action {
+public class SkillListAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int page = 1;
 		int perPageRow = 10;
-		String sh_empno = "";
 
 		try {
 			if(request.getParameter("page").trim()!=null && request.getParameter("page").trim()!=""){
@@ -31,10 +30,6 @@ public class EmpSkillListAction implements Action {
 			if(request.getParameter("rows").trim()!=null && request.getParameter("rows").trim()!=""){
 				perPageRow = Integer.parseInt(request.getParameter("rows").trim());
 			}
-			
-			if(request.getParameter("sh_empno").trim()!=null && request.getParameter("sh_empno").trim()!=""){
-				sh_empno = request.getParameter("sh_empno").trim();
-			}
 		
 		} catch (Exception e) {
 //			System.out.println("널처리 했는데.....");
@@ -42,17 +37,17 @@ public class EmpSkillListAction implements Action {
 
 		
 		EmpSkillDao sDao = EmpSkillDao.getInstance();
-		List<EmpSkillDto> empSkillList = sDao.selectAllEmpSkills(page, perPageRow, sh_empno);
+		List<EmpSkillDto> skillList = sDao.selectAllSkills(page, perPageRow);
 		
-		int records = sDao.empSkill_getCountRow(sh_empno);
+		int records = sDao.skill_getCountRow();
 		int total = (int)Math.ceil((double)records/(double)perPageRow);
 		
 		GridJson<EmpSkillDto> empJson = new GridJson<EmpSkillDto>();
 		empJson.setTotal(total);
 		empJson.setRecords(records);
 		empJson.setPage(page);
-		empJson.setRows(empSkillList);
-		
+		empJson.setRows(skillList);
+			
 		Gson gson = new GsonBuilder().create();
 		String json = gson.toJson(empJson);
 		
@@ -63,7 +58,6 @@ public class EmpSkillListAction implements Action {
 		out.write(json);
 		out.flush();
 		out.close();
-
 	}
 
 }

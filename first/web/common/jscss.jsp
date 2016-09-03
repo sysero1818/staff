@@ -8,10 +8,10 @@
 
 <script type="text/javascript" src="common/js/jquery-1.12.4.js"></script>
 <script type="text/javascript" src="common/js/jquery-ui.js"></script>
-<script type="text/javascript" src="common/js/jquery.jqGrid.min.js"></script>
-<script type="text/javascript" src="common/js/grid.locale-kr.js"></script>
 <script type="text/javascript" src="common/js/jquery.validate.js"></script>
 <script type="text/javascript" src="common/js/jquery.form.js"></script>
+<script type="text/javascript" src="common/js/jquery.jqGrid.min.js"></script>
+<script type="text/javascript" src="common/js/grid.locale-kr.js"></script>
 <script type="text/javascript" src="common/js/jquery.blockUI.js"></script>
 <script type="text/javascript" src="common/js/jquery.maskedinput.js"></script>
 <script type="text/javascript" src="common/js/nav.js"></script>

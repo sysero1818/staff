@@ -1,40 +1,4 @@
 $(document).ready(function(){
-	
-	var dl, form,
-	dong = $( "#dong" ),
-	allFields = $( [] ).add( dong ),
-	tips = $( ".validateTips" );
-		
-	function updateTips( t ) {
-		tips
-		.text( t )
-		.addClass( "ui-state-highlight" );
-		setTimeout(function() {
-		tips.removeClass( "ui-state-highlight", 1500 );
-		}, 500 );
-	}
-	
-	function checkLength( o, n, min, max ) {
-		if ( o.val().length > max || o.val().length < min ) {
-			o.addClass( "ui-state-error" );
-			updateTips( "Length of " + n + " must be between " +
-			min + " and " + max + "." );
-			return false;
-		} else {
-			return true;
-		}
-	}
-	
-	function checkRegexp( o, regexp, n ) {
-		if ( !( regexp.test( o.val() ) ) ) {
-			o.addClass( "ui-state-error" );
-			updateTips( n );
-		return false;
-		} else {
-			return true;
-		}
-	}
-	
 	dl = $( "#modalAddrDiv" ).dialog({
 		autoOpen: false,
 		height: 600,
@@ -287,8 +251,7 @@ $(document).ready(function(){
 		$("#regForm").clearForm();
 		$("#inup").val("in");
 		$("#btnSubmit").val("등록");		
-		$("#regForm_left > p > label.error").hide();
-		$("#regForm_right > p > label.error").hide();			
+		$("#regForm label.error").hide();
 		$("#deptcd").val("");
 		$("#positcd").val("");
 		$("#picture > img").attr("src","images/noimage_pic.gif");
@@ -297,10 +260,12 @@ $(document).ready(function(){
 	$("#btnSchRefresh").bind("click", function(){
 		var empno = $("#sch_empno").val();
 		$("#schForm").clearForm();
+		$("#schForm label.error").hide();		
 		$("#inup_sch").val("in");
 		$("#btnSchSubmit").val("등록");
 		$("#sch_empno").val(empno);
-	});			
+	});	
+	
 	var sub_upyn;
 	
     $("#user_list").jqGrid({
@@ -330,14 +295,14 @@ $(document).ready(function(){
                   {name:"deptno", index:"deptno", hidden:true},
                   {name:"positno", index:"positno", hidden:true}, 
                   {name:"payment", index:"payment", hidden:true},
-                  {name:"upyn", index:"upyn", hidden:true}                 
+                  {name:"upyn", index:"upyn", hidden:true}     
                   ],
         pager:"#pager",
         autowidth:true,
         viewrecords:true,
 		loadComplete: function () {
-			$(this).find(">tbody>tr.jqgrow:odd").addClass("myAltRowClassEven");
-			$(this).find(">tbody>tr.jqgrow:even").addClass("myAltRowClassOdd");
+			//$("tr.jqgrow:odd").css("background", "#EAF5FE");
+			//$("tr.jqgrow:even").css("background", "#FFFFFF");
 		},		        
         onSelectRow: function(ids) {  
 			var gsr = $("#user_list").jqGrid('getGridParam','selrow');
@@ -358,7 +323,7 @@ $(document).ready(function(){
 			} else if (ret.pic != null) {
 				$("#picture > img").attr("src","upload/"+ret.pic);
 			}
-
+			
 			if (ret.upyn == "o") {
 				sub_upyn = "o";
 				$("#btnPic").show();
@@ -366,6 +331,7 @@ $(document).ready(function(){
 				$("#btnSubmit").show();
 				$("#inup").val("up");
 				$("#btnSubmit").val("수정");
+				$("#btnRefresh").show();				
 				$(".pay").show();
 				$("#tabs").show();				
 			} else if (ret.upyn == "i"){
@@ -388,11 +354,16 @@ $(document).ready(function(){
 			}
 
 			
-			$("#sch_list").jqGrid('setGridParam',{url:"neviGo?cmd=schList&sh_empno="+ret.empno,page:1});
-			$("#sch_list").jqGrid('setCaption', ret.empnm+"의 학력 이력").trigger('reloadGrid');
+			$("#sch_list").jqGrid('setGridParam',{url:"neviGo?cmd=schList&sh_empno="+ret.empno,page:1}).trigger('reloadGrid');
+		    $("#gview_sch_list > .ui-jqgrid-titlebar").css("display", "none");
+		    
+			$("#empskill_list").jqGrid('setGridParam',{url:"neviGo?cmd=empSkillList&sh_empno="+ret.empno,page:1}).trigger('reloadGrid');
+		    $("#gview_empskill_list > .ui-jqgrid-titlebar").css("display", "none");
+
+			$("#skill_list").jqGrid('setGridParam',{url:"neviGo?cmd=skillList",page:1}).trigger('reloadGrid');
+		    $("#gview_skill_list > .ui-jqgrid-titlebar").css("display", "none");		    
         }
     });
-   
     $("#user_list").jqGrid("navGrid","#pager",{add:false,edit:false,del:false, search:false});
    
     
@@ -435,11 +406,130 @@ $(document).ready(function(){
 			}
         }        
     });
-    $("#sch_list").jqGrid.navGrid("#sch_pager",{add:false,edit:false,del:false, search:false});
+    $("#sch_list").jqGrid("navGrid","#sch_pager",{add:false,edit:false,del:false, search:false});
+    $("#gview_sch_list > .ui-jqgrid-titlebar").css("display", "none");
 
+    $("#empskill_list").jqGrid({
+        url:"neviGo?cmd=empSkillList",
+        mtype:"post",
+        datatype:"json",
+        caption:"보유기술",
+        height:"250",
+        rowNum:10,
+        rowList:[5,10,15,20],
+        colNames:["empno","ctno","분류명","skillno","보유스킬명","삭제"],
+        colModel:[
+                  {name:"empno", index:"empno", hidden:true}, 
+                  {name:"ctno", index:"ctno", hidden:true},           
+                  {name:"ctnm", index:"ctnm", width: 130, align:"center", sortable:false},
+                  {name:"skillno", index:"skillno", hidden:true},                    
+                  {name:"skillnm", index:"skillnm", width: 140, align:"center", sortable:false},             
+                  {name:'del', index:'del', align:"center", width:"50", sortable:false, formatter:formatOpt2}
+                  ],
+        pager:"#empskill_pager",
+        autowidth:true,
+        viewrecords:true,
+		sortname: "skillno",
+		viewrecords: false,
+		sortorder: "asc"        
+    });
+    $("#empskill_list").jqGrid("navGrid","#empskill_pager",{add:false,edit:false,del:false, search:false});
+    $("#gview_empskill_list > .ui-jqgrid-titlebar").css("display", "none");
     
+    $("#skill_list").jqGrid({
+        url:"neviGo?cmd=skillList",
+        mtype:"post",
+        datatype:"json",
+        caption:"기술목록",
+        height:"250",
+        rowNum:10,
+        rowList:[3,5,10,15,20],
+        colNames:["ctno","분류명","skillno","스킬명", "선택"],
+        colModel:[
+                  {name:"ctno", index:"ctno", hidden:true},           
+                  {name:"ctnm", index:"ctnm", align:"center", width: 130, sortable:false},
+                  {name:"skillno", index:"skillno", hidden:true},                    
+                  {name:"skillnm", index:"skillnm", align:"center", width: 150, sortable:false},
+                  {name:'choice', index:'choice', align:"center", width:"50", sortable:false, formatter:formatOpt1}
+                  ],
+        pager:"#skill_pager",
+        autowidth:true,
+        viewrecords:true,
+		sortname: "skillno",
+		viewrecords: false,
+		sortorder: "asc"           
+    });
+    $("#skill_list").jqGrid("navGrid","#skill_pager",{add:false,edit:false,del:false, search:false});  
+    $("#gview_skill_list > .ui-jqgrid-titlebar").css("display", "none");
+    
+    $("#skill_list a").on("click", function(e){
+         e.preventDefault();
+    });
+        
+    function formatOpt1(cellvalue, options, rowObject){ 
+    	var str = "";
+    	var skillno = rowObject.skillno;	
+    	str += "<span  onclick=\"choice('"+ skillno +"')\">선택</span>";
+      	return str;
+    }    
+
+    function formatOpt2(cellvalue, options, rowObject){ 
+    	var str = "";
+    	var empno = rowObject.empno;
+    	var skillno = rowObject.skillno;	
+    	str += "<span  onclick=\"empskilldel('"+ empno +"', '"+ skillno +"')\">삭제</span>";
+      	return str;
+    }        
 });
 
+function choice(skillno){
+		empno = $("#sch_empno").val();
+		$.ajax({
+		  type: "POST",
+		  url: "neviGo?cmd=empSkillInsert",
+		  data: {gubun:"insert", empno:empno,skillno:skillno},
+		  dataType: "json",
+		  beforeSend:function(){
+			$.blockUI({overlayCSS:{opacity:0.0}, message:null});
+		  },
+		  success:function(data){
+			if (data == 1){
+				$("#empskill_list").jqGrid('setGridParam',{url:"neviGo?cmd=empSkillList&sh_empno="+empno,page:1}).trigger('reloadGrid');
+			}
+		  }, 
+		  error: function (jqXHR, textStatus, errorThrown) {
+			alert(errorThrown);
+		  },
+          complete: function(){
+            $.unblockUI();
+          }
+		});
+
+}
+
+function empskilldel(empno, skillno){
+	$.ajax({
+	  type: "POST",
+	  url: "neviGo?cmd=empSkillInsert",
+	  data: {gubun:"del", empno:empno,skillno:skillno},
+	  dataType: "json",
+	  beforeSend:function(){
+		$.blockUI({overlayCSS:{opacity:0.0}, message:null});
+	  },
+	  success:function(data){
+		if (data == 1){
+			$("#empskill_list").jqGrid('setGridParam',{url:"neviGo?cmd=empSkillList&sh_empno="+empno,page:1}).trigger('reloadGrid');
+		}
+	  }, 
+	  error: function (jqXHR, textStatus, errorThrown) {
+		alert(errorThrown);
+	  },
+      complete: function(){
+        $.unblockUI();
+      }
+	});
+
+}
 
 
 function doSearch(ev){
@@ -470,3 +560,8 @@ function gridAddr(){
 	var dong = $("#dong").val();
 	$("#addr_list").jqGrid('setGridParam',{url:"neviGo?cmd=searchAddr&dong="+dong,page:1}).trigger("reloadGrid");
 }    
+
+
+
+
+

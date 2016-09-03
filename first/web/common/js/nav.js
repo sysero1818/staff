@@ -59,6 +59,8 @@ $(document).ready(function(){
 			location.href="neviGo?cmd=logOut";
 		}
 	});
+	
+	$(".jqtable > tbody > tr.jqgrow:odd").css("background","#EAF5FE");
 		
 });
 

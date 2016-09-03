@@ -6,6 +6,7 @@ public class EmpSkillDto {
 	private String skillnm;
 	private int ctno;
 	private String ctnm;
+	
 	public String getEmpno() {
 		return empno;
 	}
@@ -36,6 +37,7 @@ public class EmpSkillDto {
 	public void setCtnm(String ctnm) {
 		this.ctnm = ctnm;
 	}
+
 	@Override
 	public String toString() {
 		return "EmpSkillDto [empno=" + empno + ", skillno=" + skillno + ", skillnm=" + skillnm + ", ctno=" + ctno
