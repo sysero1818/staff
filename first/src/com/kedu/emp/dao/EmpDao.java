@@ -129,22 +129,7 @@ public class EmpDao {
 		Connection conn = null;
 		CallableStatement  cstmt = null;
 		KISA_SHA256 sha = KISA_SHA256.getInstance();
-		
-/*      p_empnm    	IN	emp.empnm%type
-      , p_passwd	IN	emp.passwd%type
-      , p_pic		IN	emp.pic%type
-      , p_jumin		IN	emp.jumin%type
-      , p_birth		IN	emp.birth%type
-      , p_zipseq	IN	emp.zipseq%type
-      , p_detailad	IN	emp.detailad%type
-      , p_mobile	IN	emp.mobile%type
-      , p_email		IN	emp.email%type
-      , p_indt		IN	emp.indt%type
-      , p_deptno	IN	dept.deptno%type
-      , p_positno	IN	posit.positno%type
-      , p_payment	IN	payhist.payment%type
-*/
-		
+
 		try {
 			conn = DBManager.getConnection();
 			cstmt = conn.prepareCall(sql);

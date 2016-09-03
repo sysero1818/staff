@@ -1,9 +1,9 @@
 package com.kedu.controller;
 
 import com.kedu.common.Action;
-import com.kedu.emp.action.EmpGoAction;
+import com.kedu.emp.action.GoAction;
 import com.kedu.emp.action.EmpInUpAction;
-import com.kedu.emp.action.EmpJsonListAction;
+import com.kedu.emp.action.EmpListAction;
 import com.kedu.emp.action.EmpSkillInsertAction;
 import com.kedu.emp.action.EmpSkillListAction;
 import com.kedu.emp.action.LogOutAction;
@@ -12,6 +12,8 @@ import com.kedu.emp.action.LoginOk;
 import com.kedu.emp.action.ManagerUpdateAction;
 import com.kedu.emp.action.MemberListGoAction;
 import com.kedu.emp.action.PicUploadAction;
+import com.kedu.emp.action.PrjInUpAction;
+import com.kedu.emp.action.PrjListAction;
 import com.kedu.emp.action.SchInupAction;
 import com.kedu.emp.action.SchListAction;
 import com.kedu.emp.action.SearchAddr;
@@ -32,6 +34,7 @@ public class ActionFactory {
 		Action action = null;
 //		System.out.println("ActionFactory :" + cmd);
 
+
 //		메뉴 : 사원목록
 		if(cmd.equals("login")) {
 			action = new LoginGoAction();
@@ -39,10 +42,10 @@ public class ActionFactory {
 			action = new LogOutAction();
 		} else if (cmd.equals("loginOk")) {
 			action = new LoginOk();
-		} else if(cmd.equals("emp")) {
-			action = new EmpGoAction();
+		} else if(cmd.equals("go")) {
+			action = new GoAction();
 		} else if (cmd.equals("empJsonList")) {
-			action = new EmpJsonListAction();
+			action = new EmpListAction();
 		} else if (cmd.equals("empInUp")) {
 			action = new EmpInUpAction();
 		} else if (cmd.equals("managerUpdate")) {
@@ -63,7 +66,11 @@ public class ActionFactory {
 			action = new SkillListAction();
 		} else if (cmd.equals("empSkillInsert")){
 			action = new EmpSkillInsertAction();
-		}                      
+		} else if (cmd.equals("prjList")){
+			action = new PrjListAction();
+		} else if (cmd.equals("prjInUp")){
+			action = new PrjInUpAction();
+		}                                 
 		
 
 

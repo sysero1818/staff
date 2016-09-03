@@ -9,11 +9,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.kedu.common.Action;
 
-public class EmpGoAction implements Action {
+public class GoAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String url = "emp/emp.jsp";
+		String url = request.getParameter("url");
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 		dispatcher.forward(request, response);
 	}

@@ -40,7 +40,7 @@ public class LoginOk implements Action {
 		passwd = SecurityUtil.makeSecureString(passwd);
 		mpasswd = SecurityUtil.makeSecureString(mpasswd);
 		
-		String url = "neviGo?cmd=login";
+		String url = "neviGo?cmd=go&url=login.jsp";
 		EmpDao empDao = EmpDao.getInstance();
 		int result = empDao.login(empno, passwd, manager, mpasswd);
 //		System.out.println(result);
@@ -54,7 +54,7 @@ public class LoginOk implements Action {
 			if(manager.equals("1")) {
 				session.setAttribute("manager", "manager");
 			}
-			url = "neviGo?cmd=emp";
+			url = "neviGo?cmd=go&url=emp/emp.jsp";
 //			System.out.println(eDto.getEmpno());
 //			System.out.println(url+":"+session.getAttribute("empno"));
 		} else {

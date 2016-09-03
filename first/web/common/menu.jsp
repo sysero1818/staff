@@ -8,13 +8,13 @@
         </li>
         <li><a href="#">프로젝트 관리</a>
           <ul>
-            <li><a href="#">프로젝트 목록</a></li>
+            <li><a href="neviGo?cmd=go&url=prj/prj.jsp">프로젝트 목록</a></li>
             <li><a href="#">개인 프로젝트 목록</a></li>
           </ul>
         </li>
         <li><a href="">사원 관리</a>
           <ul>
-            <li><a href="neviGo?cmd=emp">사원 목록</a></li>
+            <li><a href="neviGo?cmd=go&url=emp/emp.jsp">사원 목록</a></li>
           </ul>
         </li>        
         <li><a href="daum.net">고객 관리</a>

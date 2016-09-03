@@ -13,20 +13,18 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kedu.common.Action;
 import com.kedu.common.GridJson;
-import com.kedu.emp.dao.EmpDao;
-import com.kedu.emp.dto.EmpDto;
+import com.kedu.prj.dao.PrjDao;
+import com.kedu.prj.dto.PrjDto;
 
-public class EmpJsonListAction implements Action {
+public class PrjListAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//request.setCharacterEncoding("UTF-8");
+
 		int page = 1;
 		int perPageRow = 10;
-		String sh_empno = "";
-		String sh_empnm = "";
-		String sh_indt_st = "";
-		String sh_indt_ed = "";
+		String sh_prjnm = "";
+
 		try {
 			if(request.getParameter("page").trim()!=null && request.getParameter("page").trim()!=""){
 				page = Integer.parseInt(request.getParameter("page").trim());
@@ -35,22 +33,12 @@ public class EmpJsonListAction implements Action {
 			if(request.getParameter("rows").trim()!=null && request.getParameter("rows").trim()!=""){
 				perPageRow = Integer.parseInt(request.getParameter("rows").trim());
 			}
+
 			
-			if(request.getParameter("sh_empno").trim()!=null && request.getParameter("sh_empno").trim()!=""){
-				sh_empno = request.getParameter("sh_empno").trim();
-			}
-			
-			if(request.getParameter("sh_empnm").trim()!=null && request.getParameter("sh_empnm").trim()!=""){
-				sh_empnm = request.getParameter("sh_empnm").trim();
+			if(request.getParameter("sh_prjnm").trim()!=null && request.getParameter("sh_prjnm").trim()!=""){
+				sh_prjnm = request.getParameter("sh_prjnm").trim();
 			}		
-
-			if(request.getParameter("sh_indt_st").trim()!=null && request.getParameter("sh_indt_st").trim()!=""){
-				sh_indt_st = request.getParameter("sh_indt_st").trim();
-			}
-
-			if(request.getParameter("sh_indt_ed").trim()!=null && request.getParameter("sh_indt_ed").trim()!=""){
-				sh_indt_ed = request.getParameter("sh_indt_ed").trim();
-			}			
+		
 		} catch (Exception e) {
 //			System.out.println("널처리 했는데.....");
 		}
@@ -59,18 +47,17 @@ public class EmpJsonListAction implements Action {
 		String ss_empno = (String) session.getAttribute("empno");
 		String manager	= (String) session.getAttribute("manager");
 		
-		EmpDao mDao = EmpDao.getInstance();
-		List<EmpDto> empList = mDao.selectAllEmps(page, perPageRow, sh_empno, sh_empnm, sh_indt_st, sh_indt_ed, ss_empno, manager);
+		PrjDao mDao = PrjDao.getInstance();
+		List<PrjDto> prjList = mDao.selectAllPrjs(page, perPageRow, sh_prjnm, ss_empno, manager);
 		
-		int records = mDao.getCountRow(sh_empno, sh_empnm, sh_indt_st, sh_indt_ed);
+		int records = mDao.getCountRow(sh_prjnm);
 		int total = (int)Math.ceil((double)records/(double)perPageRow);
 		
-		GridJson<EmpDto> empJson = new GridJson<EmpDto>();
+		GridJson<PrjDto> empJson = new GridJson<PrjDto>();
 		empJson.setTotal(total);
 		empJson.setRecords(records);
 		empJson.setPage(page);
-		empJson.setRows(empList);
-		
+		empJson.setRows(prjList);
 		Gson gson = new GsonBuilder().create();
 		String json = gson.toJson(empJson);
 		
@@ -80,7 +67,7 @@ public class EmpJsonListAction implements Action {
 		PrintWriter out = response.getWriter();
 		out.write(json);
 		out.flush();
-		out.close();		
+		out.close();	
 	}
 
 }
