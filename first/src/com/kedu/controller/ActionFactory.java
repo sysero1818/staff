@@ -2,6 +2,7 @@ package com.kedu.controller;
 
 import com.kedu.common.Action;
 import com.kedu.emp.action.GoAction;
+import com.kedu.emp.action.BoardListAction;
 import com.kedu.emp.action.EmpInUpAction;
 import com.kedu.emp.action.EmpListAction;
 import com.kedu.emp.action.EmpSkillInsertAction;
@@ -70,7 +71,9 @@ public class ActionFactory {
 			action = new PrjListAction();
 		} else if (cmd.equals("prjInUp")){
 			action = new PrjInUpAction();
-		}                                 
+		} else if (cmd.equals("boardList")){
+			action = new BoardListAction();
+		}                                      
 		
 
 

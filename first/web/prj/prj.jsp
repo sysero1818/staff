@@ -27,13 +27,9 @@
     <div id="rightcolumn">
 	    <div id="content_table">
     		<div id="table_search">
-	 				<label for="sh_empno">사원번호 : </label>
-					<input type="text" id="sh_empno" name="sh_empno" maxlength="10" value=""  />&nbsp;
-					<label for="sh_empnm">사원명 : </label>
-					<input type="text" id="sh_empnm" name="sh_empnm" maxlength="10" value=""  onkeyup="doSearch(arguments[0]||event)" />&nbsp;
-					<label>입사일 : </label>
-					<input type="text" id="sh_indt_st" name="sh_indt_st" maxlength="8" value="" /> ~
-					<input type="text" id="sh_indt_ed" name="sh_indt_ed" maxlength="8" value="" />					
+	 				<label for="sh_prjnm">프로젝트명 : </label>
+					<input type="text" id="sh_prjnm" name="sh_prjnm" maxlength="10" value="" onkeyup="doSearch(arguments[0]||event)" />&nbsp;
+
 					&nbsp;&nbsp;<span><input type="button" id="btnSearch" value="검색"  onclick="doSearch(arguments[0]||event)" /></span>
     		</div>
     		<div id="table_body">
@@ -45,7 +41,7 @@
 		
     	<div id="content_form"> 
  			<form class="cmxform" id="regForm" name="regForm" method="post">
-				<input type="text" name="inup" id="inup" value="in" />
+				<input type="hidden" name="inup" id="inup" value="in" />
 				<p>
 					<label for="prjno">프로젝트 번호</label>
 					<input type="text" id="prjno" name="prjno" readonly value="" />
@@ -71,10 +67,8 @@
      	
 		<div id="tabs">
 		  <ul>
-		    <li><a href="#tabs-1">학 력</a></li>
-		    <li><a href="#tabs-2">경 력</a></li>
-		    <li><a href="#tabs-3">자 격 증</a></li>
-		    <li><a href="#tabs-4">보유 기술</a></li>	    
+		    <li><a href="#tabs-1">수행자</a></li>
+		    <li><a href="#tabs-4">개발 환경</a></li>	    
 		  </ul>
 		  <div id="tabs-1">
     		<div id="sch_table">

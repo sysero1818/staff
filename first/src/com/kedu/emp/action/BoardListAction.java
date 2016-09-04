@@ -7,55 +7,44 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kedu.common.Action;
 import com.kedu.common.GridJson;
-import com.kedu.prj.dao.PrjDao;
-import com.kedu.prj.dto.PrjDto;
+import com.kedu.notice.dao.BoardDao;
+import com.kedu.notice.dto.BoardDto;
 
-public class PrjListAction implements Action {
+public class BoardListAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		int page = 1;
-		int perPageRow = 10;
-		String sh_prjnm = "";
+		int pageSize = 10;
 
 		try {
 			if(request.getParameter("page").trim()!=null && request.getParameter("page").trim()!=""){
 				page = Integer.parseInt(request.getParameter("page").trim());
 			}
 			
-			if(request.getParameter("rows").trim()!=null && request.getParameter("rows").trim()!=""){
-				perPageRow = Integer.parseInt(request.getParameter("rows").trim());
-			}
-			if(request.getParameter("rows").trim() != null){
-				sh_prjnm = request.getParameter("sh_prjnm").trim();
-			}
-			System.out.println(sh_prjnm);
 		} catch (Exception e) {
-			e.printStackTrace();
+
 		}
 		
-		HttpSession session = request.getSession();
-		String ss_empno = (String) session.getAttribute("empno");
-		String manager	= (String) session.getAttribute("manager");
+        int startRowNo = ( (page-1) * pageSize ) + 1;
+        int endRowNo = page * pageSize;
+        
+		BoardDao mDao = BoardDao.getInstance();
+		List<BoardDto> boardList = mDao.selectAllBoards(startRowNo, endRowNo);
 		
-		PrjDao mDao = PrjDao.getInstance();
-		List<PrjDto> prjList = mDao.selectAllPrjs(page, perPageRow, sh_prjnm, ss_empno, manager);
+		int records = mDao.totalCount();
+		int total = (int)Math.ceil((double)records/(double)pageSize);
 		
-		int records = mDao.getCountRow(sh_prjnm);
-		int total = (int)Math.ceil((double)records/(double)perPageRow);
-		
-		GridJson<PrjDto> empJson = new GridJson<PrjDto>();
+		GridJson<BoardDto> empJson = new GridJson<BoardDto>();
 		empJson.setTotal(total);
 		empJson.setRecords(records);
 		empJson.setPage(page);
-		empJson.setRows(prjList);
+		empJson.setRows(boardList);
 		Gson gson = new GsonBuilder().create();
 		String json = gson.toJson(empJson);
 		
@@ -65,7 +54,7 @@ public class PrjListAction implements Action {
 		PrintWriter out = response.getWriter();
 		out.write(json);
 		out.flush();
-		out.close();	
+		out.close();		
 	}
 
 }

@@ -140,7 +140,7 @@ public class PrjDao {
 			conn = DBManager.getConnection();
 			cstmt = conn.prepareCall(sql);
 
-			cstmt.setString(1, pDto.getEmpno());
+			cstmt.setInt(1, pDto.getPrjno());
 			cstmt.setString(2, pDto.getPrjnm());
 			cstmt.setString(3, pDto.getStartdt());
 			cstmt.setString(4, pDto.getEnddt());

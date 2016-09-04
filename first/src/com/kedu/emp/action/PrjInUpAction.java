@@ -29,7 +29,7 @@ public class PrjInUpAction implements Action {
 		
 		pDto.setEmpno(ss_empno);
 		
-		if (request.getParameter("prjno") !=null ){
+		if (request.getParameter("prjno") != null && !request.getParameter("prjno").equals("") ){
 			pDto.setPrjno(Integer.parseInt(request.getParameter("prjno")));
 		} 
 		
@@ -41,17 +41,15 @@ public class PrjInUpAction implements Action {
 		if (request.getParameter("compno") !=null ){
 			pDto.setCompno(Integer.parseInt(request.getParameter("compno")));
 		} 
-		
 		System.out.println(pDto.toString());
-
 		PrjDao pDao = PrjDao.getInstance();
-		//if (manager.equals("manager")){
+		if (manager.equals("manager")){
 			if (inup.equals("in")){
 				result = pDao.insertPrj(pDto);
 			} else if(inup.equals("up")) {
 				result = pDao.updatePrj(pDto)+1;
 			}
-		//}
+		}
 		Gson gson = new GsonBuilder().create();
 		String json = gson.toJson(result);
 		

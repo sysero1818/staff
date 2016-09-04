@@ -394,26 +394,13 @@ function doSearch(ev){
 }
 
 function gridReload(){
-	var sh_empno = $("#sh_empno").val();
-	var sh_empnm = $("#sh_empnm").val();
-	var sh_indt_st = $("#sh_indt_st").val().replace(/-/g, '');
-	var sh_indt_ed = $("#sh_indt_ed").val().replace(/-/g, '');
-	$("#user_list").jqGrid('setGridParam',{url:"neviGo?cmd=empJsonList&sh_empno="+sh_empno+"&sh_empnm="+sh_empnm+"&sh_indt_st="+sh_indt_st+"&sh_indt_ed="+sh_indt_ed,page:1}).trigger("reloadGrid");
+	var sh_prjnm = $("#sh_prjnm").val();
+//	var sh_indt_st = $("#sh_indt_st").val().replace(/-/g, '');
+//	var sh_indt_ed = $("#sh_indt_ed").val().replace(/-/g, '');
+	$("#user_list").jqGrid('setGridParam',{url:"neviGo?cmd=prjList&sh_prjnm="+sh_prjnm,page:1}).trigger("reloadGrid");
 }
 
 
-
-function doAddr(ev){
-	var timeoutHnd;
-	if(timeoutHnd)
-		clearTimeout(timeoutHnd)
-	timeoutHnd = setTimeout(gridAddr,100)
-}
-
-function gridAddr(){
-	var dong = $("#dong").val();
-	$("#addr_list").jqGrid('setGridParam',{url:"neviGo?cmd=searchAddr&dong="+dong,page:1}).trigger("reloadGrid");
-}    
 
 
 

@@ -20,7 +20,6 @@ public class EmpListAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//request.setCharacterEncoding("UTF-8");
 		int page = 1;
 		int perPageRow = 10;
 		String sh_empno = "";
@@ -52,7 +51,7 @@ public class EmpListAction implements Action {
 				sh_indt_ed = request.getParameter("sh_indt_ed").trim();
 			}			
 		} catch (Exception e) {
-//			System.out.println("널처리 했는데.....");
+
 		}
 		
 		HttpSession session = request.getSession();

@@ -28,5 +28,9 @@
             <li><a href="#">거래처 목록</a></li>
           </ul>
         </li>  
-        <li><a href="#">공지 사항</a></li>                
+        <li><a href="#">공지 사항</a>
+          <ul>
+            <li><a href="neviGo?cmd=go&url=notice/notice.jsp">공지 사항</a></li>
+          </ul>                   
+        </li>     
       </ul>
