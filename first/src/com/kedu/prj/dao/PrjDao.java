@@ -21,7 +21,6 @@ public class PrjDao {
 		return instance;
 	}
 	
-	//사원의 row개수 구하기
 	public int getCountRow(String sh_prjnm) {
 		int x= 0;
 		String sql = "{call prj_totalrow(?,?)}";

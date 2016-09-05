@@ -1,4 +1,4 @@
-package com.kedu.emp.action;
+package com.kedu.notice.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,7 +20,7 @@ public class BoardListAction implements Action {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int page = 1;
-		int pageSize = 10;
+		int pageSize = 5;
 
 		try {
 			if(request.getParameter("page").trim()!=null && request.getParameter("page").trim()!=""){

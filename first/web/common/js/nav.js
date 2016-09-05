@@ -47,9 +47,10 @@ $(document).ready(function(){
 		  });
 	
 	$.each($('tr:odd'), function(i){ // 홀수 번째 
-		$(this).css("backgroundColor", "#FFFFFF"); 
-		}); 
-		$.each($('tr:even'), function(i){ //짝수 번째 
+		$(this).css("backgroundColor", "black"); 
+	}); 
+	
+	$.each($('tr:even'), function(i){ //짝수 번째 
 		$(this).css("backgroundColor", "#F7F7F7"); 
 	}); 
 		

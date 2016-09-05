@@ -1,4 +1,4 @@
-package com.kedu.emp.action;
+package com.kedu.prj.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -29,7 +29,7 @@ public class PrjInUpAction implements Action {
 		
 		pDto.setEmpno(ss_empno);
 		
-		if (request.getParameter("prjno") != null && !request.getParameter("prjno").equals("") ){
+		if (request.getParameter("prjno") != null && request.getParameter("prjno").trim().length() != 0){
 			pDto.setPrjno(Integer.parseInt(request.getParameter("prjno")));
 		} 
 		
@@ -41,7 +41,7 @@ public class PrjInUpAction implements Action {
 		if (request.getParameter("compno") !=null ){
 			pDto.setCompno(Integer.parseInt(request.getParameter("compno")));
 		} 
-		System.out.println(pDto.toString());
+
 		PrjDao pDao = PrjDao.getInstance();
 		if (manager.equals("manager")){
 			if (inup.equals("in")){

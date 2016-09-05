@@ -2,7 +2,6 @@ package com.kedu.controller;
 
 import com.kedu.common.Action;
 import com.kedu.emp.action.GoAction;
-import com.kedu.emp.action.BoardListAction;
 import com.kedu.emp.action.EmpInUpAction;
 import com.kedu.emp.action.EmpListAction;
 import com.kedu.emp.action.EmpSkillInsertAction;
@@ -13,12 +12,16 @@ import com.kedu.emp.action.LoginOk;
 import com.kedu.emp.action.ManagerUpdateAction;
 import com.kedu.emp.action.MemberListGoAction;
 import com.kedu.emp.action.PicUploadAction;
-import com.kedu.emp.action.PrjInUpAction;
-import com.kedu.emp.action.PrjListAction;
 import com.kedu.emp.action.SchInupAction;
 import com.kedu.emp.action.SchListAction;
 import com.kedu.emp.action.SearchAddr;
 import com.kedu.emp.action.SkillListAction;
+import com.kedu.notice.action.BoardListAction;
+import com.kedu.notice.action.NoticeInUpAction;
+import com.kedu.notice.action.NoticeListAction;
+import com.kedu.notice.action.NoticeViewAction;
+import com.kedu.prj.action.PrjInUpAction;
+import com.kedu.prj.action.PrjListAction;
 
 public class ActionFactory {
 	private static ActionFactory instance = new ActionFactory();
@@ -73,7 +76,13 @@ public class ActionFactory {
 			action = new PrjInUpAction();
 		} else if (cmd.equals("boardList")){
 			action = new BoardListAction();
-		}                                      
+		} else if (cmd.equals("noticeList")){
+			action = new NoticeListAction();
+		} else if (cmd.equals("noticeView")){
+			action = new NoticeViewAction();
+		} else if (cmd.equals("noticeInUp")){
+			action = new NoticeInUpAction();
+		}                                                                 
 		
 
 

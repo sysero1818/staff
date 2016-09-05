@@ -27,27 +27,27 @@ public class EmpListAction implements Action {
 		String sh_indt_st = "";
 		String sh_indt_ed = "";
 		try {
-			if(request.getParameter("page").trim()!=null && request.getParameter("page").trim()!=""){
+			if(request.getParameter("page").trim() != null && request.getParameter("page").trim().length() != 0){
 				page = Integer.parseInt(request.getParameter("page").trim());
 			}
 			
-			if(request.getParameter("rows").trim()!=null && request.getParameter("rows").trim()!=""){
+			if(request.getParameter("rows").trim() != null && request.getParameter("rows").trim().length() != 0){
 				perPageRow = Integer.parseInt(request.getParameter("rows").trim());
 			}
 			
-			if(request.getParameter("sh_empno").trim()!=null && request.getParameter("sh_empno").trim()!=""){
+			if(request.getParameter("sh_empno").trim() != null && request.getParameter("sh_empno").trim().length() != 0){
 				sh_empno = request.getParameter("sh_empno").trim();
 			}
 			
-			if(request.getParameter("sh_empnm").trim()!=null && request.getParameter("sh_empnm").trim()!=""){
+			if(request.getParameter("sh_empnm").trim() != null && request.getParameter("sh_empnm").trim().length() != 0){
 				sh_empnm = request.getParameter("sh_empnm").trim();
 			}		
 
-			if(request.getParameter("sh_indt_st").trim()!=null && request.getParameter("sh_indt_st").trim()!=""){
+			if(request.getParameter("sh_indt_st").trim() != null && request.getParameter("sh_indt_st").trim().length() != 0){
 				sh_indt_st = request.getParameter("sh_indt_st").trim();
 			}
 
-			if(request.getParameter("sh_indt_ed").trim()!=null && request.getParameter("sh_indt_ed").trim()!=""){
+			if(request.getParameter("sh_indt_ed").trim()!=null && request.getParameter("sh_indt_ed").trim().length() != 0){
 				sh_indt_ed = request.getParameter("sh_indt_ed").trim();
 			}			
 		} catch (Exception e) {

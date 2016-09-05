@@ -1,4 +1,4 @@
-package com.kedu.emp.action;
+package com.kedu.prj.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -33,10 +33,10 @@ public class PrjListAction implements Action {
 			if(request.getParameter("rows").trim()!=null && request.getParameter("rows").trim()!=""){
 				perPageRow = Integer.parseInt(request.getParameter("rows").trim());
 			}
-			if(request.getParameter("rows").trim() != null){
+			if(request.getParameter("sh_prjnm") != null && request.getParameter("sh_prjnm").trim().length() != 0){
 				sh_prjnm = request.getParameter("sh_prjnm").trim();
 			}
-			System.out.println(sh_prjnm);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

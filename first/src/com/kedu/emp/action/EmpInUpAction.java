@@ -17,7 +17,6 @@ public class EmpInUpAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		request.setCharacterEncoding("UTF-8");
 		int result = 0;
 
 		EmpDto empDto = new EmpDto();
@@ -29,8 +28,13 @@ public class EmpInUpAction implements Action {
 		empDto.setPasswd(request.getParameter("passwd"));  
 		empDto.setPic(request.getParameter("pic")); 
 		empDto.setJumin(request.getParameter("jumin").replace("-", "").trim());   
-		empDto.setBirth(request.getParameter("birth").replace("-", "").trim());   
-		empDto.setZipseq(Integer.parseInt(request.getParameter("zipseq")));
+		empDto.setBirth(request.getParameter("birth").replace("-", "").trim()); 
+		
+
+		if(request.getParameter("zipseq").trim()!=null && request.getParameter("zipseq").trim().length() != 0){
+			empDto.setZipseq(Integer.parseInt(request.getParameter("zipseq")));
+		}
+
 		empDto.setDetailad(request.getParameter("detailad"));
 		empDto.setMobile(request.getParameter("mobile").replace("-", "").trim());  
 		empDto.setEmail(request.getParameter("email"));   

@@ -32,7 +32,7 @@ public class GridJson<T> {
 	public void setRecords(int records) {
 		this.records = records;
 	}
-
+	
 	public List<T> getRows() {
 		return rows;
 	}
