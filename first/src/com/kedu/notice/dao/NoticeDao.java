@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.kedu.common.DBManager;
 import com.kedu.notice.dto.NoticeDto;
+import com.kedu.notice.dto.NotidatDto;
 
 
 public class NoticeDao {
@@ -72,7 +73,7 @@ public class NoticeDao {
 				nDto.setContent(rs.getString("content"));
 				nDto.setCnt(rs.getInt("cnt"));
 				nDto.setManager(rs.getString("manager"));
-				nDto.setRegdtt(rs.getTimestamp("regdtt"));
+				nDto.setRegdtt(rs.getString("regdtt"));
 				
 				if ( manager != null && (ss_empno !=null && ss_empno.equals(rs.getString("manager"))) ){
 					nDto.setUpyn("o");
@@ -110,7 +111,7 @@ public class NoticeDao {
 				nDto.setSeq(rs.getInt("seq"));
 				nDto.setTitle(rs.getString("title"));
 				nDto.setContent(rs.getString("content"));
-				nDto.setRegdtt(rs.getTimestamp("regdtt"));
+				nDto.setRegdtt(rs.getString("regdtt"));
 			}			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -170,4 +171,84 @@ public class NoticeDao {
 		
 		return result;
 	}	
+	
+	public List<NotidatDto> selectBySeqNotidatList(int seq){
+		String sql = "{call notidat_list(?,?)}";
+		List<NotidatDto> list = new ArrayList<NotidatDto>();
+
+		Connection conn = null;
+		CallableStatement  cstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = DBManager.getConnection();
+			cstmt = conn.prepareCall(sql);
+			cstmt.setInt(1, seq);
+			cstmt.registerOutParameter(2, oracle.jdbc.OracleTypes.CURSOR);
+			cstmt.executeQuery();
+			rs = (ResultSet) cstmt.getObject(2);			
+
+			while (rs.next()) {
+				NotidatDto nDto = new NotidatDto();
+				nDto.setSeq(rs.getInt("seq"));
+				nDto.setDseq(rs.getInt("dseq"));
+				nDto.setDcontent(rs.getString("dcontent"));
+				nDto.setDgubun(rs.getString("dgubun"));
+				nDto.setEmpno(rs.getString("empno"));
+				nDto.setManager(rs.getString("manager"));
+				nDto.setDregdtt(rs.getString("dregdtt"));
+/*				
+				if ( manager != null && (ss_empno !=null && ss_empno.equals(rs.getString("manager"))) ){
+					nDto.setUpyn("o");
+				} else {
+					nDto.setUpyn("x");
+				}
+*/			
+				list.add(nDto);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, cstmt, rs);
+		}
+		return list;
+	}
+	
+	
+	public int insertNotidat(NotidatDto nDto){
+		int result = 0;
+		String sql="{call notidat_insert(?,?,?,?,?,?)}";
+		Connection conn = null;
+		CallableStatement  cstmt = null;
+		
+		try {
+			conn = DBManager.getConnection();
+			cstmt = conn.prepareCall(sql);
+			cstmt.setInt(1, nDto.getSeq());
+			cstmt.setString(2, nDto.getDcontent());
+			cstmt.setString(3, nDto.getDgubun());
+			
+//			if (nDto.getDgubun().equals("e")) {
+				cstmt.setString(4, nDto.getEmpno());
+//			} else if (nDto.getDgubun().equals("m") ){
+//				cstmt.setNull(4, java.sql.Types.NULL);
+//			}
+
+//			if (nDto.getDgubun().equals("e")) {
+//				cstmt.setNull(5, java.sql.Types.NULL);
+//			} else if (nDto.getDgubun().equals("m") ){
+				cstmt.setString(5, nDto.getManager());
+//			}
+			
+			cstmt.registerOutParameter(6, oracle.jdbc.OracleTypes.NUMBER);
+			cstmt.executeUpdate();
+			result = cstmt.getInt(6);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, cstmt);
+		}
+		
+		return result;
+	}
 }

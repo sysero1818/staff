@@ -30,11 +30,28 @@ $(document).ready(function(){
 				$("#content").val(data.content);
 				$("#btnSubmit").val("수정");
 				$("#inup").val("up");
+				$("#Oseq").val(seq);
 			},
 		    error:function(request,status,error){
 		        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 	        }
-		});	
+		});
+		
+		$.ajax({
+			type: "post",
+			url: "neviGo?cmd=notidatList",
+			data: {seq: seq},
+			dataType: "json",
+			success : function(data) {
+				$("#notiDat_table tbody *").remove();
+				$.each(data, function(i,v){
+					$("#notiDat_table tbody").append("<tr id='"+seq+"_dat_"+v.dseq+"'><td>"+v.dseq+"</td><td>"+v.dcontent+"</td><td>"+v.dregdtt+"</td></tr>");
+				});
+			},
+		    error:function(request,status,error){
+		        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	        }			
+		});
 	}); 
 	
 	//초기화버튼
@@ -90,6 +107,46 @@ $(document).ready(function(){
 	}
 	$("#regForm").ajaxForm(options);
 	
+
+	
+	//댓글 등록
+	$("#datForm").validate({
+		rules: {
+		  dcontent: {required: true}
+		},
+		messages: {
+		  dcontent: {required: "필수"}
+		}
+	 });
+	// submit
+	var options = {
+		url : 'neviGo?cmd=notidatInsert',
+		type : 'POST',
+		beforeSubmit: function(){
+			$.blockUI({overlayCSS:{opacity:0.0}, message:""});
+			return $("#datForm").valid();
+		},
+	
+		success : function(rt,statusText,xhr){
+			var seq = $("#Oseq").val();
+			$("#datForm").clearForm();
+			$.unblockUI();
+			if (rt.result=="0"){
+				alertMsg("댓글 등록", "등록 실패");
+			} else if (rt.result=="1"){
+				alertMsg("공지 사항", "등록 완료");
+				$("#notiDat_table tbody").append("<tr id='"+seq+"_dat_"+rt.dseq+"'><td>"+rt.dseq+"</td><td>"+rt.dcontent+"</td><td>"+rt.dregdtt+"</td></tr>");				
+			}
+		}, 
+		error: function (jqXHR, textStatus, errorThrown) {
+			$.unblockUI();
+			alert(errorThrown);
+		}
+	}
+	$("#datForm").ajaxForm(options);
+	
+	
+	
 	$(".btnwht").css("width","80");
 });
 
@@ -114,33 +171,50 @@ function ld(page){
 }
 
 function pageing(page, block, totalPage){
+	var maxPageGroup = Math.ceil(totalPage/block);
 	var pageGroup = Math.ceil(page/block);
 	var next = pageGroup*block;
 	var prev = next - (block - 1);
+	var goPrev;
+	var goNext;
+	
 	var str = "";
+	var first = "";
+	var last = "";	
+	var prevStep = "";
+	var nextStep = "";
+	
 	$("#main_paging").empty();
 	
-	var goNext = next+1;
+	if (page > 1) {
+		first = "<img src='../images/first.gif'  width='20' height='20' onclick='ld(1)'/> ";
+	}
+	
+	goNext = next+1;
 	if(prev-1 <= 0){
-		var goPrev = 1;
-		var last = "<img src='../images/last.gif' width='20' height='20' onclick='ld("+ totalPage +")'/> ";			
+		goPrev = 1;
+		last = "<img src='../images/last.gif' width='20' height='20' onclick='ld("+ totalPage +")'/> ";			
 	} else {
-		var goPrev = prev - 1;
-		var first = "<img src='../images/first.gif'  width='20' height='20' onclick='ld(1)'/> ";
+		goPrev = prev - 1;
+		first = "<img src='../images/first.gif'  width='20' height='20' onclick='ld(1)'/> ";
 	}
 	
 	$("#main_paging").append(first);	
 	
 	if(next > totalPage){
-		var goNext = totalPage;
+		goNext = totalPage;
 		next = totalPage;
+		last = "";		
 	} else {
-		var goNext = next + 1;
-		var last = "<img src='../images/last.gif'  width='20' height='20' onclick='ld("+ totalPage +")'/> ";	
+		goNext = next + 1;
+		last = "<img src='../images/last.gif'  width='20' height='20' onclick='ld("+ totalPage +")'/> ";	
 	}
 	
-	var prevStep = "<img src='../images/prev.gif'  width='20' height='20' onclick='ld("+ goPrev +")'/> ";
-	var nextStep = "<img src='../images/next.gif'  width='20' height='20' onclick='ld("+ goNext +")'/> ";
+	if(pageGroup == 1) {
+		prevStep = " ";
+	} else {
+		prevStep = "<img src='../images/prev.gif'  width='20' height='20' onclick='ld("+ goPrev +")'/> ";	
+	}
 	
 	$("#main_paging").append(prevStep);
 	
@@ -153,16 +227,36 @@ function pageing(page, block, totalPage){
 		$("#main_paging").append(str);
 	}
 	
+	if (pageGroup == maxPageGroup){
+		nextStep = "";
+	} else {
+		nextStep = "<img src='../images/next.gif'  width='20' height='20' onclick='ld("+ goNext +")'/> ";
+	}
+	
+	if (page == totalPage){
+		last = "";
+	}
+	
 	$("#main_paging").append(nextStep);
 	$("#main_paging").append(last);	
 }
 
 </script>
 <style>
+#table_title, #notiDatIn_title, #notiDat_title{
+	width: 100%;
+	height: 27px;
+	vertical-align: middle;
+	line-height: 30px;
+	padding-left: 5px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px; 
+	border: 0;
+}
 #member_table{
 	margin-top: 5px;
 	width: 100%;
-	height: 170px;
+	height: 200px;
 	border: 1px solid #C1DAD7;
 	border-radius: 5px;	
 }
@@ -172,7 +266,7 @@ function pageing(page, block, totalPage){
 	text-align: center;
 	line-height: 20px;
 	color: #4f6b72;	
-	font-size: 1em;
+	font-size: 1.05em;
 }
 
 #main_paging img{
@@ -222,6 +316,40 @@ table > tbody > tr:hover > td {
 	background: #f2f2f2; 
 }
 
+#regForm_title{
+	width: 100%;
+	height: 27px;
+	vertical-align: middle;
+	line-height: 30px;
+	padding-left: 5px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px; 
+	border: 0;
+}
+
+#notiDatIn{
+	float: right;
+	margin: 10px auto;
+	width: 100%;
+	height: 150px;
+	border: 1px solid #C1DAD7;
+	border-radius: 5px;
+}
+
+#notiDat{
+	float: right;
+	margin-top: 5px;
+	width: 100%;
+	height: 100%;
+	border: 1px solid #C1DAD7;
+	border-radius: 5px;
+}
+
+#notiDat_table{
+	margin-top: 5px;
+	width: 100%;
+	height: 100%;
+}
 </style>
 </head>
 <body>
@@ -240,23 +368,23 @@ table > tbody > tr:hover > td {
 		</div>
 	    <div id="rightcolumn">
 	    	<div id="member_table">
-				<table id="mytable">
+	    		<div id="table_title" class="ui-widget-header">공지 목록</div> 
+	    		<table id="mytable">
 					<thead>
 						<tr>
-						  <th scope="col" abbr="글번호">글번호</th>
+						  <th scope="col" abbr="글번호" width="80">글번호</th>
 						  <th scope="col" abbr="제목">제목</th>
-						  <th scope="col" abbr="등록일">등록일</th>				  				  
+						  <th scope="col" abbr="등록일" width="100">등록일</th>				  				  
 						</tr>
 					</thead>
 					<tbody>
 					</tbody>													
 				</table>			
 			</div>
-			<div id="main_paging">
-
-			</div>
+			<div id="main_paging"></div>
 			
-	    	<div id="content_form"> 
+	    	<div id="content_form">
+	    		<div id="regForm_title" class="ui-widget-header">공지 내용</div> 
 	 			<form class="cmxform" id="regForm" name="regForm" method="post">
 					<input type="hidden" name="inup" id="inup" value="in" />
 					<p>
@@ -275,7 +403,36 @@ table > tbody > tr:hover > td {
 						<input type="submit" id="btnSubmit" class="btnwht" value="등록" tabindex="3" /> <input type="button" id="btnRefresh" class="btnwht" value="초기화" />
 					</p>					
 				</form> 
-	     	</div>					
+	     	</div>
+	     	<div id="notiDatIn">
+	     		<div id="notiDatIn_title" class="ui-widget-header">댓글 입력</div> 
+	 			<form class="cmxform" id="datForm" name="datForm" method="post">
+					<input type="hidden" name="Oseq" id="Oseq" value=""/>
+					<p>
+						<label for="dcontent">글 내용</label>
+						<textarea id="dcontent" name="dcontent" cols="60" rows="3"  tabindex="1"></textarea>
+					</p>	
+					<p class="btnRow">
+						<input type="submit" id="btnDatSubmit" class="btnwht" value="등록" tabindex="2" /> <input type="button" id="btnDatRefresh" class="btnwht" value="초기화" />
+					</p>					
+				</form> 	     		
+	     	</div>
+	     	<div id="notiDat">
+	    		<div id="notiDat_title" class="ui-widget-header">댓글 목록</div> 
+	    		<table id="notiDat_table">
+					<thead>
+						<tr>
+						  <th scope="col" abbr="댓글" width="80">댓글번호</th>
+						  <th scope="col" abbr="내용">내용</th>
+						  <th scope="col" abbr="등록일" width="100">등록일</th>				  				  
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>													
+				</table>
+	     	</div>
+	     	
+	     						
 		</div>
     </div>
 							

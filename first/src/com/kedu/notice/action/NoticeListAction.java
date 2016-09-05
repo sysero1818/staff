@@ -45,7 +45,6 @@ public class NoticeListAction implements Action {
 		
 		int records = nDao.getCountRow(sh_title);
 		int total = (int)Math.ceil((double)records/(double)pageSize);
-		
 		GridJson<NoticeDto> empJson = new GridJson<NoticeDto>();
 		empJson.setTotal(total);
 		empJson.setRecords(records);

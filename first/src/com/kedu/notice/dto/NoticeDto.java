@@ -1,14 +1,12 @@
 package com.kedu.notice.dto;
 
-import java.sql.Timestamp;
-
 public class NoticeDto {
 	private int seq;
 	private String title;
 	private String content;
 	private int cnt;
 	private String manager;
-	private Timestamp regdtt;
+	private String regdtt;
 	private String upyn;
 	private int result;
 	
@@ -45,10 +43,10 @@ public class NoticeDto {
 	public void setManager(String manager) {
 		this.manager = manager;
 	}
-	public Timestamp getRegdtt() {
+	public String getRegdtt() {
 		return regdtt;
 	}
-	public void setRegdtt(Timestamp regdtt) {
+	public void setRegdtt(String regdtt) {
 		this.regdtt = regdtt;
 	}
 	public String getUpyn() {

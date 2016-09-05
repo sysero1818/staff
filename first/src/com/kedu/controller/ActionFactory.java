@@ -20,6 +20,8 @@ import com.kedu.notice.action.BoardListAction;
 import com.kedu.notice.action.NoticeInUpAction;
 import com.kedu.notice.action.NoticeListAction;
 import com.kedu.notice.action.NoticeViewAction;
+import com.kedu.notice.action.NotidatInsertAction;
+import com.kedu.notice.action.NotidatListAction;
 import com.kedu.prj.action.PrjInUpAction;
 import com.kedu.prj.action.PrjListAction;
 
@@ -82,7 +84,11 @@ public class ActionFactory {
 			action = new NoticeViewAction();
 		} else if (cmd.equals("noticeInUp")){
 			action = new NoticeInUpAction();
-		}                                                                 
+		} else if (cmd.equals("notidatList")){
+			action = new NotidatListAction();
+		} else if (cmd.equals("notidatInsert")){
+			action = new NotidatInsertAction();
+		}                                                                       
 		
 
 
