@@ -1,4 +1,4 @@
-package com.kedu.emp.dto;
+package com.kedu.career.dto;
 
 public class CareerDto {
 	private int careerno;
@@ -8,6 +8,11 @@ public class CareerDto {
 	private String compnm;
 	private String positnm;
 	private String charge;
+	private String period;
+	
+	public CareerDto(){
+		
+	}
 	public int getCareerno() {
 		return careerno;
 	}
@@ -49,6 +54,13 @@ public class CareerDto {
 	}
 	public void setCharge(String charge) {
 		this.charge = charge;
+	}
+	
+	public String getPeriod() {
+		return period;
+	}
+	public void setPeriod(String period) {
+		this.period = period;
 	}
 	@Override
 	public String toString() {

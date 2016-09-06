@@ -169,6 +169,8 @@ $(document).ready(function(){
 	});
 	
 	$(".btnwht").css("width","80");
+	
+	//tableToGrid("#mytable");
 });
 
 function ld(page){

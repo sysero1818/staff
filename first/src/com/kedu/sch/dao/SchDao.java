@@ -1,4 +1,4 @@
-package com.kedu.emp.dao;
+package com.kedu.sch.dao;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.kedu.common.DBManager;
-import com.kedu.emp.dto.SchDto;
+import com.kedu.sch.dto.SchDto;
 
 public class SchDao {
 

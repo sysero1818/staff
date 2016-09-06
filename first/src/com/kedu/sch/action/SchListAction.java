@@ -1,4 +1,4 @@
-package com.kedu.emp.action;
+package com.kedu.sch.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,8 +12,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kedu.common.Action;
 import com.kedu.common.GridJson;
-import com.kedu.emp.dao.SchDao;
-import com.kedu.emp.dto.SchDto;
+import com.kedu.sch.dao.SchDao;
+import com.kedu.sch.dto.SchDto;
 
 public class SchListAction implements Action {
 

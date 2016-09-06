@@ -116,7 +116,7 @@
 					</p>			
 					<p>
 						<label for="mobile">휴대폰</label>
-						<input type="text" id="mobile" name="mobile" value="01022223333"  tabindex="8" />
+						<input type="text" id="mobile" name="mobile" value=""  tabindex="8" />
 					</p>	
 					<p>
 						<label for="birth">생일</label>
@@ -231,6 +231,47 @@
     		</div>
 		  </div>
 		  <div id="tabs-2">
+
+    		<div id="career_table">
+				<table id="career_list" class="jqtable"></table>
+    			<div id="career_pager"></div>
+    		</div>
+    		<div id="career_inup">
+    			<form id="careerForm" class="cmxform" method="post">
+    				<input type="hidden" id="inup_career" name="inup_career"  value="in" />
+    				<input type="hidden" id="careerno" name="careerno" value="" />
+    				<input type="hidden" id="career_empno" name="career_empno" value=""/>
+    				<div id="career_left">
+    					<p>
+							<label for="career_startdt">시작</label>
+							<input type="text" id="career_startdt" name="career_startdt" class="required" value="" />
+						</p>
+						<p>
+							<label for="career_enddt">종료</label>
+							<input type="text" id="career_enddt" name="career_enddt"  class="required" value="" />
+						</p>    				
+    				</div>
+    				<div id="career_right">
+    					<p>
+							<label for="compnm">직장명</label>
+							<input type="text" id="compnm" name="compnm" class="required" value="" />
+						</p>
+						<p>
+							<label for="positnm">전공</label>
+							<input type="text" id="positnm" name="positnm" class="required" value="" />
+						</p>
+						<p>
+							<label for="charge">직무</label>
+							<input type="text" id="charge" name="charge" value="" />
+						</p>						
+    				</div>
+					<div id="career_bottom">
+						<p>
+							<input type="submit" id="btncareerSubmit" class="btnwht" value="등록" /> <input type="button" id="btncareerRefresh" class="btnwht" value="초기화" />
+						</p>
+					</div>
+    			</form>
+    		</div>
 		  
 		  </div>
 		  <div id="tabs-3">

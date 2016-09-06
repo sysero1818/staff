@@ -131,9 +131,10 @@ $(document).ready(function(){
 			dataType: "json",
 			success : function(result) {
 				if(result == 1){
-					alert("삭제성공");
+					$("#picture > img").attr("src","images/noimage_pic.gif");
+					$("#user_list").trigger("reloadGrid");
 				} else {
-					alert("삭제실패");
+					alertMsg("사진삭제",  "삭제실패");
 				}
 			},
 		    error:function(request,status,error){
@@ -153,7 +154,7 @@ $(document).ready(function(){
     $(".btnwht").css("width", "80");
 	$("#indt, #outdt, #sh_indt_st, #sh_indt_ed").datepicker();
 	
-	$("#birth, #sch_startdt, #sch_enddt").datepicker({
+	$("#birth, #sch_startdt, #sch_enddt, #career_startdt, #career_enddt").datepicker({
 		changeMonth: true,
 		changeYear: true,
 		yearRange: '1950:2020'
@@ -162,7 +163,8 @@ $(document).ready(function(){
 	
 	setStEd_picker("#indt", "#outdt");
 	setStEd_picker("#sh_indt_st", "#sh_indt_ed");	
-	setStEd_picker("#sch_startdt", "#sch_startdt");		
+	setStEd_picker("#sch_startdt", "#sch_startdt");
+	setStEd_picker("#career_startdt", "#career_enddt");		
 
     
 	$("#mobile").mask("999-9999-9999");
@@ -275,6 +277,59 @@ $(document).ready(function(){
 //	********** 학력 등록/수정 부분 끝*************
 	
 	
+	
+//	********** 경력 등록/수정 부분 *************
+	$("#careerForm").validate({
+		rules: {
+		  career_startdt: {required: true, dateISO: true},
+		  career_enddt:{required: true, dateISO: true},
+		  compnm: {required: true },
+		  positnm: {required: true}
+		},
+		messages: {
+			career_startdt: {required: "필수", dateISO: "형식오류"},
+			career_enddt: {required: "필수", dateISO: "형식오류"},
+			compnm: {required: "필수"},
+			positnm: {required: "필수"}
+		}
+	 });
+	
+	// submit
+	var options = {
+		url : 'neviGo?cmd=careerInup',
+		type : 'POST',
+		beforeSubmit: function(){
+			$.blockUI({overlayCSS:{opacity:0.0}, message:""});
+			return $("#careerForm").valid();
+		},
+	
+		success : function(responseText,statusText,xhr){
+			var empno = $("#career_empno").val();
+			$("#careerForm").clearForm();
+			$("#career_inup").val("in");
+			$("#btncareerSubmit").val("등록");
+			//$("#btncareerRefresh").hide();
+			$.unblockUI();
+			
+			if (responseText=="0"){
+				alertMsg("경력 목록", "등록/수정 실패");
+			} else if (responseText=="1"){
+				alertMsg("경력 목록", "등록 완료");
+			} else if (responseText=="2"){
+				alertMsg("경력 목록", "수정 완료");
+			}
+			$("#career_empno").val(empno);
+			$("#career_list").trigger("reloadGrid");
+		}, 
+		error: function (jqXHR, textStatus, errorThrown) {
+			$.unblockUI();
+			alert(errorThrown);
+		}
+	}
+	$("#careerForm").ajaxForm(options);	
+//	********** 경력 등록/수정 부분 끝************
+	
+	
 	$("#btnRefresh").bind("click", function(){
 		$(".pass").show();		
 		$("#regForm").clearForm();
@@ -344,6 +399,7 @@ $(document).ready(function(){
 			$("#payment").val(set_comma(ret.payment));
 			$(".pass").hide();
 			$("#sch_empno").val(ret.empno);
+			$("#career_empno").val(ret.empno);			
 			
 			if (ret.pic == ""){
 				$("#btnPicDel").hide();
@@ -383,6 +439,9 @@ $(document).ready(function(){
 			
 			$("#sch_list").jqGrid('setGridParam',{url:"neviGo?cmd=schList&sh_empno="+ret.empno,page:1}).trigger('reloadGrid');
 		    $("#gview_sch_list > .ui-jqgrid-titlebar").css("display", "none");
+		    
+			$("#career_list").jqGrid('setGridParam',{url:"neviGo?cmd=careerList&sh_empno="+ret.empno,page:1}).trigger('reloadGrid');
+		    $("#gview_career_list > .ui-jqgrid-titlebar").css("display", "none");		    
 		    
 			$("#empskill_list").jqGrid('setGridParam',{url:"neviGo?cmd=empSkillList&sh_empno="+ret.empno,page:1}).trigger('reloadGrid');
 		    $("#gview_empskill_list > .ui-jqgrid-titlebar").css("display", "none");
@@ -436,6 +495,51 @@ $(document).ready(function(){
     $("#sch_list").jqGrid("navGrid","#sch_pager",{add:false,edit:false,del:false, search:false});
     $("#gview_sch_list > .ui-jqgrid-titlebar").css("display", "none");
 
+
+    $("#career_list").jqGrid({
+        url:"neviGo?cmd=careerList",
+        mtype:"post",
+        datatype:"json",
+        caption:"경력",
+        height:"200",
+        rowNum:10,
+        rowList:[5,10,15,20],
+        colNames:["careerno","empno","startdt","enddt","경력기간","직장명","직위","직무"],
+        colModel:[
+                  {name:"careerno", index:"careerno", hidden:true}, 
+                  {name:"empno", index:"empno", hidden:true}, 
+                  {name:"startdt", index:"startdt", hidden:true},           
+                  {name:"enddt", index:"enddt", hidden:true},
+                  {name:"period", index:"period", align:"center", sortable:false},
+                  {name:"compnm", index:"compnm", align:"center", sortable:false},                         
+                  {name:"positnm", index:"positnm", align:"center", sortable:false},
+                  {name:"charge", index:"charge", align:"center", sortable:false}, 
+                  ],
+        pager:"#career_pager",
+        autowidth:true,
+        viewrecords:true,
+        onSelectRow: function(ids) {  
+			var gsr = $("#career_list").jqGrid('getGridParam','selrow');
+			$("#career_list").jqGrid('GridToForm',gsr,"#careerForm");
+			var ret = $("#career_list").getRowData( ids );
+			$("#career_startdt").val($.trim(ret.startdt));
+			$("#career_enddt").val($.trim(ret.enddt));			
+
+			if (sub_upyn == "o") {
+				$("#career_bottom").show();
+				$("#btncareerSubmit").show();
+				$("#btncareerRefresh").show();
+				$("#inup_career").val("up");
+				$("#btncareerSubmit").val("수정");
+			} else {
+				$("#career_bottom").hide();
+			}
+        }        
+    });
+    $("#career_list").jqGrid("navGrid","#career_pager",{add:false,edit:false,del:false, search:false});
+    $("#gview_career_list > .ui-jqgrid-titlebar").css("display", "none");
+    
+    
     $("#empskill_list").jqGrid({
         url:"neviGo?cmd=empSkillList",
         mtype:"post",

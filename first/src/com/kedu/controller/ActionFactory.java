@@ -1,5 +1,7 @@
 package com.kedu.controller;
 
+import com.kedu.career.action.CareerInUpAction;
+import com.kedu.career.action.CareerListAction;
 import com.kedu.common.Action;
 import com.kedu.emp.action.GoAction;
 import com.kedu.emp.action.EmpInUpAction;
@@ -13,8 +15,6 @@ import com.kedu.emp.action.ManagerUpdateAction;
 import com.kedu.emp.action.MemberListGoAction;
 import com.kedu.emp.action.PicDeleteAction;
 import com.kedu.emp.action.PicUploadAction;
-import com.kedu.emp.action.SchInupAction;
-import com.kedu.emp.action.SchListAction;
 import com.kedu.emp.action.SearchAddr;
 import com.kedu.emp.action.SkillListAction;
 import com.kedu.notice.action.BoardListAction;
@@ -26,6 +26,8 @@ import com.kedu.notice.action.NotidatInsertAction;
 import com.kedu.notice.action.NotidatListAction;
 import com.kedu.prj.action.PrjInUpAction;
 import com.kedu.prj.action.PrjListAction;
+import com.kedu.sch.action.SchInupAction;
+import com.kedu.sch.action.SchListAction;
 
 public class ActionFactory {
 	private static ActionFactory instance = new ActionFactory();
@@ -70,6 +72,10 @@ public class ActionFactory {
 			action = new SchListAction();
 		} else if (cmd.equals("schInup")){
 			action = new SchInupAction();
+		} else if (cmd.equals("careerList")){
+			action = new CareerListAction();
+		} else if (cmd.equals("careerInup")){
+			action = new CareerInUpAction();
 		} else if (cmd.equals("empSkillList")){
 			action = new EmpSkillListAction();
 		} else if (cmd.equals("skillList")){

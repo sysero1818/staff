@@ -192,25 +192,24 @@ input:focus, select:focus {background-color:#ecf2f6; border:1px solid #79B7E7;}
 	padding: 3px;
 }
 
-#sch_inup{
+#sch_inup, #career_inup{
 	font-size: 0.98em;
 	margin-top: 10px;
-	height: 100px;	
 	border: 1px solid #A6C9E2;
 	padding: 3px;
 }
 
-#sch_left{
+#sch_left, #career_left{
 	float: left;
 	width: 50%;
 }
 
-#sch_right{
+#sch_right, #career_right{
 	float: right;
 	width: 50%;
 }
 
-#sch_bottom{
+#sch_bottom, #career_bottom{
 	clear: both;
 	text-align: center;
 }

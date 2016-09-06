@@ -1,4 +1,4 @@
-package com.kedu.emp.dto;
+package com.kedu.sch.dto;
 
 public class SchDto {
 	private int schno;
