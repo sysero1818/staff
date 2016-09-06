@@ -45,7 +45,13 @@ $(document).ready(function(){
 			success : function(data) {
 				$("#notiDat_table tbody *").remove();
 				$.each(data, function(i,v){
-					$("#notiDat_table tbody").append("<tr id='"+seq+"_dat_"+v.dseq+"'><td>"+v.dseq+"</td><td>"+v.dcontent+"</td><td>"+v.dregdtt+"</td></tr>");
+					$("#notiDat_table tbody").append("<tr id='"+seq+"_dat_"+v.dseq+"'><td>"
+														+v.dseq+"</td><td>"
+														+v.dcontent+"</td><td>"
+														+v.empnm+"</td><td>"
+														+v.dregdtt+"</td><td>"
+														+"<input type='button' value='삭제' id='dat_"+seq+"_"+v.dseq+"' onclick=\"noti_del('"+seq+"', '"+v.dseq+"')\" /></td></tr>"							
+													);
 				});
 			},
 		    error:function(request,status,error){
@@ -123,6 +129,10 @@ $(document).ready(function(){
 		url : 'neviGo?cmd=notidatInsert',
 		type : 'POST',
 		beforeSubmit: function(){
+			if ($("#Oseq").val()==""){
+				alertMsg("댓글 입력", "글번호가 없습니다.");
+				return false;
+			}
 			$.blockUI({overlayCSS:{opacity:0.0}, message:""});
 			return $("#datForm").valid();
 		},
@@ -133,9 +143,15 @@ $(document).ready(function(){
 			$.unblockUI();
 			if (rt.result=="0"){
 				alertMsg("댓글 등록", "등록 실패");
-			} else if (rt.result=="1"){
+			} else if (rt.result != "0"){
 				alertMsg("공지 사항", "등록 완료");
-				$("#notiDat_table tbody").append("<tr id='"+seq+"_dat_"+rt.dseq+"'><td>"+rt.dseq+"</td><td>"+rt.dcontent+"</td><td>"+rt.dregdtt+"</td></tr>");				
+				$("#notiDat_table tbody").append("<tr id='"+seq+"_dat_"+rt.dseq+"'><td>"
+													+rt.dseq+"</td><td>"
+													+rt.dcontent+"</td><td>"
+													+rt.empnm+"</td><td>"
+													+rt.dregdtt+"</td><td>"
+													+"<input type='button' value='삭제' id='dat_"+seq+"_"+rt.dseq+"' onclick=\"noti_del('"+seq+"', '"+rt.dseq+"')\" /></td></tr>"
+												);				
 			}
 		}, 
 		error: function (jqXHR, textStatus, errorThrown) {
@@ -146,6 +162,11 @@ $(document).ready(function(){
 	$("#datForm").ajaxForm(options);
 	
 	
+	$("document").find("#notiDat_table input[type=button]").button().css({
+		"font-size":"1em", 
+		"color":"#4f6b72",
+		"border-radius":"2px"
+	});
 	
 	$(".btnwht").css("width","80");
 });
@@ -222,7 +243,7 @@ function pageing(page, block, totalPage){
 		if (i == page){
 			str = "<strong><span onclick='ld("+i+")'>["+i+"]</span></strong> ";
 		} else {
-			str = "<span onclick='ld("+i+")'>["+i+"]</span> ";
+			str = "<span class='num' onclick='ld("+i+")'>["+i+"]</span> ";
 		}
 		$("#main_paging").append(str);
 	}
@@ -241,8 +262,30 @@ function pageing(page, block, totalPage){
 	$("#main_paging").append(last);	
 }
 
+function noti_del(seq, dseq){
+	if (confirm("삭제하시겠습니까?")){
+		$.ajax({
+			type: "post",
+			url: "neviGo?cmd=notidatDelete",
+			data: {seq:seq, dseq:dseq},
+			dataType: "json",
+			success : function(data) {
+				if (data==1){
+					alertMsg("댓글삭제", "삭제성공");
+					$("#"+seq+"_dat_"+dseq).remove();
+				} else {
+					alertMsg("댓글삭제", "삭제실패");
+				}
+			},
+		    error:function(request,status,error){
+		        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	        }
+		});
+	}
+}
 </script>
 <style>
+
 #table_title, #notiDatIn_title, #notiDat_title{
 	width: 100%;
 	height: 27px;
@@ -350,6 +393,49 @@ table > tbody > tr:hover > td {
 	width: 100%;
 	height: 100%;
 }
+
+.btnRow{
+	text-align: center;
+}
+
+#datForm{
+	margin-top: 18px;
+}
+
+.num:hover {
+	cursor: default;
+}
+
+#notiDat_table input[type=button] {
+  background: #3498db;
+  background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+  background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+  background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+  background-image: -o-linear-gradient(top, #3498db, #2980b9);
+  background-image: linear-gradient(to bottom, #3498db, #2980b9);
+  -webkit-border-radius: 2;
+  -moz-border-radius: 2;
+  border-radius: 2px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 0.8em;
+  padding: 2px;
+  width: 40px;
+  margin: 0;
+  text-align: center;
+  text-decoration: none;
+}
+
+#notiDat_table input[type=button]:hover {
+  background: #3cb0fd;
+  background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+  text-decoration: none;
+}
+
 </style>
 </head>
 <body>
@@ -409,11 +495,11 @@ table > tbody > tr:hover > td {
 	 			<form class="cmxform" id="datForm" name="datForm" method="post">
 					<input type="hidden" name="Oseq" id="Oseq" value=""/>
 					<p>
-						<label for="dcontent">글 내용</label>
-						<textarea id="dcontent" name="dcontent" cols="60" rows="3"  tabindex="1"></textarea>
+						<label for="dcontent">댓글 내용</label>
+						<textarea id="dcontent" name="dcontent" cols="60" rows="3"  tabindex="4"></textarea>
 					</p>	
 					<p class="btnRow">
-						<input type="submit" id="btnDatSubmit" class="btnwht" value="등록" tabindex="2" /> <input type="button" id="btnDatRefresh" class="btnwht" value="초기화" />
+						<input type="submit" id="btnDatSubmit" class="btnwht" value="등록" tabindex="5" />
 					</p>					
 				</form> 	     		
 	     	</div>
@@ -422,9 +508,11 @@ table > tbody > tr:hover > td {
 	    		<table id="notiDat_table">
 					<thead>
 						<tr>
-						  <th scope="col" abbr="댓글" width="80">댓글번호</th>
+						  <th scope="col" abbr="번호" width="60">번호</th>
 						  <th scope="col" abbr="내용">내용</th>
-						  <th scope="col" abbr="등록일" width="100">등록일</th>				  				  
+						  <th scope="col" abbr="작성자"width="70">작성자</th>
+						  <th scope="col" abbr="등록일" width="100">등록일</th>
+						  <th scope="col" abbr="삭제" width="50">삭제</th>				  				  
 						</tr>
 					</thead>
 					<tbody>

@@ -44,7 +44,7 @@ $(document).ready(function(){
 			"font-size":"1em", 
 			"color":"#4f6b72",
 			"border-radius":"2px"
-		  });
+	});
 	
 	$.each($('tr:odd'), function(i){ // 홀수 번째 
 		$(this).css("backgroundColor", "black"); 

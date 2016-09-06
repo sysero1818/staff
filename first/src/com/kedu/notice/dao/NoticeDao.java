@@ -197,6 +197,12 @@ public class NoticeDao {
 				nDto.setEmpno(rs.getString("empno"));
 				nDto.setManager(rs.getString("manager"));
 				nDto.setDregdtt(rs.getString("dregdtt"));
+				
+				if (rs.getString("dgubun").equals("e")) {
+					nDto.setEmpnm(rs.getString("empnm"));
+				} else if (rs.getString("dgubun").equals("m")) {
+					nDto.setEmpnm("관리자");
+				}				
 /*				
 				if ( manager != null && (ss_empno !=null && ss_empno.equals(rs.getString("manager"))) ){
 					nDto.setUpyn("o");
@@ -251,4 +257,70 @@ public class NoticeDao {
 		
 		return result;
 	}
+	
+	
+	public NotidatDto selectOneNotidat(int seq, int dseq){
+		NotidatDto ndtDto = null;
+		
+		String sql="{call notidat_content(?,?,?)}";
+		Connection conn = null;
+		CallableStatement  cstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = DBManager.getConnection();
+			cstmt = conn.prepareCall(sql);
+			cstmt.setInt(1, seq);
+			cstmt.setInt(2, dseq);			
+			cstmt.registerOutParameter(3, oracle.jdbc.OracleTypes.CURSOR);
+			cstmt.executeQuery();
+			rs = (ResultSet) cstmt.getObject(3);
+			if (rs.next()) {
+				ndtDto = new NotidatDto();
+				ndtDto.setSeq(rs.getInt("seq"));
+				ndtDto.setDseq(rs.getInt("dseq"));
+				ndtDto.setDcontent(rs.getString("dcontent"));
+				ndtDto.setDregdtt(rs.getString("dregdtt"));
+				ndtDto.setDgubun(rs.getString("dgubun"));
+				ndtDto.setEmpno(rs.getString("empno"));
+				
+				if (rs.getString("dgubun").equals("e")) {
+					ndtDto.setEmpnm(rs.getString("empnm"));
+				} else if (rs.getString("dgubun").equals("m")) {
+					ndtDto.setEmpnm("관리자");
+				}
+			}			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, cstmt, rs);
+		}
+		return ndtDto;		
+
+	}
+	
+
+	public int deleteNotidat(int seq, int dseq, String empno){
+		int result = 0;
+		String sql="{call notidat_delete(?,?,?,?)}";
+		Connection conn = null;
+		CallableStatement  cstmt = null;
+		
+		try {
+			conn = DBManager.getConnection();
+			cstmt = conn.prepareCall(sql);
+			cstmt.setInt(1, seq);
+			cstmt.setInt(2, dseq);
+			cstmt.setString(3, empno);
+			cstmt.registerOutParameter(4, oracle.jdbc.OracleTypes.NUMBER);
+			cstmt.executeUpdate();
+			result = cstmt.getInt(4);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, cstmt);
+		}
+		
+		return result;
+	}	
 }

@@ -115,12 +115,41 @@ $(document).ready(function(){
 
 //  ************* 사진 업로드 모달 폼 끝*****************
 	
+
 	
+// ***************** 사진 삭제 *************************
+	$("#btnPicDel").on("click", function(){
+		var empno=$("#empno").val();
+		if (empno==""){
+			alertMsg("사진삭제", "사원을 선택해 주세요...");
+			return false;	
+		}
+		$.ajax({
+			type: "post",
+			url: "neviGo?cmd=picDelete",
+			data: {empno:empno},
+			dataType: "json",
+			success : function(result) {
+				if(result == 1){
+					alert("삭제성공");
+				} else {
+					alert("삭제실패");
+				}
+			},
+		    error:function(request,status,error){
+		        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	        }
+		});
+	});
+	
+// ***************** 사진 삭제 끝*************************	
 
     $( "#tabs" ).tabs({
     	event:"mouseover"
     });
 
+    $("#btnPicDel").hide();
+    
     $(".btnwht").css("width", "80");
 	$("#indt, #outdt, #sh_indt_st, #sh_indt_ed").datepicker();
 	
@@ -301,11 +330,9 @@ $(document).ready(function(){
         autowidth:true,
         viewrecords:true,
 		loadComplete: function () {
-			//$("tr.jqgrow:odd").css("background", "#EAF5FE");
-			//$("tr.jqgrow:even").css("background", "#FFFFFF");
 		},		        
         onSelectRow: function(ids) {  
-			var gsr = $("#user_list").jqGrid('getGridParam','selrow');
+        	var gsr = $("#user_list").jqGrid('getGridParam','selrow');
 			$("#user_list").jqGrid('GridToForm',gsr,"#regForm");
 			var ret = $("#user_list").getRowData( ids );
 			$("#pic_empno").val(ret.empno);
@@ -319,15 +346,16 @@ $(document).ready(function(){
 			$("#sch_empno").val(ret.empno);
 			
 			if (ret.pic == ""){
+				$("#btnPicDel").hide();
 				$("#picture > img").attr("src","images/noimage_pic.gif");
-			} else if (ret.pic != null) {
+			} else if (ret.pic != "") {
+				$("#btnPicDel").show();
 				$("#picture > img").attr("src","upload/"+ret.pic);
 			}
 			
 			if (ret.upyn == "o") {
 				sub_upyn = "o";
 				$("#btnPic").show();
-				$("#btnPicDel").show();				
 				$("#btnSubmit").show();
 				$("#inup").val("up");
 				$("#btnSubmit").val("수정");
@@ -337,7 +365,6 @@ $(document).ready(function(){
 			} else if (ret.upyn == "i"){
 				sub_upyn = "o";
 				$("#btnPic").show();
-				$("#btnPicDel").show();				
 				$("#btnSubmit").show();
 				$("#inup").val("up");
 				$("#btnSubmit").val("수정");

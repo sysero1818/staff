@@ -11,6 +11,7 @@ import com.kedu.emp.action.LoginGoAction;
 import com.kedu.emp.action.LoginOk;
 import com.kedu.emp.action.ManagerUpdateAction;
 import com.kedu.emp.action.MemberListGoAction;
+import com.kedu.emp.action.PicDeleteAction;
 import com.kedu.emp.action.PicUploadAction;
 import com.kedu.emp.action.SchInupAction;
 import com.kedu.emp.action.SchListAction;
@@ -20,6 +21,7 @@ import com.kedu.notice.action.BoardListAction;
 import com.kedu.notice.action.NoticeInUpAction;
 import com.kedu.notice.action.NoticeListAction;
 import com.kedu.notice.action.NoticeViewAction;
+import com.kedu.notice.action.NotidatDeleteAction;
 import com.kedu.notice.action.NotidatInsertAction;
 import com.kedu.notice.action.NotidatListAction;
 import com.kedu.prj.action.PrjInUpAction;
@@ -60,6 +62,8 @@ public class ActionFactory {
 			action = new MemberListGoAction();
 		} else if (cmd.equals("picUpload")){
 			action = new PicUploadAction();
+		} else if (cmd.equals("picDelete")){
+			action = new PicDeleteAction();
 		} else if (cmd.equals("searchAddr")){
 			action = new SearchAddr();
 		} else if (cmd.equals("schList")){
@@ -88,7 +92,9 @@ public class ActionFactory {
 			action = new NotidatListAction();
 		} else if (cmd.equals("notidatInsert")){
 			action = new NotidatInsertAction();
-		}                                                                       
+		} else if (cmd.equals("notidatDelete")){
+			action = new NotidatDeleteAction();
+		}                                                                          
 		
 
 

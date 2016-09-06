@@ -7,6 +7,7 @@ public class NotidatDto {
 	private String dregdtt;
 	private String dgubun;
 	private String empno;
+	private String empnm;
 	private String manager;
 	private int result;
 	
@@ -77,6 +78,14 @@ public class NotidatDto {
 
 	public void setResult(int result) {
 		this.result = result;
+	}
+
+	public String getEmpnm() {
+		return empnm;
+	}
+
+	public void setEmpnm(String empnm) {
+		this.empnm = empnm;
 	}
 
 	@Override

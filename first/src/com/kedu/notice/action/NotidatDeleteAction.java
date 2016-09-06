@@ -14,40 +14,31 @@ import com.kedu.common.Action;
 import com.kedu.notice.dao.NoticeDao;
 import com.kedu.notice.dto.NotidatDto;
 
-public class NotidatInsertAction implements Action {
+public class NotidatDeleteAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int result = 0;
+		int seq = 0;
 		int dseq = 0;
-		String manager = "";
-		
-		NotidatDto nDto = new NotidatDto();
-		
-		if (request.getParameter("Oseq") != null && request.getParameter("Oseq").trim().length() != 0){
-			nDto.setSeq(Integer.parseInt(request.getParameter("Oseq")));
-		}
-		String dcontent = request.getParameter("dcontent");
 		
 		HttpSession session = request.getSession();
 		String ss_empno = (String) session.getAttribute("empno");
-		manager	= (String) session.getAttribute("manager");
+//		String manager	= (String) session.getAttribute("manager");
 		
-		nDto.setDcontent(dcontent);
-		if (manager != null && manager.equals("manager")){
-			nDto.setDgubun("m");
-			nDto.setManager(ss_empno);
-		} else {
-			nDto.setDgubun("e");
-			nDto.setEmpno(ss_empno);
+		if (request.getParameter("seq") != null && request.getParameter("seq").trim().length() != 0){
+			seq = Integer.parseInt(request.getParameter("seq"));
 		}
 
-		NoticeDao nDao = NoticeDao.getInstance();
+		if (request.getParameter("dseq") != null && request.getParameter("dseq").trim().length() != 0){
+			dseq = Integer.parseInt(request.getParameter("dseq"));
+		}		
 		
-		dseq = nDao.insertNotidat(nDto);
-		nDto = nDao.selectOneNotidat(nDto.getSeq(), dseq);
-		nDto.setResult(dseq);
+		NoticeDao nDao = NoticeDao.getInstance();
+		result = nDao.deleteNotidat(seq, dseq, ss_empno);
+		
 		Gson gson = new GsonBuilder().create();
-		String json = gson.toJson(nDto);
+		String json = gson.toJson(result);
 		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
@@ -55,8 +46,7 @@ public class NotidatInsertAction implements Action {
 		PrintWriter out = response.getWriter();
 		out.write(json);
 		out.flush();
-		out.close();
-
+		out.close();		
 	}
 
 }

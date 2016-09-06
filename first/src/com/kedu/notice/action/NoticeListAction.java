@@ -35,7 +35,7 @@ public class NoticeListAction implements Action {
 		} catch (Exception e) {
 
 		}
-	
+
 		HttpSession session = request.getSession();
 		String ss_empno = (String) session.getAttribute("empno");
 		String manager	= (String) session.getAttribute("manager");

@@ -21,7 +21,7 @@ public class NoticeInUpAction implements Action {
 		int result = 0;
 //		String sh_title = "";
 //		int pageSize = 5;
-		
+		String manager = "";
 		NoticeDto nDto = new NoticeDto();
 		
 		String inup = request.getParameter("inup");
@@ -30,7 +30,7 @@ public class NoticeInUpAction implements Action {
 		
 		HttpSession session = request.getSession();
 		String ss_empno = (String) session.getAttribute("empno");
-		String manager	= (String) session.getAttribute("manager");
+		manager	= (String) session.getAttribute("manager");
 		
 		if (request.getParameter("seq") != null && request.getParameter("seq").trim().length() != 0){
 			nDto.setSeq(Integer.parseInt(request.getParameter("seq")));
@@ -43,7 +43,7 @@ public class NoticeInUpAction implements Action {
 //		int records = nDao.getCountRow(sh_title);
 //		int total = (int)Math.ceil((double)records/(double)pageSize);
 		
-		if (manager.equals("manager")){
+		if (manager != null && manager.equals("manager")){
 			if (inup.equals("in")){
 				result = nDao.insertNotice(nDto);
 			} else if(inup.equals("up")) {

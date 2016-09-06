@@ -185,6 +185,28 @@ public class EmpDao {
 		return result;
 	}
 	
+	public int deletePic(String empno){
+		int result = 0;
+		String sql="update emp set pic=null where empno=?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+
+		try {
+			conn = DBManager.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, empno);
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+		
+		return result;
+	}	
+	
 	public int updateEmp(EmpDto eDto){
 		int result = 0;
 		String sql="{call emp_update(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
