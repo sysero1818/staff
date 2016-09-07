@@ -119,28 +119,44 @@ $(document).ready(function(){
 	
 // ***************** 사진 삭제 *************************
 	$("#btnPicDel").on("click", function(){
-		var empno=$("#empno").val();
-		if (empno==""){
-			alertMsg("사진삭제", "사원을 선택해 주세요...");
-			return false;	
-		}
-		$.ajax({
-			type: "post",
-			url: "neviGo?cmd=picDelete",
-			data: {empno:empno},
-			dataType: "json",
-			success : function(result) {
-				if(result == 1){
-					$("#picture > img").attr("src","images/noimage_pic.gif");
-					$("#user_list").trigger("reloadGrid");
-				} else {
-					alertMsg("사진삭제",  "삭제실패");
-				}
-			},
-		    error:function(request,status,error){
-		        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	    $( "#modalPicDel" ).dialog({
+	        resizable: false,
+	        height: "auto",
+	        width: 400,
+	        modal: true,
+	        buttons: {
+	          "삭제하기": function() {
+		      		var empno=$("#empno").val();
+		    		if (empno==""){
+		    			alertMsg("사진삭제", "사원을 선택해 주세요...");
+		    			return false;	
+		    		}
+		    		$.ajax({
+		    			type: "post",
+		    			url: "neviGo?cmd=picDelete",
+		    			data: {empno:empno},
+		    			dataType: "json",
+		    			success : function(result) {
+		    				if(result == 1){
+		    					$("#picture > img").attr("src","images/noimage_pic.gif");
+		    					$("#user_list").trigger("reloadGrid");
+		    					$("#btnPicDel").hide();
+		    					$( this ).dialog( "close" );
+		    				} else {
+		    					alertMsg("사진삭제",  "삭제실패");
+		    				}
+		    			},
+		    		    error:function(request,status,error){
+		    		        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		    	        }
+		    		});	            
+	          },
+	          Cancel: function() {
+	            $( this ).dialog( "close" );
+	          }
 	        }
-		});
+	      });
+
 	});
 	
 // ***************** 사진 삭제 끝*************************	
@@ -154,17 +170,17 @@ $(document).ready(function(){
     $(".btnwht").css("width", "80");
 	$("#indt, #outdt, #sh_indt_st, #sh_indt_ed").datepicker();
 	
-	$("#birth, #sch_startdt, #sch_enddt, #career_startdt, #career_enddt").datepicker({
+	$("#birth, #sch_startdt, #sch_enddt, #career_startdt, #career_enddt, #aqdt, #cert_renewstdt, #cert_reneweddt").datepicker({
 		changeMonth: true,
 		changeYear: true,
 		yearRange: '1950:2020'
 	});
 	
-	
 	setStEd_picker("#indt", "#outdt");
 	setStEd_picker("#sh_indt_st", "#sh_indt_ed");	
-	setStEd_picker("#sch_startdt", "#sch_startdt");
-	setStEd_picker("#career_startdt", "#career_enddt");		
+	setStEd_picker("#sch_startdt", "#sch_enddt");
+	setStEd_picker("#career_startdt", "#career_enddt");
+	setStEd_picker("#cert_renewstdt, #cert_reneweddt");	
 
     
 	$("#mobile").mask("999-9999-9999");
@@ -328,7 +344,64 @@ $(document).ready(function(){
 	}
 	$("#careerForm").ajaxForm(options);	
 //	********** 경력 등록/수정 부분 끝************
+
 	
+//	********** 자격증 등록/수정 부분 *************
+
+	$("#certForm").validate({
+		rules: {
+		  certno:{required: true},
+		  certnm:{required: true},
+		  aqdt:{required: true, dateISO: true},
+		  issuorgan:{required: true},
+		  cert_renewstdt: {required: true, dateISO: true},
+		  cert_reneweddt:{required: true, dateISO: true}
+		},
+		messages: {
+		    certno:{required: "필수"},
+		    certnm:{required: "필수"},			
+			aqdt: {required: "필수", dateISO: "형식오류"},
+			issuorgan:{required: "필수"},			
+			cert_renewstdt: {required: "필수", dateISO: "형식오류"},
+			cert_reneweddt: {required: "필수", dateISO: "형식오류"}
+		}
+	 });
+	
+	// submit
+	var options = {
+		url : 'neviGo?cmd=certInup',
+		type : 'POST',
+		beforeSubmit: function(){
+			$.blockUI({overlayCSS:{opacity:0.0}, message:""});
+			return $("#certForm").valid();
+		},
+	
+		success : function(responseText,statusText,xhr){
+			var empno = $("#cert_empno").val();
+			$("#certForm").clearForm();
+			$("#cert_inup").val("in");
+			$("#btncertSubmit").val("등록");
+			//$("#btncertRefresh").hide();
+			$.unblockUI();
+			
+			if (responseText=="0"){
+				alertMsg("경력 목록", "등록/수정 실패");
+			} else if (responseText=="1"){
+				alertMsg("경력 목록", "등록 완료");
+			} else if (responseText=="2"){
+				alertMsg("경력 목록", "수정 완료");
+			}
+			$("#cert_empno").val(empno);
+			$("#cert_list").trigger("reloadGrid");
+		}, 
+		error: function (jqXHR, textStatus, errorThrown) {
+			$.unblockUI();
+			alert(errorThrown);
+		}
+	}
+	$("#certForm").ajaxForm(options);
+	
+//	********** 자격증 등록/수정 부분 끝************	
 	
 	$("#btnRefresh").bind("click", function(){
 		$(".pass").show();		
@@ -348,6 +421,24 @@ $(document).ready(function(){
 		$("#inup_sch").val("in");
 		$("#btnSchSubmit").val("등록");
 		$("#sch_empno").val(empno);
+	});	
+	
+	$("#btnCareerRefresh").bind("click", function(){
+		var empno = $("#career_empno").val();
+		$("#careerForm").clearForm();
+		$("#careerForm label.error").hide();		
+		$("#inup_career").val("in");
+		$("#btnCareerSubmit").val("등록");
+		$("#career_empno").val(empno);
+	});	
+	
+	$("#btnCertRefresh").bind("click", function(){
+		var empno = $("#cert_empno").val();
+		$("#certForm").clearForm();
+		$("#certForm label.error").hide();		
+		$("#inup_cert").val("in");
+		$("#btnCertSubmit").val("등록");
+		$("#cert_empno").val(empno);
 	});	
 	
 	var sub_upyn;
@@ -399,7 +490,8 @@ $(document).ready(function(){
 			$("#payment").val(set_comma(ret.payment));
 			$(".pass").hide();
 			$("#sch_empno").val(ret.empno);
-			$("#career_empno").val(ret.empno);			
+			$("#career_empno").val(ret.empno);	
+			$("#cert_empno").val(ret.empno);
 			
 			if (ret.pic == ""){
 				$("#btnPicDel").hide();
@@ -442,6 +534,9 @@ $(document).ready(function(){
 		    
 			$("#career_list").jqGrid('setGridParam',{url:"neviGo?cmd=careerList&sh_empno="+ret.empno,page:1}).trigger('reloadGrid');
 		    $("#gview_career_list > .ui-jqgrid-titlebar").css("display", "none");		    
+
+			$("#cert_list").jqGrid('setGridParam',{url:"neviGo?cmd=certList&sh_empno="+ret.empno,page:1}).trigger('reloadGrid');
+		    $("#gview_cert_list > .ui-jqgrid-titlebar").css("display", "none");	
 		    
 			$("#empskill_list").jqGrid('setGridParam',{url:"neviGo?cmd=empSkillList&sh_empno="+ret.empno,page:1}).trigger('reloadGrid');
 		    $("#gview_empskill_list > .ui-jqgrid-titlebar").css("display", "none");
@@ -510,13 +605,14 @@ $(document).ready(function(){
                   {name:"empno", index:"empno", hidden:true}, 
                   {name:"startdt", index:"startdt", hidden:true},           
                   {name:"enddt", index:"enddt", hidden:true},
-                  {name:"period", index:"period", align:"center", sortable:false},
+                  {name:"period", index:"period", width: 210, align:"center", sortable:false},
                   {name:"compnm", index:"compnm", align:"center", sortable:false},                         
                   {name:"positnm", index:"positnm", align:"center", sortable:false},
                   {name:"charge", index:"charge", align:"center", sortable:false}, 
                   ],
         pager:"#career_pager",
         autowidth:true,
+        //width: 660,
         viewrecords:true,
         onSelectRow: function(ids) {  
 			var gsr = $("#career_list").jqGrid('getGridParam','selrow');
@@ -539,6 +635,52 @@ $(document).ready(function(){
     $("#career_list").jqGrid("navGrid","#career_pager",{add:false,edit:false,del:false, search:false});
     $("#gview_career_list > .ui-jqgrid-titlebar").css("display", "none");
     
+
+    $("#cert_list").jqGrid({
+        url:"neviGo?cmd=certList",
+        mtype:"post",
+        datatype:"json",
+        caption:"자격증",
+        height:"200",
+        rowNum:10,
+        rowList:[5,10,15,20],
+        colNames:["cno","empno","증번호","자격증명","취득일","발급기관","renewstdt","reneweddt","갱신일"],
+        colModel:[
+                  {name:"cno", index:"cno", hidden:true}, 
+                  {name:"empno", index:"empno", hidden:true}, 
+                  {name:"certno", index:"certno", align:"center", sortable:false},
+                  {name:"certnm", index:"certnm", align:"center", sortable:false},
+                  {name:"aqdt", index:"aqdt", align:"center", sortable:false},  
+                  {name:"issuorgan", index:"issuorgan", align:"center", sortable:false},                    
+                  {name:"renewstdt", index:"renewstdt", hidden:true},           
+                  {name:"reneweddt", index:"reneweddt", hidden:true},
+                  {name:"period", index:"period", width: 210, align:"center", sortable:false}
+                  ],
+        pager:"#cert_pager",
+//        autowidth:true,
+        width: 660,
+        viewrecords:true,
+        onSelectRow: function(ids) {  
+			var gsr = $("#cert_list").jqGrid('getGridParam','selrow');
+			$("#cert_list").jqGrid('GridToForm',gsr,"#certForm");
+			var ret = $("#cert_list").getRowData( ids );
+			$("#aqdt").val($.trim(ret.aqdt));
+			$("#cert_renewstdt").val($.trim(ret.renewstdt));
+			$("#cert_reneweddt").val($.trim(ret.reneweddt));			
+
+			if (sub_upyn == "o") {
+				$("#cert_bottom").show();
+				$("#btncertSubmit").show();
+				$("#btncertRefresh").show();
+				$("#inup_cert").val("up");
+				$("#btncertSubmit").val("수정");
+			} else {
+				$("#cert_bottom").hide();
+			}
+        }        
+    });
+    $("#cert_list").jqGrid("navGrid","#cert_pager",{add:false,edit:false,del:false, search:false});
+    $("#gview_cert_list > .ui-jqgrid-titlebar").css("display", "none");    
     
     $("#empskill_list").jqGrid({
         url:"neviGo?cmd=empSkillList",

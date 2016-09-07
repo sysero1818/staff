@@ -1,4 +1,4 @@
-package com.kedu.emp.dto;
+package com.kedu.empskill.dto;
 
 public class EmpSkillDto {
 	private String empno;

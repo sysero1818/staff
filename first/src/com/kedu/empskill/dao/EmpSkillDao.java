@@ -1,4 +1,4 @@
-package com.kedu.emp.dao;
+package com.kedu.empskill.dao;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.kedu.common.DBManager;
-import com.kedu.emp.dto.EmpSkillDto;
+import com.kedu.empskill.dto.EmpSkillDto;
 
 public class EmpSkillDao {
 	

@@ -38,7 +38,6 @@ public class PicDeleteAction implements Action {
 		
 //		새로 업로드한 사진 DB에 update하기
 		int result = eDao.deletePic(empno);
-		System.out.println(result);
 //		새로 update한 데이터를 json으로 세팅해주기
 		Gson gson = new GsonBuilder().create();
 		

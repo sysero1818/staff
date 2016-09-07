@@ -1,7 +1,7 @@
-package com.kedu.emp.dto;
+package com.kedu.cert.dto;
 
 public class CertDto {
-	private String cno;
+	private int cno;
 	private String empno;
 	private String certno;
 	private String certnm;
@@ -9,10 +9,15 @@ public class CertDto {
 	private String issuorgan;
 	private String renewstdt;
 	private String reneweddt;
-	public String getCno() {
+	private String period;
+	
+	public CertDto(){
+		
+	}
+	public int getCno() {
 		return cno;
 	}
-	public void setCno(String cno) {
+	public void setCno(int cno) {
 		this.cno = cno;
 	}
 	public String getEmpno() {
@@ -56,6 +61,13 @@ public class CertDto {
 	}
 	public void setReneweddt(String reneweddt) {
 		this.reneweddt = reneweddt;
+	}
+	
+	public String getPeriod() {
+		return period;
+	}
+	public void setPeriod(String period) {
+		this.period = period;
 	}
 	@Override
 	public String toString() {

@@ -1,4 +1,4 @@
-package com.kedu.emp.action;
+package com.kedu.empskill.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kedu.common.Action;
-import com.kedu.emp.dao.EmpSkillDao;
-import com.kedu.emp.dto.EmpSkillDto;
+import com.kedu.empskill.dao.EmpSkillDao;
+import com.kedu.empskill.dto.EmpSkillDto;
 
 
 public class EmpSkillInsertAction implements Action {

@@ -42,7 +42,9 @@
 	</div>	
 
 </div>
-
+<div id="modalPicDel" title="사진 삭제">
+  <p>사진을 삭제하시겠습니까?</p>
+</div>
 <div id="modalPicDiv" title="사진 수정">
 	<form id="picForm" name="picForm" method="post" action="neviGo?cmd=picUpload" enctype="multipart/form-data">
 		<input type="hidden" id="pic_empno" name="pic_empno" value="" />
@@ -233,7 +235,7 @@
 		  <div id="tabs-2">
 
     		<div id="career_table">
-				<table id="career_list" class="jqtable"></table>
+				<table id="career_list"></table>
     			<div id="career_pager"></div>
     		</div>
     		<div id="career_inup">
@@ -257,7 +259,7 @@
 							<input type="text" id="compnm" name="compnm" class="required" value="" />
 						</p>
 						<p>
-							<label for="positnm">전공</label>
+							<label for="positnm">직위</label>
 							<input type="text" id="positnm" name="positnm" class="required" value="" />
 						</p>
 						<p>
@@ -267,7 +269,7 @@
     				</div>
 					<div id="career_bottom">
 						<p>
-							<input type="submit" id="btncareerSubmit" class="btnwht" value="등록" /> <input type="button" id="btncareerRefresh" class="btnwht" value="초기화" />
+							<input type="submit" id="btnCareerSubmit" class="btnwht" value="등록" /> <input type="button" id="btnCareerRefresh" class="btnwht" value="초기화" />
 						</p>
 					</div>
     			</form>
@@ -275,6 +277,51 @@
 		  
 		  </div>
 		  <div id="tabs-3">
+		  
+		     <div id="cert_table">
+				<table id="cert_list"></table>
+    			<div id="cert_pager"></div>
+    		</div>
+    		<div id="cert_inup">
+    			<form id="certForm" class="cmxform" method="post">
+    				<input type="hidden" id="inup_cert" name="inup_cert"  value="in" />
+    				<input type="hidden" id="cno" name="cno" value="" />
+    				<input type="hidden" id="cert_empno" name="cert_empno" value=""/>
+    				<div id="cert_left">
+	    				<p>
+							<label for="certno">증번호</label>
+							<input type="text" id="certno" name="certno" class="required" tabindex="40" value="" />
+						</p>
+	    				<p>
+							<label for="aqdt">취득일</label>
+							<input type="text" id="aqdt" name="aqdt" class="required" tabindex="42" value="" />
+						</p> 						    				
+    					<p>
+							<label for="cert_renewstdt">갱신시작일</label>
+							<input type="text" id="cert_renewstdt" name="cert_renewstdt" class="required" tabindex="44" value="" />
+						</p>
+    				</div>
+    				<div id="cert_right">
+	    				<p>
+							<label for="certnm">자격증명</label>
+							<input type="text" id="certnm" name="certnm" class="required" tabindex="41" value="" />
+						</p>    
+	    				<p>
+							<label for="issuorgan">발급기관</label>
+							<input type="text" id="issuorgan" name="issuorgan" class="required" tabindex="43" value="" />
+						</p> 	
+						<p>
+							<label for="cert_reneweddt">갱신종료일</label>
+							<input type="text" id="cert_reneweddt" name="cert_reneweddt"  class="required" tabindex="45" value="" />
+						</p>    					
+    				</div>
+					<div id="cert_bottom">
+						<p>
+							<input type="submit" id="btnCertSubmit" class="btnwht" value="등록" /> <input type="button" id="btnCertRefresh" class="btnwht" value="초기화" />
+						</p>
+					</div>
+    			</form>
+    		</div>
 		  
 		  </div>
 		  <div id="tabs-4">

@@ -133,7 +133,7 @@ form.cmxform  p {
 
 form.cmxform label {
 	display: inline-block;
-	width: 60px;
+	width: 70px;
 	line-height: 2.1;
 	vertical-align: middle;
 	text-align: right;
@@ -186,35 +186,39 @@ input:focus, select:focus {background-color:#ecf2f6; border:1px solid #79B7E7;}
 	font-size: 12px;
 }
 
+#tabs form{
+	font-size: 0.95em;
+}
+
 #insert_addr {
 	border: 1px solid #A6C9E2;
 	margin-top : 20px;
 	padding: 3px;
 }
 
-#sch_inup, #career_inup{
+#sch_inup, #career_inup, #cert_inup{
 	font-size: 0.98em;
 	margin-top: 10px;
 	border: 1px solid #A6C9E2;
 	padding: 3px;
 }
 
-#sch_left, #career_left{
+#sch_left, #career_left, #cert_left{
 	float: left;
 	width: 50%;
 }
 
-#sch_right, #career_right{
+#sch_right, #career_right, #cert_right{
 	float: right;
 	width: 50%;
 }
 
-#sch_bottom, #career_bottom{
+#sch_bottom, #career_bottom, #cert_bottom{
 	clear: both;
 	text-align: center;
 }
 
-#empskill_table{
+#empskill_table {
 	float: left;
 	width: 50%;
 }
@@ -224,3 +228,7 @@ input:focus, select:focus {background-color:#ecf2f6; border:1px solid #79B7E7;}
 	width: 50%;
 }
 
+
+span:hover {
+	cursor: default;
+}

@@ -18,7 +18,7 @@ $(document).ready(function(){
 	$(document).on("click", "#mytable tbody tr", function(){
 		var row = $(this);
 		var seq = row.children("td:eq(0)").text();
-		
+			
 		$.ajax({
 			type: "post",
 			url: "neviGo?cmd=noticeView",
@@ -284,6 +284,28 @@ function noti_del(seq, dseq){
 	        }
 		});
 	}
+}
+
+function gfnChgRowColor(pTarget, pObj) {
+    var viewCnt = 0;
+    $.each($(pTarget), function(idx, obj) {
+        if("none" != $(this).css("display")) viewCnt++;    //실제 보이는 row count 체크
+        
+        if($(pObj).index() == idx) {
+            if(viewCnt%2 == 0) {
+                $(obj).removeClass("table-blue");    //짝수 row 컬러 지정 class
+            }
+            $(obj).css("background","yellow");    //선택한 row 컬러 지정 class
+        } else {
+            //삭제한 row 컬러 지정 class 는 남겨두고 다른 row들의 class 변경
+            if(!$(obj).hasClass("deleted")) {
+                $(obj).removeClass("selected");
+                if(viewCnt%2 == 0) {
+                    $(obj).addClass("table-blue");
+                }
+            }
+        }
+    });
 }
 </script>
 <style>
