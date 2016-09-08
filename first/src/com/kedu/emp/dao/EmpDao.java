@@ -86,7 +86,6 @@ public class EmpDao {
 				empDto.setEmpnm(rs.getString("empnm"));
 				empDto.setPasswd(rs.getString("passwd"));
 				empDto.setPic(rs.getString("pic"));
-				empDto.setJumin(rs.getString("jumin"));
 				empDto.setBirth(rs.getString("birth"));
 				empDto.setZipseq(rs.getInt("zipseq"));
 				empDto.setZipcode(rs.getString("zipcode"));
@@ -105,12 +104,15 @@ public class EmpDao {
 				
 				if (ss_empno !=null && ss_empno.equals(rs.getString("empno"))){
 					empDto.setPayment(rs.getInt("payment"));
+					empDto.setJumin(rs.getString("jumin"));					
 					empDto.setUpyn("i");
 				} else if (manager != null){
 					empDto.setPayment(rs.getInt("payment"));
+					empDto.setJumin(rs.getString("jumin"));					
 					empDto.setUpyn("o");
 				} else {
 					empDto.setPayment(0);
+					empDto.setJumin(" ");					
 					empDto.setUpyn("x");
 				}
 				list.add(empDto);

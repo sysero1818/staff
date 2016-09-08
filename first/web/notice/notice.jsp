@@ -17,8 +17,10 @@ $(document).ready(function(){
 	// 로우 클릭할때 이벤트
 	$(document).on("click", "#mytable tbody tr", function(){
 		var row = $(this);
+		var tbody = $("#mytable tbody").find("tr");
 		var seq = row.children("td:eq(0)").text();
-			
+		tbody.find("td").css("background","white");
+		row.children().css("background","#FBEC88");
 		$.ajax({
 			type: "post",
 			url: "neviGo?cmd=noticeView",
@@ -113,6 +115,30 @@ $(document).ready(function(){
 	}
 	$("#regForm").ajaxForm(options);
 	
+	$("#btnDel").on("click", function(){
+		var seq = $("#seq").val();
+		var curPage = $("#curPage").val();
+		var curTotalPage = $("#curTotalPage").val();
+		$.ajax({
+			type: "post",
+			url: "neviGo?cmd=noticeDelete",
+			data: {seq:seq},
+			dataType: "json",
+			success : function(result) {
+				if(result == 1){
+					alertMsg("공지사항 삭제", "삭제완료");
+					ld(curPage);
+					$("#regForm").clearForm();
+					$("#notiDat_table tbody *").remove();
+				} else {
+					alertMsg("공지사항 삭제",  "삭제실패");
+				}
+			},
+		    error:function(request,status,error){
+		        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	        }
+		});
+	});
 
 	
 	//댓글 등록
@@ -186,6 +212,8 @@ function ld(page){
 				$("#mytable tbody").append("<tr id='noti_"+v.seq+"'><td>"+v.seq+"</td><td>"+v.title+"</td><td>"+v.regdtt+"</td></tr>");
 			});
 			pageing(page, 3, data.total);
+			$("#curPage").val(page);
+			$("#curTotalPage").val(data.total);
 		},
 	    error:function(request,status,error){
 	        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -460,6 +488,9 @@ table > tbody > tr:hover > td {
   text-decoration: none;
 }
 
+.trbg{
+	background: "yellow";
+}
 </style>
 </head>
 <body>
@@ -497,6 +528,8 @@ table > tbody > tr:hover > td {
 	    		<div id="regForm_title" class="ui-widget-header">공지 내용</div> 
 	 			<form class="cmxform" id="regForm" name="regForm" method="post">
 					<input type="hidden" name="inup" id="inup" value="in" />
+					<input type="hidden" name="curPage" id="curPage" value="" />
+					<input type="hidden" name="curTotalPage" id="curTotalPage" value="" />			
 					<p>
 						<label for="seq">글 번호</label>
 						<input type="text" id="seq" name="seq" readonly value="" />
@@ -510,7 +543,9 @@ table > tbody > tr:hover > td {
 						<textarea id="content" name="content" cols="60" rows="10"  tabindex="2"></textarea>
 					</p>	
 					<p class="btnRow">
-						<input type="submit" id="btnSubmit" class="btnwht" value="등록" tabindex="3" /> <input type="button" id="btnRefresh" class="btnwht" value="초기화" />
+						<input type="submit" id="btnSubmit" class="btnwht" value="등록" tabindex="3" /> 
+						<input type="button" id="btnRefresh" class="btnwht" value="초기화" />
+						<input type="button" id="btnDel" class="btnwht" value="삭제" />
 					</p>					
 				</form> 
 	     	</div>

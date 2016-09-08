@@ -42,9 +42,9 @@
 	</div>	
 
 </div>
-<div id="modalPicDel" title="사진 삭제">
-  <p>사진을 삭제하시겠습니까?</p>
-</div>
+<!-- <div id="modalPicDel" title="사진 삭제">
+	<span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span><p>사진을 삭제하시겠습니까?</p>
+</div> -->
 <div id="modalPicDiv" title="사진 수정">
 	<form id="picForm" name="picForm" method="post" action="neviGo?cmd=picUpload" enctype="multipart/form-data">
 		<input type="hidden" id="pic_empno" name="pic_empno" value="" />

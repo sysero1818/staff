@@ -119,44 +119,44 @@ $(document).ready(function(){
 	
 // ***************** 사진 삭제 *************************
 	$("#btnPicDel").on("click", function(){
-	    $( "#modalPicDel" ).dialog({
-	        resizable: false,
+		/*$( "#modalPicDel" ).dialog({
+			autoOpen: false,
 	        height: "auto",
 	        width: 400,
 	        modal: true,
 	        buttons: {
 	          "삭제하기": function() {
-		      		var empno=$("#empno").val();
-		    		if (empno==""){
-		    			alertMsg("사진삭제", "사원을 선택해 주세요...");
-		    			return false;	
-		    		}
-		    		$.ajax({
-		    			type: "post",
-		    			url: "neviGo?cmd=picDelete",
-		    			data: {empno:empno},
-		    			dataType: "json",
-		    			success : function(result) {
-		    				if(result == 1){
-		    					$("#picture > img").attr("src","images/noimage_pic.gif");
-		    					$("#user_list").trigger("reloadGrid");
-		    					$("#btnPicDel").hide();
-		    					$( this ).dialog( "close" );
-		    				} else {
-		    					alertMsg("사진삭제",  "삭제실패");
-		    				}
-		    			},
-		    		    error:function(request,status,error){
-		    		        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		    	        }
-		    		});	            
+       
 	          },
 	          Cancel: function() {
 	            $( this ).dialog( "close" );
 	          }
 	        }
-	      });
-
+	      });*/
+  		var empno=$("#empno").val();
+		if (empno==""){
+			alertMsg("사진삭제", "사원을 선택해 주세요...");
+			return false;	
+		}
+		$.ajax({
+			type: "post",
+			url: "neviGo?cmd=picDelete",
+			data: {empno:empno},
+			dataType: "json",
+			success : function(result) {
+				if(result == 1){
+					$("#picture > img").attr("src","images/noimage_pic.gif");
+					$("#user_list").trigger("reloadGrid");
+					$("#btnPicDel").hide();
+					$( this ).dialog( "close" );
+				} else {
+					alertMsg("사진삭제",  "삭제실패");
+				}
+			},
+		    error:function(request,status,error){
+		        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	        }
+		});	
 	});
 	
 // ***************** 사진 삭제 끝*************************	

@@ -20,6 +20,7 @@ import com.kedu.empskill.action.EmpSkillInsertAction;
 import com.kedu.empskill.action.EmpSkillListAction;
 import com.kedu.empskill.action.SkillListAction;
 import com.kedu.notice.action.BoardListAction;
+import com.kedu.notice.action.NoticeDeleteAction;
 import com.kedu.notice.action.NoticeInUpAction;
 import com.kedu.notice.action.NoticeListAction;
 import com.kedu.notice.action.NoticeViewAction;
@@ -100,6 +101,8 @@ public class ActionFactory {
 			action = new NoticeViewAction();
 		} else if (cmd.equals("noticeInUp")){
 			action = new NoticeInUpAction();
+		} else if (cmd.equals("noticeDelete")){
+			action = new NoticeDeleteAction();
 		} else if (cmd.equals("notidatList")){
 			action = new NotidatListAction();
 		} else if (cmd.equals("notidatInsert")){

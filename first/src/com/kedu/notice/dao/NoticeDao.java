@@ -323,4 +323,27 @@ public class NoticeDao {
 		
 		return result;
 	}	
+
+	public int deleteNotice(int seq, String ss_empno){
+		int result = 0;
+		String sql="{call notice_delete(?,?,?)}";
+		Connection conn = null;
+		CallableStatement  cstmt = null;
+		
+		try {
+			conn = DBManager.getConnection();
+			cstmt = conn.prepareCall(sql);
+			cstmt.setInt(1, seq);
+			cstmt.setString(2, ss_empno);
+			cstmt.registerOutParameter(3, oracle.jdbc.OracleTypes.NUMBER);
+			cstmt.executeUpdate();
+			result = cstmt.getInt(3);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, cstmt);
+		}
+		
+		return result;
+	}		
 }
