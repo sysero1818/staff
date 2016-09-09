@@ -216,20 +216,19 @@ $(document).ready(function(){
 			return $("#regForm").valid();
 		},
 	
-		success : function(responseText,statusText,xhr){
+		success : function(rt,statusText,xhr){
 			$("#regForm").clearForm();
 			$("#inup").val("in");
 			$("#btnSubmit").val("등록");
 			//$("#btnRefresh").hide();
 			$.unblockUI();
-			
-			if (responseText=="0"){
+			if (rt.result=="0"){
 				alertMsg("사원 목록", "등록/수정 실패");
-			} else if (responseText=="1"){
-				alertMsg("사원 목록", "등록 완료");
-			} else if (responseText=="2"){
-				alertMsg("사원 목록", "수정 완료");
-			}
+			} else if (rt.result=="1"){
+				alertMsg("사원 목록", "등록/수정 완료");
+			} else {
+				alertMsg("사원 목록", rt.msg);
+			} 
 
 			$("#user_list").trigger("reloadGrid");
 		}, 

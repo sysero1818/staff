@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.kedu.common.DBManager;
+import com.kedu.common.ResultJson;
 import com.kedu.crypt.BCrypt;
 import com.kedu.crypt.KISA_SHA256;
 import com.kedu.emp.dto.EmpDto;
@@ -125,7 +126,8 @@ public class EmpDao {
 		return list;
 	}
 	
-	public int insertEmp(EmpDto eDto){
+	public ResultJson<Integer> insertEmp(EmpDto eDto){
+		ResultJson<Integer> rj = new ResultJson<Integer>(); 
 		int result = 0;
 		String sql="{call emp_insert(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 		Connection conn = null;
@@ -155,13 +157,15 @@ public class EmpDao {
 			cstmt.registerOutParameter(14, oracle.jdbc.OracleTypes.NUMBER);
 			cstmt.executeUpdate();
 			result = cstmt.getInt(14);
+			rj.setResult(result);
+			rj.setMsg("");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			DBManager.close(conn, cstmt);
 		}
 		
-		return result;
+		return rj;
 	}
 
 	public int updatePic(String empno, String pic){
@@ -209,28 +213,15 @@ public class EmpDao {
 		return result;
 	}	
 	
-	public int updateEmp(EmpDto eDto){
+	public ResultJson<Integer> updateEmp(EmpDto eDto, String ip){
+		ResultJson<Integer> rj = new ResultJson<Integer>(); 
 		int result = 0;
-		String sql="{call emp_update(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+		String expt = "";
+		String sql="{call emp_update(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 		Connection conn = null;
 		CallableStatement  cstmt = null;
 		KISA_SHA256 sha = KISA_SHA256.getInstance();
-		
-/*      p_empnm    	IN	emp.empnm%type
-      , p_passwd	IN	emp.passwd%type
-      , p_pic		IN	emp.pic%type
-      , p_jumin		IN	emp.jumin%type
-      , p_birth		IN	emp.birth%type
-      , p_zipseq	IN	emp.zipseq%type
-      , p_detailad	IN	emp.detailad%type
-      , p_mobile	IN	emp.mobile%type
-      , p_email		IN	emp.email%type
-      , p_indt		IN	emp.indt%type
-      , p_deptno	IN	dept.deptno%type
-      , p_positno	IN	posit.positno%type
-      , p_payment	IN	payhist.payment%type
-*/
-      
+     
 		try {
 			conn = DBManager.getConnection();
 			cstmt = conn.prepareCall(sql);
@@ -253,8 +244,76 @@ public class EmpDao {
 			cstmt.setInt(13, eDto.getPayment());
 			cstmt.setString(14, eDto.getEmpno());			
 			cstmt.registerOutParameter(15, oracle.jdbc.OracleTypes.NUMBER);
+			cstmt.registerOutParameter(16, oracle.jdbc.OracleTypes.NVARCHAR);
 			cstmt.executeUpdate();
 			result = cstmt.getInt(15);
+			expt = cstmt.getString(16);
+			rj.setResult(result);
+			rj.setMsg(expt);
+			dbacs_insert(eDto.getEmpno(), "emp_update", expt, ip);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, cstmt);
+		}
+		
+		return rj;
+	}	
+	
+	public int login(String empno, String passwd, String manager, String mpasswd, String ip){
+		int result = 0;
+//		String sql = "SELECT e.passwd AS epasswd, m.passwd AS mpasswd FROM EMP e left outer JOIN manage m ON e.empno = m.manager where empno=? and e.outdt is null"; 
+		String sql = "{call emp_login(?, ?, ?)}";
+		Connection conn = null;
+//		PreparedStatement pstmt = null;
+		CallableStatement  cstmt = null;
+//		ResultSet rs = null;
+		
+		KISA_SHA256 sha = KISA_SHA256.getInstance();
+     
+		try {
+			conn = DBManager.getConnection();
+//			pstmt = conn.prepareStatement(sql);
+			cstmt = conn.prepareCall(sql);
+			
+//			pstmt.setString(1, empno);
+			
+			cstmt.setString(1, empno);
+			cstmt.registerOutParameter(2, oracle.jdbc.OracleTypes.VARCHAR);
+			cstmt.registerOutParameter(3, oracle.jdbc.OracleTypes.VARCHAR);
+			
+			cstmt.executeQuery();
+
+			String db_epasswd = cstmt.getString(2);
+			String db_mpasswd = cstmt.getString(3);
+			
+			String sha_passwd = sha.Sha256Encrypt(passwd.getBytes());
+			String sha_mpasswd = sha.Sha256Encrypt(mpasswd.getBytes());
+						
+//			if(rs.next()){
+				if (manager.equals("0")){
+//					if (BCrypt.checkpw(sha_passwd, rs.getString("epasswd")) ) {
+					if (BCrypt.checkpw(sha_passwd, db_epasswd)) {
+						result = 1;
+						weblog_insert(empno, ip, "y");
+					} else {
+						result = 0;
+						weblog_insert(empno, ip, "n");
+					}					
+				} else if (manager.equals("1")){
+//					if (BCrypt.checkpw(sha_passwd, rs.getString("epasswd")) && BCrypt.checkpw(sha_mpasswd, rs.getString("mpasswd"))) {
+					if (BCrypt.checkpw(sha_passwd, db_epasswd) && BCrypt.checkpw(sha_mpasswd, db_mpasswd)) {
+						result = 1;
+						weblog_insert(empno, ip, "y");
+					} else {
+						result = 0;
+						weblog_insert(empno, ip, "n");
+					}		
+				}
+//			} else {
+//				result = -1;
+//			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -262,53 +321,48 @@ public class EmpDao {
 		}
 		
 		return result;
-	}	
+	}
 	
-	public int login(String empno, String passwd, String manager, String mpasswd){
-		int result = 0;
-		String sql = "SELECT e.passwd AS epasswd, m.passwd AS mpasswd FROM EMP e left outer JOIN manage m ON e.empno = m.manager where empno=? and e.outdt is null"; 
-		
+	public void weblog_insert(String empno, String ip, String sfyn){
+		String sql = "{call weblog_insert(?,?,?,?)}";
 		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+		CallableStatement  cstmt = null;
 		
-		KISA_SHA256 sha = KISA_SHA256.getInstance();
-     
 		try {
 			conn = DBManager.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, empno);
-			rs = pstmt.executeQuery();
-
-			String sha_passwd = sha.Sha256Encrypt(passwd.getBytes());
-			String sha_mpasswd = sha.Sha256Encrypt(mpasswd.getBytes());
-						
-			if(rs.next()){
-				if (manager.equals("0")){
-					if (BCrypt.checkpw(sha_passwd, rs.getString("epasswd")) ) {
-						result = 1;
-					} else {
-						result = 0;
-					}					
-				} else if (manager.equals("1")){
-					if (BCrypt.checkpw(sha_passwd, rs.getString("epasswd")) && BCrypt.checkpw(sha_mpasswd, rs.getString("mpasswd"))) {
-						result = 1;
-					} else {
-						result = 0;
-					}		
-				}
-			} else {
-				result = -1;
-			}
-
+			cstmt = conn.prepareCall(sql);
+			cstmt.setString(1, empno);
+			cstmt.setString(2, ip);
+			cstmt.setString(3, sfyn);
+			cstmt.registerOutParameter(4, oracle.jdbc.OracleTypes.NUMBER);
+			cstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DBManager.close(conn, pstmt, rs);
+			DBManager.close(conn, cstmt);
 		}
-		
-		return result;
 	}
+
+	public void dbacs_insert(String empno, String procnm, String expt, String ip ){
+		String sql = "{call dbacs_insert(?,?,?,?,?)}";
+		Connection conn = null;
+		CallableStatement  cstmt = null;
+		
+		try {
+			conn = DBManager.getConnection();
+			cstmt = conn.prepareCall(sql);
+			cstmt.setString(1, empno);
+			cstmt.setString(2, procnm);			
+			cstmt.setString(3, expt);
+			cstmt.setString(4, ip);
+			cstmt.registerOutParameter(5, oracle.jdbc.OracleTypes.NUMBER);
+			cstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, cstmt);
+		}
+	}	
 	
 	public int login_manager(String empno, String passwd, String manager, String mpasswd){
 		int result = 0;

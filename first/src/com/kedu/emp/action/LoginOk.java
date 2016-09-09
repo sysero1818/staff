@@ -20,6 +20,7 @@ public class LoginOk implements Action {
 		String passwd = "";
 		String manager = "";
 		String mpasswd = "";
+		String ip = "";
 		
 		if (request.getParameter("empno") != null) {
 			empno = request.getParameter("empno");
@@ -34,16 +35,15 @@ public class LoginOk implements Action {
 			mpasswd = request.getParameter("mpasswd");
 		}				
 		
-//		System.out.println(empno +":"+passwd+":"+manager+":"+mpasswd);
 		
 		empno = SecurityUtil.makeSecureString(empno);
 		passwd = SecurityUtil.makeSecureString(passwd);
 		mpasswd = SecurityUtil.makeSecureString(mpasswd);
-		
+		ip = request.getRemoteAddr();
+		System.out.println(ip);
 		String url = "neviGo?cmd=go&url=login.jsp";
 		EmpDao empDao = EmpDao.getInstance();
-		int result = empDao.login(empno, passwd, manager, mpasswd);
-//		System.out.println(result);
+		int result = empDao.login(empno, passwd, manager, mpasswd, ip);
 		if (result == 1){
 			EmpDto eDto = empDao.getEmpOneByEmpno(empno);
 			HttpSession session = request.getSession();
@@ -55,8 +55,6 @@ public class LoginOk implements Action {
 				session.setAttribute("manager", "manager");
 			}
 			url = "neviGo?cmd=go&url=emp/emp.jsp";
-//			System.out.println(eDto.getEmpno());
-//			System.out.println(url+":"+session.getAttribute("empno"));
 		} else {
 //			System.out.println("로그인 결과" + result);
 		}

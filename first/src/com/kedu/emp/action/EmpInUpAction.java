@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kedu.common.Action;
+import com.kedu.common.ResultJson;
 import com.kedu.emp.dao.EmpDao;
 import com.kedu.emp.dto.EmpDto;
 
@@ -17,10 +18,11 @@ public class EmpInUpAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int result = 0;
-
+//		int result = 0;
+		String ip = request.getRemoteAddr();
 		EmpDto empDto = new EmpDto();
-
+		ResultJson<Integer> rj = null;
+		
 		String inup = request.getParameter("inup");
 		
 		empDto.setEmpno(request.getParameter("empno"));
@@ -59,14 +61,12 @@ public class EmpInUpAction implements Action {
 		EmpDao empDao = EmpDao.getInstance();
 		
 		if (inup.equals("in")){
-			result = empDao.insertEmp(empDto);
+			rj = empDao.insertEmp(empDto);
 		} else if(inup.equals("up")) {
-			result = empDao.updateEmp(empDto)+1;
+			rj = empDao.updateEmp(empDto, ip);
 		}
-		
 		Gson gson = new GsonBuilder().create();
-		String json = gson.toJson(result);
-		
+		String json = gson.toJson(rj);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		
